@@ -1,13 +1,21 @@
 #!/bin/bash
 
+# Allow snaps for Linux Mint
 sudo rm /etc/apt/preferences.d/nosnap.pref
-sudo apt update
-sudo apt install -y python3 python3-pip python3-setuptools python3-wheel rofi zsh ripgrep ranger htop git-all make cmake valgrind libreadline-dev maven openjdk-8-jdk graphviz virtualbox testdisk snapd
 
+# Apt packages
+sudo apt update
+sudo apt install -y python3 python3-pip python3-setuptools python3-wheel rofi zsh ripgrep ranger htop git-all make cmake valgrind libreadline-dev maven openjdk-8-jdk graphviz virtualbox testdisk snapd blueman
+
+sudo apt remove -y blueberry
+
+# Snaps
 sudo snap install code --classic
 sudo snap install intellij-idea-ultimate --classic
+sudo snap install pycharm-professional --classic
 sudo snap install spotify
 sudo snap install discord
+sudo snap install zoom-client
 
 # Chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -19,10 +27,11 @@ git config --global credential.helper store
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 
-# Bat (chequear última versión)
-wget https://github.com/sharkdp/bat/releases/download/v0.18.1/bat-musl_0.18.1_amd64.deb
-sudo dpkg -i bat-musl_0.18.1_amd64.deb 
-rm bat-musl_0.18.1_amd64.deb 
+# Bat (check version!)
+BATVERSION=0.18.2
+wget https://github.com/sharkdp/bat/releases/download/v$(BATVERSION)/bat-musl_$(BATVERSION)_amd64.deb
+sudo dpkg -i bat-musl_$(BATVERSION)_amd64.deb 
+rm bat-musl_$(BATVERSION)_amd64.deb 
 
 # CSpec
 git clone https://github.com/mumuki/cspec.git
@@ -43,5 +52,5 @@ chsh -s `which zsh`
 # Dual boot time
 sudo timedatectl set-local-rtc 1
 
-# Reiniciar
+# Reboot
 sudo shutdown -r 0

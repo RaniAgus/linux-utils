@@ -7,6 +7,7 @@ sudo printf "\nalias ranger='ranger --choosedir=\$HOME/.rangerdir; LASTDIR=\$(ca
 # Node JS (chequear última versión de nvm)
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 sudo printf '\nexport NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm\n\n' >> ~/.zshrc
+source ~/.zshrc
 nvm install --lts
 
 # Java
