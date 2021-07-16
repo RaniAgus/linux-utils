@@ -30,9 +30,11 @@ fi
 
 # Make permanent
 echo -e "\nDocs $HOST vboxsf defaults 0 0\n" >> /etc/fstab
-echo "Edited: /etc/fstab"
+echo -e "\nEdited: /etc/fstab"
 cat /etc/fstab
 
 echo -e "\nvboxsf\n" >> /etc/modules
-echo "Edited: /etc/modules"
+echo -e "\nEdited: /etc/modules"
 cat /etc/modules
+
+echo -e "\nPlease restart to apply changes: 'shutdown -r now'"
