@@ -10,5 +10,9 @@ sudo printf '\nexport NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM
 source ~/.zshrc
 nvm install --lts
 
+sudo ln -s "$(type -a nvm | awk '{ print $NF }')" "/usr/local/bin/nvm"
+sudo ln -s "$(type -a node | awk '{ print $NF }')" "/usr/local/bin/node"
+sudo ln -s "$(type -a npm | awk '{ print $NF }')" "/usr/local/bin/npm"
+
 # Java
 sudo update-alternatives --config java # Switch to Java 8
