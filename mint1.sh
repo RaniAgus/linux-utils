@@ -5,7 +5,7 @@ sudo rm /etc/apt/preferences.d/nosnap.pref
 
 # Apt packages
 sudo apt update
-sudo apt install -y python3 python3-pip python3-setuptools python3-wheel rofi zsh ripgrep ranger htop git-all make cmake valgrind libreadline-dev maven openjdk-8-jdk graphviz virtualbox testdisk snapd blueman
+sudo apt install -y python3 python3-pip python3-setuptools python3-wheel rofi zsh ranger htop git-all make cmake valgrind libreadline-dev maven openjdk-8-jdk graphviz virtualbox testdisk snapd blueman entr
 
 sudo apt remove -y blueberry
 
@@ -32,6 +32,12 @@ BATVERSION=0.18.2
 wget https://github.com/sharkdp/bat/releases/download/v$(BATVERSION)/bat-musl_$(BATVERSION)_amd64.deb
 sudo dpkg -i bat-musl_$(BATVERSION)_amd64.deb 
 rm bat-musl_$(BATVERSION)_amd64.deb 
+
+# Ripgrep (check version!)
+RGVERSION=12.1.1
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/$(RGVERSION)/ripgrep_$(RGVERSION)_amd64.deb
+sudo dpkg -i ripgrep_$(RGVERSION)_amd64.deb
+rm ripgrep_$(RGVERSION)_amd64.deb
 
 # CSpec
 git clone https://github.com/mumuki/cspec.git
