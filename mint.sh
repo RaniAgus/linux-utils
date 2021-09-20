@@ -5,7 +5,12 @@ sudo rm /etc/apt/preferences.d/nosnap.pref
 
 # Apt packages
 sudo apt update
-sudo apt install -y python3 python3-pip python3-setuptools python3-wheel rofi zsh ranger htop git-all make cmake valgrind libreadline-dev maven openjdk-8-jdk graphviz virtualbox testdisk snapd blueman entr
+sudo apt install -y \
+python3 python3-pip python3-setuptools python3-wheel \
+rofi zsh ranger htop git-all \
+make cmake valgrind libreadline-dev \
+maven openjdk-8-jdk graphviz \
+virtualbox testdisk snapd blueman entr
 
 sudo apt remove -y blueberry
 
@@ -58,5 +63,24 @@ chsh -s `which zsh`
 # Dual boot time
 sudo timedatectl set-local-rtc 1
 
+# Ranger
+pip install ranger-fm
+sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
+sudo printf "\nalias ranger='ranger --choosedir=\$HOME/.rangerdir; LASTDIR=\$(cat \$HOME/.rangerdir); cd \"\$LASTDIR\"'\n\n" >> ~/.zshrc
+# Shortcut: gnome-terminal -e "zsh -c '. ranger;zsh'"
+
+# Node JS (chequear última versión de nvm)
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+sudo printf '\nexport NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm\n\n' >> ~/.zshrc
+source ~/.zshrc
+nvm install --lts
+
+sudo ln -s "$(type -a nvm | awk '{ print $NF }')" "/usr/local/bin/nvm"
+sudo ln -s "$(type -a node | awk '{ print $NF }')" "/usr/local/bin/node"
+sudo ln -s "$(type -a npm | awk '{ print $NF }')" "/usr/local/bin/npm"
+
+# Java
+sudo update-alternatives --config java # Switch to Java 8
+
 # Reboot
-sudo shutdown -r 0
+echo "Remember to reboot! 'sudo shutdown -r 0'"
