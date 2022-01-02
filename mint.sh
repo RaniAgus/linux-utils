@@ -20,6 +20,7 @@ bash -x ./other/ohmyzsh.sh
 bash -x ./other/ranger.sh
 bash -x ./other/node.sh
 bash -x ./other/ruby.sh
+bash -x ./other/steam.sh
 
 sudo update-alternatives --config java
 sudo timedatectl set-local-rtc 1
