@@ -38,7 +38,7 @@ install_dpkg https://dl.google.com/linux/direct/google-chrome-stable_current_amd
 install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
 
 # Docker
-$(INSTALL) apt-transport-https ca-certificates curl gnupg lsb-release
+$(INSTALL) apt-transport-https ca-certificates gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 if [ $MINT ]; then
   sh -c "echo $(cat ./apt/docker.mint.list)" | sudo tee /etc/apt/sources.list.d/docker.list
@@ -67,7 +67,7 @@ sudo snap install rider --classic
 $(INSTALL) python3 python3-pip python3-setuptools python3-wheel
 
 # Ripgrep
-install_dpkg https://github.com/BurntSushi/ripgrep/download/latest/ripgrep_$(gh_latest_tag BurntSushi/ripgrep | sed 's/v//')_amd64.deb
+install_dpkg https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_$(gh_latest_tag BurntSushi/ripgrep | sed 's/v//')_amd64.deb
 
 # Spotify
 curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
@@ -109,7 +109,7 @@ install_dpkg "https://zoom.us/client/latest/zoom_amd64.deb"
 ########################################################################################################################
 
 # Oh My Zsh
-$(INSTALL) zsh wget
+$(INSTALL) zsh
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 chsh -s $(which zsh)
 
