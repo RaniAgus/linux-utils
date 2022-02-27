@@ -8,9 +8,10 @@ remove() {
 
 install_dpkg() {
   URL=${1:?}
-  wget -O ./temp.deb "${URL}"
-  sudo apt install ./temp.deb
-  remove ./temp.deb
+  NAME=$(tempfile -s .deb)
+  wget -O ${NAME} "${URL}"
+  sudo apt install ${NAME}
+  remove ${NAME}
 }
 
 gh_latest_tag() {
