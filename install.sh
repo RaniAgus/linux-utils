@@ -96,8 +96,9 @@ make install -C so-commons-library
 remove so-commons-library
 
 # VirtualBox
-install python-is-python2 libqt5opengl5 libqt5printsupport5 libqt5x11extras5 libsdl1.2debian
-install_dpkg "https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~eoan_amd64.deb"
+# install python-is-python2 libqt5opengl5 libqt5printsupport5 libqt5x11extras5 libsdl1.2debian
+# install_dpkg "https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~eoan_amd64.deb"
+# sudo apt-get install --reinstall -y virtualbox virtualbox-dkms
 
 # Visual Studio Code
 install apt-transport-https
