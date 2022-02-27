@@ -29,6 +29,10 @@ gh_latest_tag() {
 
 # Basics
 install wget curl git-all testdisk
+if [ -z $MINT ]; then
+  sudo apt install -y usb-creator-gtk
+fi
+
 git config --global credential.helper store
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
