@@ -2,35 +2,14 @@
 
 set -e
 
-if [ $MINT ]; then
-  sudo apt remove -y blueberry
-fi
-
-install() {
-  sudo apt update && sudo apt install -y "$@"
-}
-
-remove() {
-  rm -rfv "$@"
-}
-
-install_dpkg() {
-  URL=${1:?}
-  wget -O ./temp.deb "${URL}"
-  sudo dpkg -i ./temp.deb
-  remove ./temp.deb
-}
-
-gh_latest_tag() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
-}
+source ./utils/functions.sh
 
 # Basics
-install wget curl git-all testdisk
-if [ -z $MINT ]; then
-  sudo apt install -y usb-creator-gtk
+install wget curl git-all testdisk usb-creator-gtk
+
+if [ $MINT ]; then
+  install blueman
+  sudo apt remove -y blueberry
 fi
 
 git config --global credential.helper store
@@ -55,9 +34,7 @@ else
   sh -c "echo $(cat ./apt/docker.list)" | sudo tee /etc/apt/sources.list.d/docker.list
 fi
 install docker-ce docker-ce-cli containerd.io
-sudo groupadd docker
 sudo usermod -aG docker $USER
-newgrp docker
 docker run hello-world
 
 # Java
@@ -100,9 +77,8 @@ make install -C so-commons-library
 remove so-commons-library
 
 # VirtualBox
-# install python-is-python2 libqt5opengl5 libqt5printsupport5 libqt5x11extras5 libsdl1.2debian
-# install_dpkg "https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~Ubuntu~eoan_amd64.deb"
-# sudo apt-get install --reinstall -y virtualbox virtualbox-dkms
+# install virtualbox
+# install virtualbox-ext-pack
 
 # Visual Studio Code
 install apt-transport-https
@@ -113,7 +89,6 @@ remove packages.microsoft.gpg
 install code
 
 # Zoom
-install libgl1-mesa-glx libgl1-mesa-glx libxcb-xtest0
 install_dpkg "https://zoom.us/client/latest/zoom_amd64.deb"
 
 ########################################################################################################################
@@ -121,33 +96,8 @@ install_dpkg "https://zoom.us/client/latest/zoom_amd64.deb"
 # Oh My Zsh
 install zsh
 sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-chsh -s $(which zsh)
+chsh -s `which zsh`
 
 ########################################################################################################################
 
-# Node
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh | bash
-cat ./aliases/nvm.sh >> ~/.zshrc
-source ~/.zshrc
-nvm install --lts
-
-sudo ln -s "$(type -a nvm | awk '{ print $NF }')" "/usr/local/bin/nvm"
-sudo ln -s "$(type -a node | awk '{ print $NF }')" "/usr/local/bin/node"
-sudo ln -s "$(type -a npm | awk '{ print $NF }')" "/usr/local/bin/npm"
-
-# Ranger
-pip install ranger-fm
-sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
-cat ./aliases/ranger.sh >> ~/.zshrc
-
-# Ruby
-install libssl-dev
-curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
-cat ./aliases/ruby.sh >> ~/.zshrc
-~/.rbenv/bin/rbenv init >> ~/.zshrc
-~/.rbenv/bin/rbenv install -l | grep -v "-" | tail -1 | xargs ~/.rbenv/bin/rbenv install
-
-########################################################################################################################
-
-sudo timedatectl set-local-rtc 1
-echo "Remember to reboot! 'sudo shutdown -r 0'"
+zsh ./install.zsh
