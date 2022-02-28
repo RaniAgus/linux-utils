@@ -8,7 +8,7 @@ remove() {
 
 install_dpkg() {
   URL=${1:?}
-  NAME=$(tempfile -s .deb)
+  NAME=./$RANDOM.deb
   wget -O ${NAME} "${URL}"
   sudo apt install ${NAME}
   remove ${NAME}
