@@ -40,3 +40,5 @@ ls | cut -f1 -d. | xargs -n1 -i -p mongoimport --db $DB_NAME --collection {} --f
 2. Navigate to org -> gnome -> mutter -> keybindings -> switch-monitor
 3. Then uncheck the box about using the default value and set the custom value to []
 4. Restart
+
+- Force dark theme on Chrome: chrome://flags/#enable-force-dark
