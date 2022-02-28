@@ -35,7 +35,8 @@ else
 fi
 install docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
-docker run hello-world
+echo "run 'docker run hello-world' to test docker installation"
+newgrp -l
 
 # Java
 install maven openjdk-8-jdk graphviz
@@ -44,8 +45,8 @@ sudo update-alternatives --config java
 # JetBrains
 if [ $MINT ]; then
   sudo rm /etc/apt/preferences.d/nosnap.pref
-  install snapd
 fi
+install snapd
 sudo snap install intellij-idea-ultimate --classic
 sudo snap install rider --classic
 
