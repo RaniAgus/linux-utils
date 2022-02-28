@@ -1,4 +1,4 @@
-#!/bin/zsh -x
+#!/bin/zsh
 
 source ./utils/functions.sh
 
