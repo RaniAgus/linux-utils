@@ -33,3 +33,10 @@ $ tree .
 ```bash
 ls | cut -f1 -d. | xargs -n1 -i -p mongoimport --db $DB_NAME --collection {} --file {}.json
 ```
+
+- Remove `Ctrl` + `p` keybinding for display switch:
+
+1. Open `dconf-editor`
+2. Navigate to org -> gnome -> mutter -> keybindings -> switch-monitor
+3. Then uncheck the box about using the default value and set the custom value to []
+4. Restart

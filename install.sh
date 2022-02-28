@@ -5,7 +5,7 @@ set -e
 source ./utils/functions.sh
 
 # Basics
-install wget curl git-all testdisk usb-creator-gtk
+install wget curl git-all testdisk usb-creator-gtk dconf-editor
 
 if [ $MINT ]; then
   install blueman
