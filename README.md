@@ -6,6 +6,8 @@ Scripts para instalar las apps que uso
 ### Rofi launcher and SSH
 ```
 rofi -show run
+```
+```
 rofi -show ssh
 ```
 ### Execute zsh after exiting ranger
