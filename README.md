@@ -3,12 +3,13 @@ Scripts para instalar las apps que uso
 
 ## Shortcuts
 
-```zsh
-# Rofi launcher and SSH
+### Rofi launcher and SSH
+```
 rofi -show run
 rofi -show ssh
-
-# Execute zsh after exiting ranger
+```
+### Execute zsh after exiting ranger
+```
 gnome-terminal -e "zsh -c '. ranger;zsh'"
 ```
 
@@ -20,7 +21,7 @@ gnome-terminal -e "zsh -c '. ranger;zsh'"
 git diff --staged --name-only | xargs git stash -m
 ```
 
-### Import mongo from multiple JSON files:
+### Import mongo from multiple JSON files
 
 ```
 $ tree .
@@ -34,7 +35,7 @@ $ tree .
 ls | cut -f1 -d. | xargs -n1 -i -p mongoimport --db $DB_NAME --collection {} --file {}.json
 ```
 
-### Remove `Ctrl` + `p` keybinding for display switch:
+### Remove `Ctrl` + `p` keybinding for display switch
 
 - Open `dconf-editor`
 - Navigate to org -> gnome -> mutter -> keybindings -> switch-monitor
@@ -45,6 +46,7 @@ ls | cut -f1 -d. | xargs -n1 -i -p mongoimport --db $DB_NAME --collection {} --f
 - Go to: [chrome://flags/#enable-force-dark](chrome://flags/#enable-force-dark)
 
 ### Repair grub dual boot
+
 ```bash
 # Install required software
 sudo apt install -y os-prober grub-customizer
