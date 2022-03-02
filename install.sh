@@ -5,7 +5,7 @@ set -e
 source ./utils/functions.sh
 
 # Basics
-install wget curl git-all testdisk usb-creator-gtk dconf-editor
+install wget curl git-all testdisk usb-creator-gtk dconf-editor apt-transport-https
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
 if [ $MINT ]; then
@@ -27,7 +27,7 @@ install_dpkg "https://dl.google.com/linux/direct/google-chrome-stable_current_am
 install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
 
 # Docker
-install apt-transport-https ca-certificates gnupg lsb-release
+install ca-certificates gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 if [ $MINT ]; then
   sh -c "echo $(cat ./apt/docker.mint.list)" | sudo tee /etc/apt/sources.list.d/docker.list
@@ -38,6 +38,10 @@ install docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
 echo "run 'docker run hello-world' to test docker installation"
 newgrp -l
+
+# DotNET
+install_dpkg https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
+install dotnet-sdk-6.0
 
 # Java
 install maven openjdk-8-jdk graphviz
@@ -83,7 +87,6 @@ remove so-commons-library
 # install virtualbox-ext-pack
 
 # Visual Studio Code
-install apt-transport-https
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 sudo cp ./apt/vscode.list /etc/apt/sources.list.d/vscode.list
