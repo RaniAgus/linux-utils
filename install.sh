@@ -13,6 +13,7 @@ if [ $MINT ]; then
   sudo apt remove -y blueberry
 fi
 
+git config --global init.defaultBranch main
 git config --global credential.helper store
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
