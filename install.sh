@@ -71,7 +71,7 @@ install spotify-client
 install_dpkg "https://cdn.akamai.steamstatic.com/client/installer/steam.deb"
 
 # UTNSO
-install make cmake valgrind libreadline-dev entr
+install make cmake valgrind libreadline-dev entr libcriterion-dev
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
