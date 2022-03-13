@@ -5,13 +5,17 @@ set -e
 source ./utils/functions.sh
 
 # Basics
-install apt-transport-https curl dconf-editor git-all p7zip-full software-properties-common testdisk tree usb-creator-gtk wget
+install apt-transport-https curl dconf-editor p7zip-full software-properties-common testdisk tree usb-creator-gtk wget
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
 if [ $MINT ]; then
   install blueman
   sudo apt remove -y blueberry
 fi
+
+# Git
+sudo add-apt-repository ppa:git-core/ppa
+install git-all
 
 git config --global init.defaultBranch main
 git config --global credential.helper store
