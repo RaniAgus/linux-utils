@@ -10,7 +10,7 @@ install_dpkg() {
   URL=${1:?}
   NAME=./$RANDOM.deb
   wget -O ${NAME} "${URL}"
-  sudo apt install ${NAME}
+  sudo apt install -y ${NAME}
   remove ${NAME}
 }
 
