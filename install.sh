@@ -41,8 +41,8 @@ else
 fi
 install docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
-echo "run 'docker run hello-world' to test docker installation"
-newgrp -l
+# run 'docker run hello-world' to test docker installation
+newgrp docker
 
 # DotNET
 install_dpkg https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
@@ -75,7 +75,7 @@ install spotify-client
 install_dpkg "https://cdn.akamai.steamstatic.com/client/installer/steam.deb"
 
 # UTNSO
-install make cmake valgrind libreadline-dev entr libcriterion-dev
+install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr libcriterion-dev
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
