@@ -23,7 +23,7 @@ git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 
 # Bat
-install_dpkg "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat | sed 's/v//')_amd64.deb"
+install_dpkg "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat | sed 's/v//g')_amd64.deb"
 
 # Chrome
 install_dpkg "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
@@ -64,7 +64,7 @@ sudo snap install rider --classic
 install python3 python3-pip python3-setuptools python3-wheel
 
 # Ripgrep
-install_dpkg "https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_$(gh_latest_tag BurntSushi/ripgrep | sed 's/v//')_amd64.deb"
+install_dpkg "https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_$(gh_latest_tag BurntSushi/ripgrep | sed 's/v//g')_amd64.deb"
 
 # Spotify
 curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
