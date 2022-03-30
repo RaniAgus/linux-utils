@@ -105,7 +105,7 @@ install_dpkg "https://zoom.us/client/latest/zoom_amd64.deb"
 
 # Oh My Zsh
 install zsh
-sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 chsh -s `which zsh`
 
 ########################################################################################################################
