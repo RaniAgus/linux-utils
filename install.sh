@@ -35,9 +35,11 @@ install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
 install ca-certificates gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 if [ $MINT ]; then
-  sh -c "echo $(cat ./apt/docker.mint.list)" | sudo tee /etc/apt/sources.list.d/docker.list
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(cat /etc/upstream-release/lsb-release | grep "DISTRIB_CODENAME" | cut -d '=' -f2) stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list
 else
-  sh -c "echo $(cat ./apt/docker.list)" | sudo tee /etc/apt/sources.list.d/docker.list
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+    | sudo tee /etc/apt/sources.list.d/docker.list
 fi
 install docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
@@ -68,7 +70,7 @@ install_dpkg "https://github.com/BurntSushi/ripgrep/releases/latest/download/rip
 
 # Spotify
 curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
-sudo cp ./apt/spotify.list /etc/apt/sources.list.d/spotify.list
+echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 install spotify-client
 
 # Steam
@@ -94,7 +96,8 @@ remove so-commons-library
 # Visual Studio Code
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo cp ./apt/vscode.list /etc/apt/sources.list.d/vscode.list
+echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
+  | sudo tee /etc/apt/sources.list.d/vscode.list
 remove packages.microsoft.gpg
 install code
 
