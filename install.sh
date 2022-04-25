@@ -5,7 +5,8 @@ set -e
 source ./utils/functions.sh
 
 # Basics
-install apt-transport-https curl dconf-editor htop ncdu p7zip-full remake software-properties-common testdisk tree usb-creator-gtk wget
+sudo add-apt-repository ppa:daniel-milde/gdu
+install apt-transport-https curl dconf-editor htop gdu p7zip-full remake software-properties-common testdisk tree usb-creator-gtk wget
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
 if [ $MINT ]; then
