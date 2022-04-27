@@ -2,11 +2,34 @@
 
 set -e
 
-source ./utils/functions.sh
+install() {
+  sudo apt update && sudo apt install -y "$@"
+}
+
+remove() {
+  rm -rfv "$@"
+}
+
+install_dpkg() {
+  URL=${1:?}
+  NAME=./$RANDOM.deb
+  wget -O ${NAME} "${URL}"
+  sudo apt install -y ${NAME}
+  remove ${NAME}
+}
+
+gh_latest_tag() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' |                                            # Get tag line
+    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+}
+
+# if [ $MINT ]; then
+#   sudo rm /etc/apt/preferences.d/nosnap.pref
+# fi
 
 # Basics
-sudo add-apt-repository ppa:daniel-milde/gdu
-install apt-transport-https curl dconf-editor htop gdu p7zip-full remake software-properties-common testdisk tree usb-creator-gtk wget
+install apt-transport-https curl dconf-editor htop p7zip-full remake ripgrep software-properties-common testdisk tree usb-creator-gtk wget
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
 if [ $MINT ]; then
@@ -15,8 +38,9 @@ if [ $MINT ]; then
 fi
 
 # Git
-sudo add-apt-repository ppa:git-core/ppa
+sudo add-apt-repository -y ppa:git-core/ppa
 install git-all
+install_dpkg "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager | sed 's/v//g').deb"
 
 git config --global init.defaultBranch main
 git config --global credential.helper store
@@ -27,10 +51,12 @@ git config --global user.name "Agustin Ranieri"
 install_dpkg "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat | sed 's/v//g')_amd64.deb"
 
 # Chrome
-install_dpkg "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+flatpak install flathub com.google.Chrome
+#install_dpkg "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 # Discord
-install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
+flatpak install flathub com.discordapp.Discord
+#install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
 
 # Docker
 install ca-certificates gnupg lsb-release
@@ -48,20 +74,18 @@ sudo usermod -aG docker $USER
 newgrp docker
 
 # DotNET
-install_dpkg https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
-install dotnet-sdk-6.0
+# install_dpkg https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
+# install dotnet-sdk-6.0
 
 # Java
 install maven openjdk-8-jdk graphviz
 sudo update-alternatives --config java
 
 # JetBrains
-if [ $MINT ]; then
-  sudo rm /etc/apt/preferences.d/nosnap.pref
-fi
-install snapd
-sudo snap install intellij-idea-ultimate --classic
-sudo snap install rider --classic
+wget https://download.jetbrains.com/toolbox/jetbrains-toolbox-1.23.11849.tar.gz
+sudo tar xvzf jetbrains-toolbox-*.tar.gz -C /opt
+/opt/jetbrains-toolbox-*/jetbrains-toolbox
+rm jetbrains-toolbox-*.tar.gz
 
 # Ngrok
 curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
@@ -71,19 +95,16 @@ install ngrok
 # Python
 install python3 python3-pip python3-setuptools python3-wheel
 
-# Ripgrep
-install_dpkg "https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_$(gh_latest_tag BurntSushi/ripgrep | sed 's/v//g')_amd64.deb"
-
 # Spotify
-curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
-echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-install spotify-client
-
-# Steam
-install_dpkg "https://cdn.akamai.steamstatic.com/client/installer/steam.deb"
+flatpak install flathub com.spotify.Client
+# curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+# echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+# install spotify-client
 
 # UTNSO
-install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr libcriterion-dev
+# sudo add-apt-repository -y ppa:daniel-milde/gdu
+# install gdu
+install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
@@ -95,20 +116,16 @@ make -C so-commons-library debug
 make install -C so-commons-library
 remove so-commons-library
 
-# VirtualBox
-# install virtualbox
-# install virtualbox-ext-pack
-
 # Visual Studio Code
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
 sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
-  | sudo tee /etc/apt/sources.list.d/vscode.list
+ | sudo tee /etc/apt/sources.list.d/vscode.list
 remove packages.microsoft.gpg
 install code
 
 # Zoom
-install_dpkg "https://zoom.us/client/latest/zoom_amd64.deb"
+flatpak install flathub us.zoom.Zoom
 
 ########################################################################################################################
 
@@ -116,7 +133,3 @@ install_dpkg "https://zoom.us/client/latest/zoom_amd64.deb"
 install zsh
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 chsh -s `which zsh`
-
-########################################################################################################################
-
-zsh ./install.zsh
