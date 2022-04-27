@@ -41,9 +41,11 @@ fi
 sudo add-apt-repository -y ppa:git-core/ppa
 install git-all
 install_dpkg "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager | sed 's/v//g').deb"
+git-credential-manager-core configure
+gpg --generate-key
 
 git config --global init.defaultBranch main
-git config --global credential.helper store
+git config --global credential.credentialStore gpg
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 
