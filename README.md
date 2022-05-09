@@ -1,5 +1,5 @@
 # linux-utils
-Scripts para instalar las apps que uso
+Scripts para instalar las apps que uso.
 
 ## Shortcuts
 
