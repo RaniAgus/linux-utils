@@ -24,13 +24,16 @@ gh_latest_tag() {
     sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
 }
 
-# if [ $MINT ]; then
-#   sudo rm /etc/apt/preferences.d/nosnap.pref
-# fi
+if [ $MINT ]; then
+  sudo rm /etc/apt/preferences.d/nosnap.pref
+fi
 
 # Basics
-install apt-transport-https curl dconf-editor htop p7zip-full remake ripgrep software-properties-common testdisk tree usb-creator-gtk wget
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
+install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
+flatpak install flathub org.kde.kdenlive
+
+# Fonts
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
 if [ $MINT ]; then
   install blueman
@@ -106,7 +109,7 @@ flatpak install flathub com.spotify.Client
 # UTNSO
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
-install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr
+install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
