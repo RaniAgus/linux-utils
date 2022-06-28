@@ -46,7 +46,7 @@ install git-all
 install_dpkg "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager | sed 's/v//g').deb"
 git-credential-manager-core configure
 gpg --generate-key
-read -p "Enter generated gpg key: " $gpgkey
+read -p "Enter generated gpg key: " gpgkey
 pass init $gpgkey
 
 git config --global init.defaultBranch main
