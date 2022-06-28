@@ -30,7 +30,7 @@ fi
 
 # Basics
 install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
-flatpak install flathub org.kde.kdenlive
+flatpak install -y flathub org.kde.kdenlive
 
 # Fonts
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
@@ -46,6 +46,8 @@ install git-all
 install_dpkg "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager | sed 's/v//g').deb"
 git-credential-manager-core configure
 gpg --generate-key
+read -p "Enter generated gpg key: " $gpgkey
+pass init $gpgkey
 
 git config --global init.defaultBranch main
 git config --global credential.credentialStore gpg
@@ -56,11 +58,11 @@ git config --global user.name "Agustin Ranieri"
 install_dpkg "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat | sed 's/v//g')_amd64.deb"
 
 # Chrome
-flatpak install flathub com.google.Chrome
+flatpak install -y flathub com.google.Chrome
 #install_dpkg "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 # Discord
-flatpak install flathub com.discordapp.Discord
+flatpak install -y flathub com.discordapp.Discord
 #install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
 
 # Docker
@@ -101,7 +103,7 @@ install ngrok
 install python3 python3-pip python3-setuptools python3-wheel
 
 # Spotify
-flatpak install flathub com.spotify.Client
+flatpak install -y flathub com.spotify.Client
 # curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
 # echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 # install spotify-client
@@ -130,7 +132,7 @@ remove packages.microsoft.gpg
 install code
 
 # Zoom
-flatpak install flathub us.zoom.Zoom
+flatpak install -y flathub us.zoom.Zoom
 
 ########################################################################################################################
 
