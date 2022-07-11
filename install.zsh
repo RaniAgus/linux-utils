@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 install() {
-  sudo apt update && sudo apt install -y "$@"
+  sudo apt-get update && sudo apt-get install -y "$@"
 }
 
 remove() {
