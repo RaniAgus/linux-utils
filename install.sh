@@ -3,7 +3,7 @@
 set -e
 
 install() {
-  sudo apt update && sudo apt install -y "$@"
+  sudo apt-get update && sudo apt-get install -y "$@"
 }
 
 remove() {
@@ -29,7 +29,7 @@ if [ $MINT ]; then
 fi
 
 # Basics
-install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
+install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep shellcheck software-properties-common testdisk tree usb-creator-gtk wget
 flatpak install -y flathub org.kde.kdenlive
 
 # Fonts
@@ -101,6 +101,10 @@ install ngrok
 
 # Python
 install python3 python3-pip python3-setuptools python3-wheel
+
+# Nautilus terminal
+install python3-nautilus python3-psutil python3-pip libglib2.0-bin dconf-editor
+pip3 install --user nautilus_terminal 
 
 # Spotify
 flatpak install -y flathub com.spotify.Client
