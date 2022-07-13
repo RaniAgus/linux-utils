@@ -32,6 +32,8 @@ sudo ln -s "$(type -a nvm | awk '{ print $NF }')" "/usr/local/bin/nvm"
 sudo ln -s "$(type -a node | awk '{ print $NF }')" "/usr/local/bin/node"
 sudo ln -s "$(type -a npm | awk '{ print $NF }')" "/usr/local/bin/npm"
 
+npm i --location=global degit @angular/cli
+
 # Ruby
 install libssl-dev
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
