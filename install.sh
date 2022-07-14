@@ -29,7 +29,7 @@ if [ $MINT ]; then
 fi
 
 # Basics
-install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep shellcheck software-properties-common testdisk tree usb-creator-gtk wget
+install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
 flatpak install -y flathub org.kde.kdenlive
 
 # Fonts
@@ -122,7 +122,7 @@ flatpak install -y flathub com.spotify.Client
 # UTNSO
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
-install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake
+install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake shellcheck
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
