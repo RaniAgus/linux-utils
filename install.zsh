@@ -48,8 +48,14 @@ pip install ranger-fm
 sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
 cat ./aliases/ranger.sh >> ~/.zshrc
 
+# Valgrind aliases
+echo 'alias memcheck="valgrind --leak-check=full --track-origins=yes"' >> ~/.zshrc
+echo 'alias helgrind="valgrind --tool=helgrind"' >> ~/.zshrc
+
+echo 'alias vg="memcheck"' >> ~/.zshrc
+echo 'alias hg="helgrind"' >> ~/.zshrc
+
 ########################################################################################################################
 
 sudo timedatectl set-local-rtc 1
 echo "Remember to reboot! 'sudo shutdown -r 0'"
-
