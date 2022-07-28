@@ -130,9 +130,11 @@ sudo make install -C cspec
 remove cspec
 
 git clone https://github.com/sisoputnfrba/so-commons-library.git
-make -C so-commons-library debug
-make install -C so-commons-library
+make -C so-commons-library debug install
 remove so-commons-library
+
+sudo curl -o /usr/local/include/doctest.h \
+  https://raw.githubusercontent.com/doctest/doctest/v2.4.9/doctest/doctest.h
 
 # Visual Studio Code
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
