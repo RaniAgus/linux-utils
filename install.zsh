@@ -34,5 +34,6 @@ sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
 
 ########################################################################################################################
 
-sudo timedatectl set-local-rtc 1
+# Dual boot timezone fix
+# sudo timedatectl set-local-rtc 1
 echo "Remember to reboot! 'sudo shutdown -r 0'"
