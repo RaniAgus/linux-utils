@@ -2,20 +2,16 @@
 
 set -e
 
-install() {
+apt_install() {
   sudo apt-get update && sudo apt-get install -y "$@"
 }
 
-remove() {
-  rm -rfv "$@"
-}
-
-install_dpkg() {
+dpkg_install() {
   URL=${1:?}
   NAME=./$RANDOM.deb
   wget -O ${NAME} "${URL}"
   sudo apt install -y ${NAME}
-  remove ${NAME}
+  rm -v ${NAME}
 }
 
 gh_latest_tag() {
@@ -29,21 +25,16 @@ if [ $MINT ]; then
 fi
 
 # Basics
-install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
+apt_install apt-transport-https curl dconf-editor drawing htop p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
 flatpak install -y flathub org.kde.kdenlive
 
 # Fonts
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
-if [ $MINT ]; then
-  install blueman
-  sudo apt remove -y blueberry
-fi
-
 # Git
 sudo add-apt-repository -y ppa:git-core/ppa
-install git-all
-install_dpkg "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager | sed 's/v//g').deb"
+apt_install git-all
+dpkg_install "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager | sed 's/v//g').deb"
 git-credential-manager-core configure
 gpg --generate-key
 read -p "Enter generated gpg key: " gpgkey
@@ -58,21 +49,21 @@ git config --global user.name "Agustin Ranieri"
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-install gh
+apt_install gh
 
 # Bat
-install_dpkg "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat | sed 's/v//g')_amd64.deb"
+dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat | sed 's/v//g')_amd64.deb"
 
 # Chrome
 flatpak install -y flathub com.google.Chrome
-#install_dpkg "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+#dpkg_install "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 # Discord
 flatpak install -y flathub com.discordapp.Discord
-#install_dpkg "https://discordapp.com/api/download?platform=linux&format=deb"
+#dpkg_install "https://discordapp.com/api/download?platform=linux&format=deb"
 
 # Docker
-install ca-certificates gnupg lsb-release
+apt_install ca-certificates gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 if [ $MINT ]; then
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(cat /etc/upstream-release/lsb-release | grep "DISTRIB_CODENAME" | cut -d '=' -f2) stable" \
@@ -81,17 +72,17 @@ else
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
     | sudo tee /etc/apt/sources.list.d/docker.list
 fi
-install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+apt_install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo usermod -aG docker $USER
 # run 'docker run hello-world' to test docker installation
 newgrp docker
 
 # DotNET
-# install_dpkg https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
-# install dotnet-sdk-6.0
+# dpkg_install https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
+# apt_install dotnet-sdk-6.0
 
 # Java
-install maven openjdk-8-jdk graphviz
+apt_install maven openjdk-8-jdk graphviz
 sudo update-alternatives --config java
 
 # JetBrains
@@ -103,13 +94,13 @@ rm jetbrains-toolbox-*.tar.gz
 # Ngrok
 curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
 echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
-install ngrok
+apt_install ngrok
 
 # Python
-install python3 python3-pip python3-setuptools python3-wheel
+apt_install python3 python3-pip python3-setuptools python3-wheel
 
 # Nautilus terminal
-install python3-nautilus python3-psutil python3-pip libglib2.0-bin dconf-editor
+apt_install python3-nautilus python3-psutil python3-pip libglib2.0-bin dconf-editor
 pip3 install --user nautilus_terminal 
 
 # Spotify
@@ -121,18 +112,18 @@ flatpak install -y flathub com.spotify.Client
 # UTNSO
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
-install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake shellcheck
+apt_install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake shellcheck
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
 sudo make install -C cspec
-remove cspec
+rm -rv cspec
 
 git clone https://github.com/sisoputnfrba/so-commons-library.git
 make -C so-commons-library debug install
-remove so-commons-library
+rm -rv so-commons-library
 
-sudo curl -o /usr/local/include/doctest.h \
+sudo curl --create-dirs -o /usr/local/include/doctest/doctest.h \
   https://raw.githubusercontent.com/doctest/doctest/v2.4.9/doctest/doctest.h
 
 # Visual Studio Code
@@ -140,8 +131,8 @@ wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > pa
 sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
 echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
  | sudo tee /etc/apt/sources.list.d/vscode.list
-remove packages.microsoft.gpg
-install code
+rm -v packages.microsoft.gpg
+apt_install code
 
 # Zoom
 flatpak install -y flathub us.zoom.Zoom
@@ -149,6 +140,6 @@ flatpak install -y flathub us.zoom.Zoom
 ########################################################################################################################
 
 # Oh My Zsh
-install zsh
+apt_install zsh
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 chsh -s `which zsh`
