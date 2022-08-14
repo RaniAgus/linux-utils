@@ -28,6 +28,7 @@ npm i --location=global degit @angular/cli
 # Ruby
 rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
 rbenv global $(rbenv versions)
+gem install pry bundler
 
 # Ranger
 pip install ranger-fm
