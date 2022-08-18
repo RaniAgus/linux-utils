@@ -6,5 +6,3 @@ fix_wsl2_interop() {
     done
 }
 fix_wsl2_interop
-
-export CHROME_BIN="/mnt/c/Program Files (x86)/Google/Chrome/Application/chrome.exe"
