@@ -76,21 +76,19 @@ sudo usermod -aG docker $USER
 newgrp docker
 
 # DotNET
-# dpkg_install https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb
-# apt_install dotnet-sdk-6.0
+apt_install dotnet6
 
 # Java
 apt_install maven openjdk-8-jdk graphviz
 sudo update-alternatives --config java
 
 # JetBrains
-wget https://download.jetbrains.com/toolbox/jetbrains-toolbox-1.23.11849.tar.gz
-sudo tar xvzf jetbrains-toolbox-*.tar.gz -C /opt
+TBA_LINK=$(curl -fsSL https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release | jq -r '.TBA[0].downloads.linux.link')
+wget -qO- ${TBA_LINK:?} | sudo tar xvzC /opt
 /opt/jetbrains-toolbox-*/jetbrains-toolbox
-rm jetbrains-toolbox-*.tar.gz
 
 # Ngrok
-curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+curl -fsSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
 echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
 apt_install ngrok
 
