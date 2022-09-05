@@ -4,13 +4,18 @@
 
 Ejecutar:
 ```powershell
+# Install oh-my-posh
 winget install JanDeDobbeleer.OhMyPosh -s winget
-oh-my-posh get shell
+
+# Install git-aliases
+Install-Module git-aliases -Scope CurrentUser -AllowClobber
+
+# Add powershell profile
 New-Item -Path $PROFILE -Type File -Force
 notepad $PROFILE
 ```
 
-Agregar la línea:
+Y luego agregar la línea:
 ```ps1
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/xtoys.omp.json" | Invoke-Expression
 ```
