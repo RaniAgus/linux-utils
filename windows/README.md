@@ -19,5 +19,5 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/xtoys.omp.json" | Invoke-Ex
 Ejecutar:
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
-sed -i 's/^OSH_THEME=.*/OSH_THEME="standard"/' ~/.bashrc
+sed -i 's/^OSH_THEME=.*/OSH_THEME="sirup"/' ~/.bashrc
 ```
