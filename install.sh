@@ -23,7 +23,7 @@ if [ $MINT ]; then
 fi
 
 # Basics
-apt_install apt-transport-https curl dconf-editor drawing htop jq p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
+apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
 flatpak install -y flathub org.kde.kdenlive
 
 # Fonts
