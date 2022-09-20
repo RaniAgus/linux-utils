@@ -106,10 +106,10 @@ flatpak install -y flathub com.spotify.Client
 # echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
 # install spotify-client
 
-# UTNSO
+# SisOp
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
-apt_install make cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake shellcheck
+apt_install make clang-format clang-tidy cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake shellcheck
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
