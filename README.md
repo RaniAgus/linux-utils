@@ -17,10 +17,13 @@ gnome-terminal -e "zsh -c '. ranger;zsh'"
 
 ## Cheatsheet
 
-### Stash only staged files
+### Change commit author
 
 ```bash
-git diff --staged --name-only | xargs git stash -m
+grb -i HEAD~N
+# Mark all commits for edit and repeat N times:
+gcn! --author="Agustin Ranieri <aguseranieri@gmail.com>"
+grb --continue
 ```
 
 ### Import mongo from multiple JSON files
