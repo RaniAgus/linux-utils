@@ -23,7 +23,7 @@ if [ $MINT ]; then
 fi
 
 # Basics
-apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget
+apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget zip
 flatpak install -y flathub org.kde.kdenlive
 
 # Fonts
@@ -82,6 +82,9 @@ apt_install dotnet6
 # Java
 apt_install maven openjdk-8-jdk graphviz
 sudo update-alternatives --config java
+curl -s "https://get.sdkman.io" | bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
+sdk install gradle 7.5.1
 
 # JetBrains
 TBA_LINK=$(curl -fsSL https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release | jq -r '.TBA[0].downloads.linux.link')
