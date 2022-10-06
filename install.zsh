@@ -12,7 +12,7 @@ gh_latest_tag() {
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh | bash
 
 # rbenv
-install libssl-dev
+install libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
 # Install aliases
@@ -26,7 +26,7 @@ npm i --location=global degit yarn @angular/cli @ionic/cli
 # Ruby
 rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
 rbenv global $(rbenv versions)
-gem install pry bundler rspec colorize
+gem install pry bundler rspec colorize rails
 
 # Ranger
 pip install ranger-fm
