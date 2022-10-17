@@ -51,3 +51,4 @@ alias vm="valgrind --leak-check=full --track-origins=yes"
 alias vh="valgrind --tool=helgrind"
 alias vn="valgrind --tool=none"
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=$(cat $HOME/.rangerdir); cd "$LASTDIR"'
+alias ytdl-playlist='youtube-dl -o "%(playlist_index)s-%(title)s.%(ext)s"'
