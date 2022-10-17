@@ -134,6 +134,10 @@ echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.micr
 rm -v packages.microsoft.gpg
 apt_install code
 
+# YouTube-DL
+sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
+sudo chmod a+rx /usr/local/bin/youtube-dl
+
 # Zoom
 flatpak install -y flathub us.zoom.Zoom
 
