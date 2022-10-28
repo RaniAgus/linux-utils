@@ -80,7 +80,7 @@ newgrp docker
 apt_install dotnet6
 
 # Java
-apt_install maven openjdk-8-jdk graphviz
+apt_install maven openjdk-8-jdk openjdk-8-source openjdk-11-jdk openjdk-11-source openjdk-17-jdk openjdk-17-source graphviz
 sudo update-alternatives --config java
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
