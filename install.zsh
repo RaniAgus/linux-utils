@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-install() {
+apt_install() {
   sudo apt-get update && sudo apt-get install -y "$@"
 }
 
@@ -12,7 +12,7 @@ gh_latest_tag() {
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh | bash
 
 # rbenv
-install libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
+apt_install libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
 # Install aliases
