@@ -115,7 +115,7 @@ flatpak install -y flathub com.spotify.Client
 # SisOp
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
-apt_install make clang-format clang-tidy cmake valgrind libreadline-dev libcunit1 libcunit1-doc libcunit1-dev entr remake shellcheck
+apt_install make clang-format clang-tidy cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
