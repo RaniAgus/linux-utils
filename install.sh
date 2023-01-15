@@ -24,7 +24,10 @@ fi
 
 # Basics
 apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget zip
-flatpak install -y flathub org.kde.kdenlive
+flatpak install -y flathub \
+    org.kde.kdenlive \
+    com.github.jeromerobert.pdfarranger \
+    com.obsproject.Studio 
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
