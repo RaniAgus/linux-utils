@@ -22,6 +22,7 @@ source ~/.zshrc
 # Node.js
 nvm install --lts
 npm i --location=global degit yarn @angular/cli @ionic/cli
+wget -qO- https://get.pnpm.io/install.sh | sh -
 
 # Ruby
 rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
