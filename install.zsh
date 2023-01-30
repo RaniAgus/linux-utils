@@ -21,7 +21,7 @@ source ~/.zshrc
 
 # Node.js
 nvm install --lts
-npm i --location=global @angular/cli degit http-server pnpm yarn
+npm i --location=global @angular/cli degit http-server pnpm tldr yarn
 
 # Ruby
 rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
