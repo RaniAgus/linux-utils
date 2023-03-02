@@ -28,10 +28,6 @@ rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
 rbenv global $(rbenv versions)
 gem install pry bundler rspec colorize rails
 
-# Ranger
-pip install ranger-fm
-sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
-
 ########################################################################################################################
 
 # Dual boot timezone fix
