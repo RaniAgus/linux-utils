@@ -105,9 +105,13 @@ apt_install ngrok
 # Python
 apt_install python3 python3-pip python3-setuptools python3-wheel
 
-# Nautilus terminal
+## Nautilus terminal
 apt_install python3-nautilus python3-psutil python3-pip libglib2.0-bin dconf-editor
 pip3 install --user nautilus_terminal 
+
+## Ranger
+pip install ranger-fm
+sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
 
 # Spotify
 flatpak install -y flathub com.spotify.Client
