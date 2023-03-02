@@ -42,13 +42,15 @@ dpkg_install() {
 }
 
 gh_latest_tag() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' |                                            # Get tag line
-    sed -E 's/.*"([^"]+)".*/\1/'                                    # Pluck JSON value
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
 }
 
 alias vm="valgrind --leak-check=full --track-origins=yes"
 alias vh="valgrind --tool=helgrind"
 alias vn="valgrind --tool=none"
+
 alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=$(cat $HOME/.rangerdir); cd "$LASTDIR"'
-alias ytdl-playlist='youtube-dl -o "%(playlist_index)s-%(title)s.%(ext)s"'
+
+alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
+alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
+alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
