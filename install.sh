@@ -129,8 +129,9 @@ git clone https://github.com/sisoputnfrba/so-commons-library.git
 make -C so-commons-library debug install
 rm -rv so-commons-library
 
-sudo curl --create-dirs -o /usr/local/include/doctest/doctest.h \
-  https://raw.githubusercontent.com/doctest/doctest/v2.4.9/doctest/doctest.h
+sudo mkdir /usr/local/include/doctest
+curl -fsSL https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h \
+  | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
 # Visual Studio Code
 wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
