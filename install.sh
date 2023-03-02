@@ -113,6 +113,9 @@ pip3 install --user nautilus_terminal
 pip install ranger-fm
 sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
 
+## yt-dlp
+pip install yt-dlp
+
 # Spotify
 flatpak install -y flathub com.spotify.Client
 # curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
@@ -144,10 +147,6 @@ echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.micr
  | sudo tee /etc/apt/sources.list.d/vscode.list
 rm -v packages.microsoft.gpg
 apt_install code
-
-# YouTube-DL
-sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /usr/local/bin/youtube-dl
-sudo chmod a+rx /usr/local/bin/youtube-dl
 
 # Zoom
 flatpak install -y flathub us.zoom.Zoom
