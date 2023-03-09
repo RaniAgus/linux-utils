@@ -18,12 +18,12 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
-if [ $MINT ]; then
+if [ "$MINT" ]; then
   sudo rm /etc/apt/preferences.d/nosnap.pref
 fi
 
 # Basics
-apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget zip
+apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq pass p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget zip
 flatpak install -y flathub \
     org.kde.kdenlive \
     com.github.jeromerobert.pdfarranger \
@@ -38,11 +38,11 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/
 # Git
 sudo add-apt-repository -y ppa:git-core/ppa
 apt_install git-all
-dpkg_install "https://github.com/GitCredentialManager/git-credential-manager/releases/latest/download/gcmcore-linux_amd64.$(gh_latest_tag GitCredentialManager/git-credential-manager).deb"
+dpkg_install "https://github.com/git-ecosystem/git-credential-manager/releases/latest/download/gcm-linux_amd64.$(gh_latest_tag git-ecosystem/git-credential-manager).deb"
 git-credential-manager-core configure
 gpg --generate-key
 read -p "Enter generated gpg key: " gpgkey
-pass init $gpgkey
+pass init "$gpgkey"
 
 git config --global init.defaultBranch main
 git config --global credential.credentialStore gpg
@@ -70,16 +70,16 @@ flatpak install -y flathub com.discordapp.Discord
 # Docker
 apt_install ca-certificates gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-if [ $MINT ]; then
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(cat /etc/upstream-release/lsb-release | grep "DISTRIB_CODENAME" | cut -d '=' -f2) stable" \
+if [ "$MINT" ]; then
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(grep "DISTRIB_CODENAME" /etc/upstream-release/lsb-release | cut -d '=' -f2) stable" \
     | sudo tee /etc/apt/sources.list.d/docker.list
 else
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
     | sudo tee /etc/apt/sources.list.d/docker.list
 fi
 apt_install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-sudo usermod -aG docker $USER
-# run 'docker run hello-world' to test docker installation
+sudo usermod -aG docker "$USER"
+echo "run 'docker run hello-world' to test docker installation"
 newgrp docker
 
 # DotNET
@@ -93,12 +93,12 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install gradle 7.5.1
 
 # JetBrains
-TBA_LINK=$(curl -fsSL https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release | jq -r '.TBA[0].downloads.linux.link')
-wget -qO- ${TBA_LINK:?} | sudo tar xvzC /opt
+TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
+wget -qO- "${TBA_LINK:?}" | sudo tar xvzC /opt
 /opt/jetbrains-toolbox-*/jetbrains-toolbox
 
 # Ngrok
-curl -fsSL https://ngrok-agent.s3.amazonaws.com/ngrok.asc | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
+curl -fsSL "https://ngrok-agent.s3.amazonaws.com/ngrok.asc" | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
 echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
 apt_install ngrok
 
@@ -111,7 +111,7 @@ pip3 install --user nautilus_terminal
 
 ## Ranger
 pip install ranger-fm
-sudo ln -s $HOME/.local/bin/ranger /usr/local/bin/ranger
+sudo ln -s "$HOME/.local/bin/ranger" /usr/local/bin/ranger
 
 ## yt-dlp
 pip install yt-dlp
@@ -137,7 +137,7 @@ make -C so-commons-library debug install
 rm -rv so-commons-library
 
 sudo mkdir /usr/local/include/doctest
-curl -fsSL https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h \
+curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h" \
   | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
 # Visual Studio Code
