@@ -77,21 +77,16 @@ sudo mount /dev/sda1 /mnt/windows
 sudo cp -r /mnt/windows/EFI/Microsoft/ /boot/efi/EFI
 
 # Add starting menu with timeout
-sudo nano /boot/efi/loader/loader.conf
+printf "timeout 10\nconsole-mode max\n" | sudo tee /boot/efi/loader/loader.conf > /dev/null
 ```
-
-```conf
-default Pop_OS-current
-timeout 10
-console-mode max
-```
-
-### Auto-Mount Second Hard Drive(s)
-
-- [Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
 
 ### Fix dual boot time
 
 ```bash
 sudo timedatectl set-local-rtc 1
 ```
+
+### [Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
+
+![image](https://user-images.githubusercontent.com/39303639/224554288-3b6484d5-6188-425f-b8d1-121d916f5c72.png)
+
