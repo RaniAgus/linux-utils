@@ -62,3 +62,30 @@ sudo update-grub
 # Check grub configuration
 sudo grub-customizer
 ```
+
+### Repair `/boot/efi` dual boot
+
+```bash
+# Find Windows efi partition 
+sudo fdisk -l
+
+# Mount it
+sudo mkdir /mnt/windows
+sudo mount /dev/sda1 /mnt/windows
+
+# Copy Windows entry
+sudo cp -r /mnt/windows/EFI/Microsoft/ /boot/efi/EFI
+
+# Add starting menu with timeout
+sudo nano /boot/efi/loader/loader.conf
+```
+
+```conf
+default Pop_OS-current
+timeout 10
+console-mode max
+```
+
+### Auto-Mount Second Hard Drive(s)
+
+- ![Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
