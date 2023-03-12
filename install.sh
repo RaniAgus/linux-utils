@@ -23,11 +23,12 @@ if [ "$MINT" ]; then
 fi
 
 # Basics
-apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq pass p7zip-full ripgrep software-properties-common testdisk tree usb-creator-gtk wget zip
+apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq pass p7zip-full ripgrep snapd software-properties-common testdisk tree usb-creator-gtk wget zip
 flatpak install -y flathub \
     org.kde.kdenlive \
     com.github.jeromerobert.pdfarranger \
     com.obsproject.Studio 
+snap install vlc
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
@@ -61,11 +62,10 @@ dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$
 
 # Chrome
 flatpak install -y flathub com.google.Chrome
-#dpkg_install "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+# snap install chromium
 
 # Discord
 flatpak install -y flathub com.discordapp.Discord
-#dpkg_install "https://discordapp.com/api/download?platform=linux&format=deb"
 
 # Docker
 apt_install ca-certificates gnupg lsb-release
@@ -117,10 +117,8 @@ sudo ln -s "$HOME/.local/bin/ranger" /usr/local/bin/ranger
 pip install yt-dlp
 
 # Spotify
-flatpak install -y flathub com.spotify.Client
-# curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
-# echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-# install spotify-client
+snap install spotify
+# flatpak install -y flathub com.spotify.Client
 
 # SisOp
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
