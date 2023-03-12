@@ -88,7 +88,7 @@ sudo timedatectl set-local-rtc 1
 
 ### [Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
 
-![image](https://user-images.githubusercontent.com/39303639/224555614-2b6e0876-cecf-4e2b-acd2-3e18465ee18a.png)
+![image](https://user-images.githubusercontent.com/39303639/224555639-99cc156a-06b1-41db-a1c4-09e66004d269.png)
 
 ![image](https://user-images.githubusercontent.com/39303639/224555458-903394ac-e9a0-4309-9ba4-3f05d49d69a2.png)
 
