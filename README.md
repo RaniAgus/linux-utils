@@ -88,4 +88,4 @@ console-mode max
 
 ### Auto-Mount Second Hard Drive(s)
 
-- ![Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
+- [Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
