@@ -89,3 +89,9 @@ console-mode max
 ### Auto-Mount Second Hard Drive(s)
 
 - [Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
+
+### Fix dual boot time
+
+```bash
+sudo timedatectl set-local-rtc 1
+```
