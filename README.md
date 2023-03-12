@@ -90,3 +90,5 @@ sudo timedatectl set-local-rtc 1
 
 ![image](https://user-images.githubusercontent.com/39303639/224554288-3b6484d5-6188-425f-b8d1-121d916f5c72.png)
 
+![image](https://user-images.githubusercontent.com/39303639/224555458-903394ac-e9a0-4309-9ba4-3f05d49d69a2.png)
+
