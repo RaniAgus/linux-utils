@@ -114,6 +114,7 @@ pip install ranger-fm
 sudo ln -s "$HOME/.local/bin/ranger" /usr/local/bin/ranger
 
 ## yt-dlp
+apt_install ffmpeg
 pip install yt-dlp
 
 # Spotify
