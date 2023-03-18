@@ -92,3 +92,6 @@ sudo timedatectl set-local-rtc 1
 
 ![image](https://user-images.githubusercontent.com/39303639/224555458-903394ac-e9a0-4309-9ba4-3f05d49d69a2.png)
 
+### Cannot write to secondary drive fix
+
+- [Cannot Write to NTFS in POP OS](https://www.youtube.com/watch?v=N_TgL_uRTNU)
