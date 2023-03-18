@@ -86,13 +86,13 @@ printf "timeout 10\nconsole-mode max\n" | sudo tee /boot/efi/loader/loader.conf 
 sudo timedatectl set-local-rtc 1
 ```
 
-### [Auto-Mount Second Hard Drive(s)](https://support.system76.com/articles/extra-drive/)
+### [Auto-mount secondary hard drive](https://support.system76.com/articles/extra-drive/)
 
 ![image](https://user-images.githubusercontent.com/39303639/224555639-99cc156a-06b1-41db-a1c4-09e66004d269.png)
 
 ![image](https://user-images.githubusercontent.com/39303639/224555458-903394ac-e9a0-4309-9ba4-3f05d49d69a2.png)
 
-### Fix secondary drive permissions on dual boot
+### [Fix secondary drive permissions on dual boot](https://www.youtube.com/watch?v=N_TgL_uRTNU)
 
 ![image](https://user-images.githubusercontent.com/39303639/226109148-81b7f700-b930-40a5-85a8-5c77fb26d65f.png)
 
