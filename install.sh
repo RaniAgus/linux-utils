@@ -40,7 +40,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/
 sudo add-apt-repository -y ppa:git-core/ppa
 apt_install git-all
 dpkg_install "https://github.com/git-ecosystem/git-credential-manager/releases/latest/download/gcm-linux_amd64.$(gh_latest_tag git-ecosystem/git-credential-manager).deb"
-git-credential-manager-core configure
+git-credential-manager configure
 gpg --generate-key
 read -p "Enter generated gpg key: " gpgkey
 pass init "$gpgkey"
