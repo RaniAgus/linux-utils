@@ -27,8 +27,8 @@ apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyp
 flatpak install -y flathub \
     org.kde.kdenlive \
     com.github.jeromerobert.pdfarranger \
-    com.obsproject.Studio 
-snap install vlc
+    com.obsproject.Studio \
+    org.videolan.VLC
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
