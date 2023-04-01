@@ -3,9 +3,6 @@ export FLYCTL_INSTALL="/home/agus/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
 # nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
 autoload -U add-zsh-hook
 load-nvmrc() {
   local node_version="$(nvm version)"
