@@ -110,21 +110,31 @@ sudo timedatectl set-local-rtc 1
 
 6. Get all devices' pairing keys:
 ```bash
-$ chntpw -e SYSTEM
-
-> cd \ControlSet001\Services\BTHPORT\Parameters\Keys
-> ls # shows you your Bluetooth port's MAC address
+chntpw -e SYSTEM # this will open a console
+```
+```bash
+cd \ControlSet001\Services\BTHPORT\Parameters\Keys
+ls # shows you your Bluetooth port's MAC address
+```
+```
 Node has 1 subkeys and 0 values
   key name
   <aa1122334455>
-> cd aa1122334455 # cd into that folder
-> ls  # list the existing devices' MAC addresses
+```
+```bash
+cd aa1122334455 # cd into that folder
+ls  # list the existing devices' MAC addresses
+```
+```
 Node has 0 subkeys and 1 values
   size     type            value name             [value if type DWORD]
     16  REG_BINARY        <00aa22ee4455>
-> hex 00aa22ee4455 # open the value for that MAC address
+```
+```bash
+hex 00aa22ee4455 # open the value for that MAC address
+```
+```
 => :00000 XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX .................
-# ^ the XXs are the pairing key
 ```
 
 7. Rewrite the pairing keys in Linux config files:
