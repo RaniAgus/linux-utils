@@ -96,3 +96,53 @@ sudo timedatectl set-local-rtc 1
 
 ![image](https://user-images.githubusercontent.com/39303639/226109148-81b7f700-b930-40a5-85a8-5c77fb26d65f.png)
 
+### [Pair Bluetooth Devices on dual boot](https://unix.stackexchange.com/questions/255509/bluetooth-pairing-on-dual-boot-of-windows-linux-mint-ubuntu-stop-having-to-p)
+
+1. Pair all devices with Ubuntu
+
+2. Pair all devices with Windows
+
+3. Go back to Ubuntu
+
+4. Mount Windows device
+
+5. Go to `Windows/System32/config`
+
+6. Get all devices' pairing keys:
+```bash
+$ chntpw -e SYSTEM
+
+> cd \ControlSet001\Services\BTHPORT\Parameters\Keys
+> ls # shows you your Bluetooth port's MAC address
+Node has 1 subkeys and 0 values
+  key name
+  <aa1122334455>
+> cd aa1122334455 # cd into that folder
+> ls  # list the existing devices' MAC addresses
+Node has 0 subkeys and 1 values
+  size     type            value name             [value if type DWORD]
+    16  REG_BINARY        <00aa22ee4455>
+> hex 00aa22ee4455 # open the value for that MAC address
+=> :00000 XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX XX .................
+# ^ the XXs are the pairing key
+```
+
+7. Rewrite the pairing keys in Linux config files:
+
+```bash
+sudo su # run as superuser
+cd /var/lib/bluetooth/
+ls # list all pairing keys
+nano "00:AA:2:EE:44:55/info"
+```
+
+```config
+[LinkKey]
+Key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+```
+
+8. Restart bluetooth service:
+
+```bash
+sudo systemctl restart bluetooth
+```
