@@ -133,7 +133,7 @@ Node has 0 subkeys and 1 values
 sudo su # run as superuser
 cd /var/lib/bluetooth/
 ls # list all pairing keys
-nano "00:AA:2:EE:44:55/info"
+nano "00:AA:22:EE:44:55/info"
 ```
 
 ```config
