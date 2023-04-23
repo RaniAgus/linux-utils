@@ -23,7 +23,7 @@ if [ "$MINT" ]; then
 fi
 
 # Basics
-apt_install apt-transport-https curl dconf-editor drawing fd-find hexyl htop hyperfine jq pass p7zip-full ripgrep snapd software-properties-common testdisk tree usb-creator-gtk wget zip
+apt_install apt-transport-https curl chntpw dconf-editor drawing fd-find hexyl htop hyperfine jq pass p7zip-full ripgrep snapd software-properties-common testdisk tree usb-creator-gtk wget zip
 flatpak install -y flathub \
     org.kde.kdenlive \
     com.github.jeromerobert.pdfarranger \
