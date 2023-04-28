@@ -26,7 +26,7 @@ npm i --location=global @angular/cli degit http-server pnpm tldr yarn
 # Ruby
 rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
 rbenv global $(rbenv versions)
-gem install pry bundler rspec colorize rails
+gem install pry bundler rspec colorize rails jekyll
 
 ########################################################################################################################
 
