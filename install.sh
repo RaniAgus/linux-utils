@@ -30,9 +30,6 @@ flatpak install -y flathub \
     com.obsproject.Studio \
     org.videolan.VLC
 
-# Configure multiple audio outputs
-pactl load-module module-combine-sink
-
 # Fly.io
 curl -L https://fly.io/install.sh | sh
 
