@@ -49,6 +49,7 @@ git config --global init.defaultBranch main
 git config --global credential.credentialStore gpg
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
+git config --global credential.username "RaniAgus"
 
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
