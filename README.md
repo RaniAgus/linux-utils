@@ -156,3 +156,18 @@ Key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```bash
 sudo systemctl restart bluetooth
 ```
+
+## Increase maximum virtual memory areas for ElasticSearch in WSL2
+
+1. Open a Powershell and enter to Docker Desktop:
+
+```powershell
+wsl -d docker-desktop
+```
+
+2. Add `sysctl -w vm.max_map_count=262144` command to `/etc/wsl.conf`:
+
+```sh
+echo '[boot]' >> /etc/wsl.conf
+echo 'command="sysctl -w vm.max_map_count=262144"' >> /etc/wsl.conf
+```
