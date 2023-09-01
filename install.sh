@@ -118,6 +118,9 @@ sudo ln -s "$HOME/.local/bin/ranger" /usr/local/bin/ranger
 apt_install ffmpeg
 pip install yt-dlp
 
+## yq
+pip install yq
+
 # Spotify
 snap install spotify
 # flatpak install -y flathub com.spotify.Client
