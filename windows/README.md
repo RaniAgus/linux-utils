@@ -26,3 +26,9 @@ Ejecutar:
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh)"
 sed -i 's/^OSH_THEME=.*/OSH_THEME="sirup"/' ~/.bashrc
 ```
+
+## Ejecutar cmd al inicio
+
+1. Tocar Win + R
+2. Escribir `shell:startup`
+3. Guardar el script en esa carpeta
