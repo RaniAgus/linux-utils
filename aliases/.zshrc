@@ -29,6 +29,9 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/shims:$PATH"
 eval "$(rbenv init - zsh)"
 
+# go
+export PATH="$PATH:/usr/local/go/bin"
+
 # utils
 apt_install() {
   sudo apt-get update && sudo apt-get install -y "$@"
