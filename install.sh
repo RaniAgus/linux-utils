@@ -59,7 +59,7 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 && sudo apt install gh -y
 
 # Bat
-dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$( sharkdp/bat)_amd64.deb"
+dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
 
 # Chrome
 flatpak install -y flathub com.google.Chrome
