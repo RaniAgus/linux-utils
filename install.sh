@@ -86,6 +86,9 @@ newgrp docker
 # DotNET
 apt_install dotnet6
 
+# Go
+rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
+
 # Java
 apt_install maven openjdk-8-jdk openjdk-8-source openjdk-11-jdk openjdk-11-source openjdk-17-jdk openjdk-17-source graphviz
 sudo update-alternatives --config java
