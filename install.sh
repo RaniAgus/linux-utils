@@ -59,7 +59,7 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 && sudo apt install gh -y
 
 # Bat
-dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
+dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$( sharkdp/bat)_amd64.deb"
 
 # Chrome
 flatpak install -y flathub com.google.Chrome
@@ -87,7 +87,9 @@ newgrp docker
 apt_install dotnet6
 
 # Go
-rm -rf /usr/local/go && tar -C /usr/local -xzf go1.21.1.linux-amd64.tar.gz
+rm -rf /usr/local/go
+wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" \
+  | sudo tar xvzC /usr/local
 
 # Java
 apt_install maven openjdk-8-jdk openjdk-8-source openjdk-11-jdk openjdk-11-source openjdk-17-jdk openjdk-17-source graphviz
