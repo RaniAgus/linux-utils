@@ -30,7 +30,7 @@ export PATH="$HOME/.rbenv/shims:$PATH"
 eval "$(rbenv init - zsh)"
 
 # go
-export PATH="$PATH:/usr/local/go/bin"
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 
 # utils
 apt_install() {
