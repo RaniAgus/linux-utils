@@ -3,6 +3,8 @@
 # License - http://unlicense.org
 #
 # Fixes a corrupt .zsh_history file
+#
+# Usage: curl https://raw.githubusercontent.com/RaniAgus/linux-utils/main/utils/zsh-history-fix.sh | zsh
 
 mv ~/.zsh_history ~/.zsh_history_bad
 strings -eS ~/.zsh_history_bad > ~/.zsh_history
