@@ -1,3 +1,4 @@
+#!/bin/zsh 
 # George Ornbo (shapeshed) http://shapeshed.com
 # License - http://unlicense.org
 #
