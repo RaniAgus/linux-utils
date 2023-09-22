@@ -1,10 +1,3 @@
-# zsh plugins
-plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-
 # fly.io
 export FLYCTL_INSTALL="/home/agus/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
