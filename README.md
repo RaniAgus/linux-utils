@@ -1,6 +1,16 @@
 # linux-utils
 Scripts para instalar las apps que uso.
 
+## `zsh` Plugins
+
+```sh
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+)
+```
+
 ## Shortcuts
 
 ### Rofi launcher and SSH
