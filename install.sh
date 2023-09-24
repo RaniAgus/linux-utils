@@ -39,24 +39,23 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/
 # Git
 sudo add-apt-repository -y ppa:git-core/ppa
 apt_install git-all
-dpkg_install "https://github.com/git-ecosystem/git-credential-manager/releases/latest/download/gcm-linux_amd64.$(gh_latest_tag git-ecosystem/git-credential-manager).deb"
-git-credential-manager configure
-gpg --generate-key
-read -p "Enter generated gpg key: " gpgkey
-pass init "$gpgkey"
+# dpkg_install "https://github.com/git-ecosystem/git-credential-manager/releases/latest/download/gcm-linux_amd64.$(gh_latest_tag git-ecosystem/git-credential-manager).deb"
+# git-credential-manager configure
+# gpg --generate-key
+# read -p "Enter generated gpg key: " gpgkey
+# pass init "$gpgkey"
 
 git config --global init.defaultBranch main
-git config --global credential.credentialStore gpg
+# git config --global credential.credentialStore gpg
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
 
 # GitHub CLI
-curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-&& sudo apt update \
-&& sudo apt install gh -y
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+apt_install gh
 
 # Bat
 dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
@@ -96,7 +95,8 @@ apt_install maven openjdk-8-jdk openjdk-8-source openjdk-11-jdk openjdk-11-sourc
 sudo update-alternatives --config java
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install gradle 7.5.1
+sdk install gradle
+sdk install quarkus
 
 # JetBrains
 TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
