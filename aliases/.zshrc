@@ -2,6 +2,9 @@
 export FLYCTL_INSTALL="/home/agus/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 
+# go
+export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
+
 # nvm
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -29,8 +32,8 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/shims:$PATH"
 eval "$(rbenv init - zsh)"
 
-# go
-export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
+# sdkman
+source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # utils
 apt_install() {
