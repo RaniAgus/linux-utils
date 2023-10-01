@@ -24,24 +24,29 @@ fi
 
 # Basics
 apt_install apt-transport-https curl chntpw dconf-editor drawing fd-find hexyl htop hyperfine jq pass p7zip-full ripgrep snapd software-properties-common testdisk tree usb-creator-gtk wget zip
-flatpak install -y flathub \
-    org.kde.kdenlive \
-    com.github.jeromerobert.pdfarranger \
-    com.obsproject.Studio \
-    org.videolan.VLC
+
+if [ "$NOSNAP" ]; then
+  flatpak install -y flathub \
+      org.kde.kdenlive \
+      com.github.jeromerobert.pdfarranger \
+      com.obsproject.Studio \
+      org.videolan.VLC
+else
+  sudo snap install kdenlive pdfarranger obs-studio vlc
+fi
 
 # 1Password
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" |
   sudo tee /etc/apt/sources.list.d/1password.list
-mkdir -p /etc/debsig/policies/AC2D62742012EA22/
+sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
 curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | \
   sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol
-mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
+sudo mkdir -p /usr/share/debsig/keyrings/AC2D62742012EA22
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-apt_install 1password-cli
+apt_install 1password 1password-cli
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
@@ -74,11 +79,19 @@ apt_install gh
 dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
 
 # Chrome
-flatpak install -y flathub com.google.Chrome
-# snap install chromium
+if [ "$NOSNAP" ]; then
+  flatpak install -y flathub com.google.Chrome
+else
+  sudo snap install chromium
+fi
 
 # Discord
-flatpak install -y flathub com.discordapp.Discord
+
+if [ "$NOSNAP" ]; then
+  flatpak install -y flathub com.discordapp.Discord
+else
+  sudo snap install discord
+fi
 
 # Docker
 apt_install ca-certificates gnupg lsb-release
@@ -126,11 +139,10 @@ apt_install python3 python3-pip python3-setuptools python3-wheel
 
 ## Nautilus terminal
 apt_install python3-nautilus python3-psutil python3-pip libglib2.0-bin dconf-editor
-pip3 install --user nautilus_terminal 
+pip3 install --user nautilus_terminal
 
 ## Ranger
 pip install ranger-fm
-sudo ln -s "$HOME/.local/bin/ranger" /usr/local/bin/ranger
 
 ## yt-dlp
 apt_install ffmpeg
@@ -140,8 +152,11 @@ pip install yt-dlp
 pip install yq
 
 # Spotify
-snap install spotify
-# flatpak install -y flathub com.spotify.Client
+if [ "$NOSNAP" ]; then
+  sudo snap install spotify
+else
+  flatpak install -y flathub com.spotify.Client
+fi
 
 # SisOp
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
@@ -151,11 +166,11 @@ apt_install make clang-format clang-tidy cmake entr libreadline-dev libcunit1 li
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
 sudo make install -C cspec
-rm -rv cspec
+rm -rfv cspec
 
 git clone https://github.com/sisoputnfrba/so-commons-library.git
 make -C so-commons-library debug install
-rm -rv so-commons-library
+rm -rfv so-commons-library
 
 sudo mkdir /usr/local/include/doctest
 curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h" \
@@ -170,7 +185,11 @@ rm -v packages.microsoft.gpg
 apt_install code
 
 # Zoom
-flatpak install -y flathub us.zoom.Zoom
+if [ "$NOSNAP" ]; then
+  flatpak install -y flathub us.zoom.Zoom
+else
+  sudo snap install zoom-client
+fi
 
 ########################################################################################################################
 
