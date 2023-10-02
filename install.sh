@@ -48,7 +48,7 @@ curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
 apt_install 1password 1password-cli
 
-tee ~/.ssh/config << EOF
+tee ~/.ssh/config >> /dev/null << EOF
 Host *
         IdentityAgent ~/.1password/agent.sock
 EOF
@@ -75,8 +75,8 @@ git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
 
-read -p "Enter SSH public key" $SSH_PUB_KEY
-tee ~/.gitconfig << EOF
+read -p 'Enter SSH public key: ' $SSH_PUB_KEY
+tee ~/.gitconfig >> /dev/null << EOF
 [user]
   signingkey = $SSH_PUB_KEY
 
