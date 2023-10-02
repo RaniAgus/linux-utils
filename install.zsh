@@ -21,7 +21,7 @@ source ~/.zshrc
 
 # Node.js
 nvm install --lts
-npm i --location=global npm@latest @angular/cli degit http-server pnpm tldr yarn
+npm i --location=global npm@latest @angular/cli degit http-server pnpm tldr typescript yarn
 
 # Plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
