@@ -34,6 +34,7 @@ if [ "$NOSNAP" ]; then
 else
   sudo snap install kdenlive pdfarranger obs-studio vlc
 fi
+sudo sed -i 's/#IdleTimeout=30/IdleTimeout=0/g' /etc/bluetooth/input.conf
 
 # 1Password
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
