@@ -69,26 +69,17 @@ apt_install git-all
 # read -p "Enter generated gpg key: " gpgkey
 # pass init "$gpgkey"
 
+read -p 'Enter SSH public key: ' $SSH_PUB_KEY
+
 git config --global init.defaultBranch main
 # git config --global credential.credentialStore gpg
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
-
-read -p 'Enter SSH public key: ' $SSH_PUB_KEY
-tee ~/.gitconfig >> /dev/null << EOF
-[user]
-  signingkey = $SSH_PUB_KEY
-
-[gpg]
-  format = ssh
-
-[gpg "ssh"]
-  program = "/opt/1Password/op-ssh-sign"
-
-[commit]
-  gpgsign = true
-EOF
+git config --global gpg.format ssh
+git config --global user.signingkey "$SSH_PUB_KEY"
+git config --global commit.gpgsign true
+git config --global gpg.ssh.program "/opt/1Password/op-ssh-sign"
 
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
