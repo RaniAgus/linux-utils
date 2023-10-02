@@ -52,6 +52,7 @@ tee ~/.ssh/config << EOF
 Host *
         IdentityAgent ~/.1password/agent.sock
 EOF
+chmod 600 ~/.ssh/config
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
