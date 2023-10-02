@@ -48,6 +48,11 @@ curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
 apt_install 1password 1password-cli
 
+tee ~/.ssh/config << EOF
+Host *
+        IdentityAgent ~/.1password/agent.sock
+EOF
+
 # Fly.io
 curl -L https://fly.io/install.sh | sh
 
@@ -68,6 +73,21 @@ git config --global init.defaultBranch main
 git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
+
+read -p "Enter SSH public key" $SSH_PUB_KEY
+tee ~/.gitconfig << EOF
+[user]
+  signingkey = $SSH_PUB_KEY
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/opt/1Password/op-ssh-sign"
+
+[commit]
+  gpgsign = true
+EOF
 
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
