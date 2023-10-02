@@ -3,7 +3,18 @@
 pip install xcfflib
 pip install qtile
 
+sudo rm -rf /usr/share/xsessions/qtile.desktop
 sudo tee /usr/share/xsessions/qtile.desktop << EOF
+[Desktop Entry]
+Name=Qtile
+Comment=Qtile Session
+Exec=qtile start
+Type=Application
+Keywords=wm;tiling
+EOF
+
+sudo rm -rf /usr/share/xsessions/qtile_gnome.desktop
+sudo tee /usr/share/xsessions/qtile_gnome.desktop << EOF
 [Desktop Entry]
 Name=Qtile GNOME
 Comment=Tiling window manager
@@ -12,6 +23,7 @@ Exec=gnome-session --session=qtile
 Type=XSession
 EOF
 
+sudo rm -rf /usr/share/gnome-session/sessions/qtile.session
 sudo tee /usr/share/gnome-session/sessions/qtile.session << EOF
 [Desktop Entry]
 Name=Qtile GNOME
@@ -21,6 +33,7 @@ Exec=gnome-session --session=qtile
 Type=XSession
 EOF
 
+sudo rm -rf /usr/share/applications/qtile.desktop 
 sudo tee /usr/share/applications/qtile.desktop << EOF
 [Desktop Entry]
 Type=Application
