@@ -16,7 +16,7 @@ apt_install libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
 # Install aliases
-cat ./aliases/.zshrc >> ~/.zshrc
+cat ./dotfiles/.zshrc >> ~/.zshrc
 source ~/.zshrc
 
 # Node.js
