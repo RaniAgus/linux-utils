@@ -36,6 +36,11 @@ gcn! --author="Agustin Ranieri <aguseranieri@gmail.com>"
 grb --continue
 ```
 
+### Change permissions
+```bash
+git diff --name-only | xargs -i chmod 644 "{}"
+```
+
 ### Import mongo from multiple JSON files
 
 ```
