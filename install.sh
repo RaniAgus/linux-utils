@@ -101,7 +101,6 @@ else
 fi
 
 # Discord
-
 if [ "$NOSNAP" ]; then
   flatpak install -y flathub com.discordapp.Discord
 else
@@ -130,6 +129,12 @@ apt_install dotnet6
 rm -rf /usr/local/go
 wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" \
   | sudo tar xvzC /usr/local
+go install github.com/spf13/cobra-cli@latest 
+tee ~/.cobra.yaml >> /dev/null << EOF
+author: Agustin Ranieri <aguseranieri@gmail.com>
+license: MIT
+EOF
+
 
 # Java
 apt_install maven openjdk-8-jdk openjdk-8-source openjdk-11-jdk openjdk-11-source openjdk-17-jdk openjdk-17-source graphviz
@@ -192,12 +197,16 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doc
   | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
 # Visual Studio Code
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
- | sudo tee /etc/apt/sources.list.d/vscode.list
-rm -v packages.microsoft.gpg
-apt_install code
+if [ "$NOSNAP" ]; then
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+  echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
+   | sudo tee /etc/apt/sources.list.d/vscode.list
+  rm -v packages.microsoft.gpg
+  apt_install code
+else
+  sudo snap install code --classic
+fi
 
 # Zoom
 if [ "$NOSNAP" ]; then
