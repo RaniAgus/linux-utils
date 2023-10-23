@@ -83,6 +83,7 @@ git config --global gpg.format ssh
 git config --global user.signingkey "$SSH_PUB_KEY"
 git config --global commit.gpgsign true
 git config --global gpg.ssh.program "/opt/1Password/op-ssh-sign"
+git config --global core.protectNTFS false
 
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
