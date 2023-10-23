@@ -138,7 +138,10 @@ EOF
 
 
 # Java
-apt_install maven openjdk-8-jdk openjdk-8-source openjdk-11-jdk openjdk-11-source openjdk-17-jdk openjdk-17-source graphviz
+wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add - 
+sudo add-apt-repository 'deb https://apt.corretto.aws stable main'
+
+apt_install maven java-17-amazon-corretto-jdk java-11-amazon-corretto-jdk java-1.8.0-amazon-corretto-jdk graphviz
 sudo update-alternatives --config java
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
