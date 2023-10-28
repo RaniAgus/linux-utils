@@ -55,6 +55,7 @@ Host *
 EOF
 chmod 600 ~/.ssh/config
 
+mkdir -p ~/autostart
 cp ./dotfiles/autostart/1password.desktop ~/autostart/1password.desktop
 
 # Fly.io
@@ -72,7 +73,7 @@ apt_install git-all
 # read -p "Enter generated gpg key: " gpgkey
 # pass init "$gpgkey"
 
-read -p 'Enter SSH public key: ' $SSH_PUB_KEY
+read -p 'Enter SSH public key: ' SSH_PUB_KEY
 
 git config --global init.defaultBranch main
 # git config --global credential.credentialStore gpg
@@ -130,7 +131,6 @@ apt_install dotnet6
 rm -rf /usr/local/go
 wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" \
   | sudo tar xvzC /usr/local
-go install github.com/spf13/cobra-cli@latest 
 tee ~/.cobra.yaml >> /dev/null << EOF
 author: Agustin Ranieri <aguseranieri@gmail.com>
 license: MIT
@@ -138,7 +138,7 @@ EOF
 
 
 # Java
-wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add - 
+wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add -
 sudo add-apt-repository 'deb https://apt.corretto.aws stable main'
 
 apt_install maven java-17-amazon-corretto-jdk java-11-amazon-corretto-jdk java-1.8.0-amazon-corretto-jdk graphviz
