@@ -12,7 +12,7 @@ gh_latest_tag() {
 go install github.com/spf13/cobra-cli@latest
 
 # nvm
-wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh | bash
+wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh" | bash
 
 # rbenv
 apt_install libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
@@ -20,6 +20,7 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
 
 # Install aliases
 cat ./dotfiles/.zshrc >> ~/.zshrc
+# shellcheck disable=SC1090,SC3046
 source ~/.zshrc
 
 # Node.js
@@ -27,12 +28,12 @@ nvm install --lts
 npm i --location=global npm@latest @angular/cli degit http-server pnpm tldr typescript yarn
 
 # Plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 
 # Ruby
-rbenv install $(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)
-rbenv global $(rbenv versions)
+rbenv install "$(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)"
+rbenv global "$(rbenv versions)"
 gem install pry bundler rspec colorize rails jekyll
 
 ########################################################################################################################

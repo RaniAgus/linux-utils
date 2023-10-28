@@ -70,10 +70,10 @@ apt_install git-all
 # dpkg_install "https://github.com/git-ecosystem/git-credential-manager/releases/latest/download/gcm-linux_amd64.$(gh_latest_tag git-ecosystem/git-credential-manager).deb"
 # git-credential-manager configure
 # gpg --generate-key
-# read -p "Enter generated gpg key: " gpgkey
+# read -r -p "Enter generated gpg key: " gpgkey
 # pass init "$gpgkey"
 
-read -p 'Enter SSH public key: ' SSH_PUB_KEY
+read -r -p 'Enter SSH public key: ' SSH_PUB_KEY
 
 git config --global init.defaultBranch main
 # git config --global credential.credentialStore gpg
@@ -144,6 +144,7 @@ sudo add-apt-repository 'deb https://apt.corretto.aws stable main'
 apt_install maven java-17-amazon-corretto-jdk java-11-amazon-corretto-jdk java-1.8.0-amazon-corretto-jdk graphviz
 sudo update-alternatives --config java
 curl -s "https://get.sdkman.io" | bash
+# shellcheck disable=SC1091
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install gradle
 sdk install quarkus
@@ -151,6 +152,7 @@ sdk install quarkus
 # JetBrains
 TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
 wget -qO- "${TBA_LINK:?}" | sudo tar xvzC /opt
+# shellcheck disable=SC2211
 /opt/jetbrains-toolbox-*/jetbrains-toolbox
 
 # Ngrok
@@ -224,4 +226,5 @@ fi
 # Oh My Zsh
 apt_install zsh
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
+# shellcheck disable=SC2006,SC2046
 chsh -s `which zsh`
