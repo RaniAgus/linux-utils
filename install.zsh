@@ -8,9 +8,6 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
 }
 
-# Go
-go install github.com/spf13/cobra-cli@latest
-
 # nvm
 wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh" | bash
 
@@ -22,6 +19,9 @@ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
 cat ./dotfiles/.zshrc >> ~/.zshrc
 # shellcheck disable=SC1090,SC3046
 source ~/.zshrc
+
+# Go
+go install github.com/spf13/cobra-cli@latest
 
 # Node.js
 nvm install --lts

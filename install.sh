@@ -18,6 +18,10 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
+# use this to skip successful steps
+if false; then
+fi
+
 if [ "$MINT" ]; then
   sudo rm /etc/apt/preferences.d/nosnap.pref
 fi
@@ -49,6 +53,8 @@ curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --dearmor --output /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
 apt_install 1password 1password-cli
 
+mkdir -p ~/.ssh
+chmod 600 ~/.ssh
 tee ~/.ssh/config >> /dev/null << EOF
 Host *
         IdentityAgent ~/.1password/agent.sock
@@ -58,14 +64,15 @@ chmod 600 ~/.ssh/config
 mkdir -p ~/.config/autostart
 cp ./dotfiles/autostart/1password.desktop ~/.config/autostart/1password.desktop
 
-# Fly.io
-curl -L https://fly.io/install.sh | sh
+# Code
+sudo snap install code --classic
 
 # Fonts
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 
 # Git
 sudo add-apt-repository -y ppa:git-core/ppa
+
 apt_install git-all
 # dpkg_install "https://github.com/git-ecosystem/git-credential-manager/releases/latest/download/gcm-linux_amd64.$(gh_latest_tag git-ecosystem/git-credential-manager).deb"
 # git-credential-manager configure
@@ -124,6 +131,9 @@ newgrp docker
 # DotNET
 apt_install dotnet6
 
+# Fly.io
+curl -L https://fly.io/install.sh | sh
+
 # Go
 rm -rf /usr/local/go
 wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" \
@@ -133,13 +143,11 @@ author: Agustin Ranieri <aguseranieri@gmail.com>
 license: MIT
 EOF
 
-
 # Java
 wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add -
-sudo add-apt-repository 'deb https://apt.corretto.aws stable main'
-
+sudo add-apt-repository -y 'deb https://apt.corretto.aws stable main'
 apt_install maven java-17-amazon-corretto-jdk java-11-amazon-corretto-jdk java-1.8.0-amazon-corretto-jdk graphviz
-sudo update-alternatives --config java
+# sudo update-alternatives --config java
 curl -s "https://get.sdkman.io" | bash
 # shellcheck disable=SC1091
 source "$HOME/.sdkman/bin/sdkman-init.sh"
@@ -159,10 +167,6 @@ apt_install ngrok
 
 # Python
 apt_install python3 python3-pip python3-setuptools python3-wheel
-
-## Nautilus terminal
-apt_install python3-nautilus python3-psutil python3-pip libglib2.0-bin dconf-editor
-pip3 install --user nautilus_terminal
 
 ## Ranger
 pip install ranger-fm
@@ -199,21 +203,8 @@ sudo mkdir /usr/local/include/doctest
 curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h" \
   | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
-# Visual Studio Code
-# wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-# sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-# echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
-#  | sudo tee /etc/apt/sources.list.d/vscode.list
-# rm -v packages.microsoft.gpg
-# apt_install code
-sudo snap install code --classic
-
 # Zoom
-if [ "$NOSNAP" ]; then
-  flatpak install -y flathub us.zoom.Zoom
-else
-  sudo snap install zoom-client
-fi
+flatpak install -y flathub us.zoom.Zoom
 
 ########################################################################################################################
 
