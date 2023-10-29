@@ -96,11 +96,8 @@ apt_install gh
 dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
 
 # Chrome
-if [ "$NOSNAP" ]; then
-  flatpak install -y flathub com.google.Chrome
-else
-  sudo snap install chromium
-fi
+flatpak install -y flathub com.google.Chrome
+# dpkg_install https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
 # Discord
 if [ "$NOSNAP" ]; then
@@ -179,9 +176,9 @@ pip install yq
 
 # Spotify
 if [ "$NOSNAP" ]; then
-  sudo snap install spotify
-else
   flatpak install -y flathub com.spotify.Client
+else
+  sudo snap install spotify
 fi
 
 # SisOp
@@ -203,16 +200,13 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doc
   | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
 # Visual Studio Code
-if [ "$NOSNAP" ]; then
-  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-  echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
-   | sudo tee /etc/apt/sources.list.d/vscode.list
-  rm -v packages.microsoft.gpg
-  apt_install code
-else
-  sudo snap install code --classic
-fi
+# wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+# sudo install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+# echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
+#  | sudo tee /etc/apt/sources.list.d/vscode.list
+# rm -v packages.microsoft.gpg
+# apt_install code
+sudo snap install code --classic
 
 # Zoom
 if [ "$NOSNAP" ]; then
