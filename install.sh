@@ -55,8 +55,8 @@ Host *
 EOF
 chmod 600 ~/.ssh/config
 
-mkdir -p ~/autostart
-cp ./dotfiles/autostart/1password.desktop ~/autostart/1password.desktop
+mkdir -p ~/.config/autostart
+cp ./dotfiles/autostart/1password.desktop ~/.config/autostart/1password.desktop
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
