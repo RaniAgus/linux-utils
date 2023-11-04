@@ -36,16 +36,6 @@ eval "$(rbenv init - zsh)"
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # utils
-modefix() {
-  for d in ${1:$PWD}/*/;
-  do
-   (
-   cd "$d" || exit
-   git diff --name-only | xargs -I{} chmod 644 "{}"
-   )
-  done
-}
-
 apt_install() {
   sudo apt-get update && sudo apt-get install -y "$@"
 }
