@@ -52,12 +52,19 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
 }
 
+# valgrind
 alias vm="valgrind --leak-check=full --track-origins=yes"
 alias vh="valgrind --tool=helgrind"
 alias vn="valgrind --tool=none"
 
-alias ranger='ranger --choosedir=$HOME/.rangerdir; LASTDIR=$(cat $HOME/.rangerdir); cd "$LASTDIR"'
+# ranger
+rcd () {
+  ranger --choosedir=$HOME/.rangerdir
+  cd "$(cat $HOME/.rangerdir)"
+}
+bindkey -s '^o' 'rcd\n'
 
+# ytdl
 alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
 alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
