@@ -36,7 +36,7 @@ gcn! --author="Agustin Ranieri <aguseranieri@gmail.com>"
 grb --continue
 ```
 
-### Change permissions
+### Fix file permissions
 ```bash
 git diff --name-only | xargs -i chmod 644 "{}"
 ```
@@ -61,9 +61,6 @@ ls | cut -f1 -d. | xargs -n1 -i -p mongoimport --db $DB_NAME --collection {} --f
 - Navigate to org -> gnome -> mutter -> keybindings -> switch-monitor
 - Then uncheck the box about using the default value and set the custom value to []
 - Restart
-
-### Force dark theme on Chrome
-- Go to: [chrome://flags/#enable-force-dark](chrome://flags/#enable-force-dark)
 
 ### Repair grub dual boot
 
@@ -170,19 +167,4 @@ Key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 ```bash
 sudo systemctl restart bluetooth
-```
-
-## Increase maximum virtual memory areas for ElasticSearch in WSL2
-
-1. Open a Powershell and enter to Docker Desktop:
-
-```powershell
-wsl -d docker-desktop
-```
-
-2. Add `sysctl -w vm.max_map_count=262144` command to `/etc/wsl.conf`:
-
-```sh
-echo '[boot]' >> /etc/wsl.conf
-echo 'command="sysctl -w vm.max_map_count=262144"' >> /etc/wsl.conf
 ```
