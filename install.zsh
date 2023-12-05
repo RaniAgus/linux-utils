@@ -32,8 +32,8 @@ git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 
 # Ruby
-rbenv install "$(rbenv install -l 2> /dev/null | grep -v "-" | tail -1)"
-rbenv global "$(rbenv versions)"
+rbenv install -l 2> /dev/null | grep -v "-" | tail -1 | xargs rbenv install
+rbenv versions | xargs rbenv global
 gem install pry bundler rspec colorize rails jekyll
 
 ########################################################################################################################
