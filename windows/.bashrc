@@ -162,3 +162,13 @@ lfcd () {
     # `command` is needed in case `lfcd` is aliased to `lf`
     cd "$(command lf -print-last-dir "$@")"
 }
+
+bind '"\C-o":"lfcd\C-m"'
+
+aws sts get-caller-identity &> /dev/null
+if [ $? -ne 0 ]; then
+    aws sso login
+else
+    echo "Already logged into aws sso"
+fi
+
