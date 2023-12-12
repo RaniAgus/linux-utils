@@ -10,15 +10,15 @@ sudo ln -s "/mnt/c/Users/${USERNAME}/AppData/Local/1Password/app/8/op-ssh-sign.e
 
 ```toml
 [core]
-        sshCommand = ssh.exe
+        sshCommand = "ssh.exe"
 [user]
-        name = Agustin Ranieri
-        email = aguseranieri@gmail.com
-        signingkey = ssh-????? ?????
+        name = "Agustin Ranieri"
+        email = "aguseranieri@gmail.com"
+        signingkey = "ssh-????? ?????"
 [gpg]
-        format = ssh
+        format = "ssh"
 [commit]
         gpgsign = true
 [gpg "ssh"]
-        program = op-ssh-sign.exe
+        program = "op-ssh-sign.exe"
 ```
