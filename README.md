@@ -88,9 +88,13 @@ sudo mount /dev/sda1 /mnt/windows
 # Copy Windows entry
 sudo cp -r /mnt/windows/EFI/Microsoft/ /boot/efi/EFI
 
+# Remove "noprompt" from linux entry
+sudo sed -i 's/ noprompt / /g' /boot/efi/EFI/Pop_OS-*/cmdline
+
 # Add starting menu with timeout
 printf "timeout 10\nconsole-mode max\n" | sudo tee /boot/efi/loader/loader.conf > /dev/null
 ```
+Ref: [loader.conf](https://www.freedesktop.org/software/systemd/man/latest/loader.conf.html)
 
 ### Fix dual boot time
 
