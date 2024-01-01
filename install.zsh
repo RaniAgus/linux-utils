@@ -25,7 +25,8 @@ go install github.com/spf13/cobra-cli@latest
 
 # Node.js
 nvm install --lts
-npm i --location=global npm@latest @angular/cli degit http-server pnpm tldr typescript yarn
+npm i --location=global npm@latest @angular/cli degit http-server tldr typescript yarn
+curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 # Plugins
 git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
