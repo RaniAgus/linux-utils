@@ -22,6 +22,8 @@ source ~/.zshrc
 
 # Go
 go install github.com/spf13/cobra-cli@latest
+go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
+go install github.com/a-h/templ/cmd/templ@latest
 
 # Node.js
 nvm install --lts
