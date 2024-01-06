@@ -203,6 +203,11 @@ sudo mkdir /usr/local/include/doctest
 curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h" \
   | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
+# TailwindCSS
+curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64
+chmod +x tailwindcss-linux-x64
+sudo mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
+
 # Zoom
 flatpak install -y flathub us.zoom.Zoom
 
