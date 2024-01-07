@@ -21,6 +21,7 @@ cat ./dotfiles/.zshrc >> ~/.zshrc
 source ~/.zshrc
 
 # Go
+go install github.com/go-task/task/v3/cmd/task@latest
 go install github.com/spf13/cobra-cli@latest
 go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
 go install github.com/pressly/goose/v3/cmd/goose@latest
