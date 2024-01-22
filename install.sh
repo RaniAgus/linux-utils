@@ -134,7 +134,7 @@ apt_install dotnet6
 # Fly.io
 curl -L https://fly.io/install.sh | sh
 
-# Go
+# Golang
 rm -rf /usr/local/go
 wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" \
   | sudo tar xvzC /usr/local
@@ -142,6 +142,9 @@ tee ~/.cobra.yaml >> /dev/null << EOF
 author: Agustin Ranieri <aguseranieri@gmail.com>
 license: MIT
 EOF
+# To go get packages from private repos using ssh -- https://stackoverflow.com/a/38672481
+git config --global url."git@github.com:".insteadOf "https://github.com/"
+git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
 
 # Java
 wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add -
