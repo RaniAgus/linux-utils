@@ -168,6 +168,9 @@ curl -fsSL "https://ngrok-agent.s3.amazonaws.com/ngrok.asc" | sudo tee /etc/apt/
 echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
 apt_install ngrok
 
+# Protocol buffers
+apt_install protobuf-compiler
+
 # Python
 apt_install python3 python3-pip python3-setuptools python3-wheel
 
