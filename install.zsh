@@ -5,11 +5,11 @@ apt_install() {
 }
 
 gh_latest_tag() {
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
 # nvm
-wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/$(gh_latest_tag nvm-sh/nvm)/install.sh" | bash
+wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh" | bash
 
 # rbenv
 apt_install libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
