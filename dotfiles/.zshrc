@@ -49,7 +49,7 @@ dpkg_install() {
 }
 
 gh_latest_tag() {
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
 # valgrind
