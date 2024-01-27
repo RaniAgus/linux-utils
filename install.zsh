@@ -8,6 +8,9 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
+# bun
+curl -fsSL https://bun.sh/install | bash
+
 # nvm
 wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh" | bash
 
