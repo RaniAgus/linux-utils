@@ -221,6 +221,12 @@ curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/t
 chmod +x tailwindcss-linux-x64
 sudo mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
+# VirtualBox
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" \
+  | sudo tee /etc/apt/sources.list.d/virtualbox.list
+wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor
+apt_install virtualbox-7.0
+
 # Zoom
 flatpak install -y flathub us.zoom.Zoom
 
