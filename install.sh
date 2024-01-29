@@ -18,15 +18,18 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
+if [ "$MINT" ]; then
+  LSB_RELEASE=$(grep "DISTRIB_CODENAME" /etc/upstream-release/lsb-release | cut -d '=' -f2)
+else
+  LSB_RELEASE=$(lsb_release -cs)
+fi
+
 # use this to skip successful steps
 if false; then
 fi
 
 if [ "$MINT" ]; then
   sudo rm /etc/apt/preferences.d/nosnap.pref
-  LSB_RELEASE=$(grep "DISTRIB_CODENAME" /etc/upstream-release/lsb-release | cut -d '=' -f2)
-else
-  LSB_RELEASE=$(lsb_release -cs)
 fi
 
 # Basics
