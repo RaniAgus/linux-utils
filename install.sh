@@ -168,6 +168,13 @@ curl -fsSL "https://ngrok-agent.s3.amazonaws.com/ngrok.asc" | sudo tee /etc/apt/
 echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | sudo tee /etc/apt/sources.list.d/ngrok.list
 apt_install ngrok
 
+# Posman
+if [ "$NOSNAP" ]; then
+  flatpak install -y flathub com.getpostman.Postman
+else
+  sudo snap install postman
+fi
+
 # Protocol buffers
 apt_install protobuf-compiler
 
