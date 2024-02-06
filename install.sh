@@ -33,7 +33,7 @@ if [ "$MINT" ]; then
 fi
 
 # Basics
-apt_install apt-transport-https curl chntpw dconf-editor drawing fd-find gnome-shell-extension-prefs hexyl htop hyperfine jq pass p7zip-full ripgrep silversearcher-ag snapd software-properties-common testdisk tree usb-creator-gtk wget zip
+apt_install apt-transport-https curl chntpw dconf-editor drawing fd-find gnome-shell-extension-prefs hexyl htop hyperfine jq pass p7zip-full rename ripgrep silversearcher-ag snapd software-properties-common testdisk tree usb-creator-gtk wget zip
 
 if [ "$NOSNAP" ]; then
   flatpak install -y flathub \
