@@ -27,6 +27,17 @@ gnome-terminal -e "zsh -c '. ranger;zsh'"
 
 ## Cheatsheet
 
+### Replace spaces with dashes (all files in folder)
+
+```
+rename -n 's/ /-/g' *
+```
+
+### Check video durations (all files in folder)
+```sh
+ls | xargs -n1 -I {} ffmpeg -i {} 2>&1 | grep "Duration:"
+```
+
 ### Change commit author
 
 ```bash
