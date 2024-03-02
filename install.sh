@@ -136,7 +136,7 @@ apt_install dotnet6
 curl -L https://fly.io/install.sh | sh
 
 # Golang
-rm -rf /usr/local/go
+sudo rm -rf /usr/local/go
 wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" \
   | sudo tar xvzC /usr/local
 tee ~/.cobra.yaml >> /dev/null << EOF
