@@ -231,6 +231,7 @@ apt_install virtualbox-7.0
 
 # Zoom
 flatpak install -y flathub us.zoom.Zoom
+sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.var/app/us.zoom.Zoom/config/zoomus.conf
 
 ########################################################################################################################
 
