@@ -1,4 +1,8 @@
+AlignAfterOpenBracket: BlockIndent
 AllowShortEnumsOnASingleLine: false
-AllowShortBlocksOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+BinPackArguments: false
+BinPackParameters: false
+IndentCaseLabels: true
 InsertBraces: true
