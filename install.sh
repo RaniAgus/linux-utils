@@ -18,12 +18,12 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
+ARCHITECTURE=$(dpkg --print-architecture)
 if [ "$MINT" ]; then
   LSB_RELEASE=$(grep "DISTRIB_CODENAME" /etc/upstream-release/lsb-release | cut -d '=' -f2)
 else
   LSB_RELEASE=$(lsb_release -cs)
 fi
-ARCHITECTURE=$(dpkg --print-architecture)
 
 # use this to skip successful steps
 if false; then
@@ -203,11 +203,11 @@ fi
 # SisOp
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
+curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor --yes -o /etc/apt/keyrings/llvm-snapshot.gpg
 sudo tee /etc/apt/sources.list.d/llvm.list << EOF
-deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/llvm.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
-deb-src http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
+deb [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
+deb-src [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
 EOF
-wget -O- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --yes --output /usr/share/keyrings/llvm.gpg --dearmor
 
 apt_install make clang-tidy clang-format cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
 
@@ -232,8 +232,7 @@ sudo mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 # VirtualBox
 echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian ${LSB_RELEASE:?} contrib" \
   | sudo tee /etc/apt/sources.list.d/virtualbox.list
-wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc \
-  | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor
+curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes -o /usr/share/keyrings/oracle-virtualbox-2016.gpg
 apt_install virtualbox-7.0
 
 # Zoom
