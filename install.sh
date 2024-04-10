@@ -202,7 +202,13 @@ fi
 # SisOp
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
-apt_install make clang-format clang-tidy cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
+sudo tee /etc/apt/sources.list.d/llvm.list << EOF
+deb http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs) main
+deb-src http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs) main
+EOF
+wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+
+apt_install make clang-tidy clang-format cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
 
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
