@@ -1,0 +1,4 @@
+AllowShortEnumsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortFunctionsOnASingleLine: false
+InsertBraces: true
