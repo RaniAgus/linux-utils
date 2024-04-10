@@ -23,6 +23,7 @@ if [ "$MINT" ]; then
 else
   LSB_RELEASE=$(lsb_release -cs)
 fi
+ARCHITECTURE=$(dpkg --print-architecture)
 
 # use this to skip successful steps
 if false; then
@@ -49,7 +50,7 @@ sudo sed -i 's/#IdleTimeout=30/IdleTimeout=0/g' /etc/bluetooth/input.conf
 # 1Password
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --yes --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$(dpkg --print-architecture) stable main" |
+echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/${ARCHITECTURE:?} stable main" |
   sudo tee /etc/apt/sources.list.d/1password.list
 sudo mkdir -p /etc/debsig/policies/AC2D62742012EA22/
 curl -sS https://downloads.1password.com/linux/debian/debsig/1password.pol | \
@@ -102,7 +103,7 @@ git config --global core.protectNTFS false
 # GitHub CLI
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 apt_install gh
 
 # Bat
@@ -122,7 +123,7 @@ fi
 # Docker
 apt_install ca-certificates gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu ${LSB_RELEASE:?} stable" \
+echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu ${LSB_RELEASE:?} stable" \
   | sudo tee /etc/apt/sources.list.d/docker.list
 apt_install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo usermod -aG docker "$USER"
@@ -203,10 +204,10 @@ fi
 # sudo add-apt-repository -y ppa:daniel-milde/gdu
 # install gdu
 sudo tee /etc/apt/sources.list.d/llvm.list << EOF
-deb http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs) main
-deb-src http://apt.llvm.org/$(lsb_release -cs)/ llvm-toolchain-$(lsb_release -cs) main
+deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/llvm.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
+deb-src http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
 EOF
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+wget -O- https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --yes --output /usr/share/keyrings/llvm.gpg --dearmor
 
 apt_install make clang-tidy clang-format cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
 
@@ -229,7 +230,7 @@ chmod +x tailwindcss-linux-x64
 sudo mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
 # VirtualBox
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian ${LSB_RELEASE:?} contrib" \
+echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian ${LSB_RELEASE:?} contrib" \
   | sudo tee /etc/apt/sources.list.d/virtualbox.list
 wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc \
   | sudo gpg --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg --dearmor
