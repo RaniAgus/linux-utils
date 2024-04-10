@@ -108,16 +108,16 @@ dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$
 # C Language
 sudo apt-get update && sudo apt-get install -y make cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
 
-# C Commons
-git clone https://github.com/sisoputnfrba/so-commons-library.git
-make -C so-commons-library debug install
-rm -rfv so-commons-library
-
 # CSpec
 git clone https://github.com/mumuki/cspec.git
 make -C cspec
 sudo make install -C cspec
 rm -rfv cspec
+
+# Commons
+git clone https://github.com/sisoputnfrba/so-commons-library.git
+make -C so-commons-library debug install
+rm -rfv so-commons-library
 
 # C++ Doctest
 sudo mkdir /usr/local/include/doctest
