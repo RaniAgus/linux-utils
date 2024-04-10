@@ -105,6 +105,33 @@ sudo apt-get update && sudo apt-get install -y gh
 # Bat
 dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
 
+# C Language
+sudo apt-get update && sudo apt-get install -y make cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
+
+# C Commons
+git clone https://github.com/sisoputnfrba/so-commons-library.git
+make -C so-commons-library debug install
+rm -rfv so-commons-library
+
+# CSpec
+git clone https://github.com/mumuki/cspec.git
+make -C cspec
+sudo make install -C cspec
+rm -rfv cspec
+
+# C++ Doctest
+sudo mkdir /usr/local/include/doctest
+curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h" \
+  | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
+
+# C Linter
+curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor --yes -o /etc/apt/keyrings/llvm-snapshot.gpg
+sudo tee /etc/apt/sources.list.d/llvm.list << EOF
+deb [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
+deb-src [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
+EOF
+sudo apt-get update && sudo apt-get install -y clang-tidy clang-format
+
 # Chrome
 flatpak install -y flathub com.google.Chrome
 # dpkg_install https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -195,30 +222,6 @@ if [ "$NOSNAP" ]; then
 else
   sudo snap install spotify
 fi
-
-# SisOp
-# sudo add-apt-repository -y ppa:daniel-milde/gdu
-# install gdu
-curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor --yes -o /etc/apt/keyrings/llvm-snapshot.gpg
-sudo tee /etc/apt/sources.list.d/llvm.list << EOF
-deb [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
-deb-src [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
-EOF
-
-sudo apt-get update && sudo apt-get install -y make clang-tidy clang-format cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
-
-git clone https://github.com/mumuki/cspec.git
-make -C cspec
-sudo make install -C cspec
-rm -rfv cspec
-
-git clone https://github.com/sisoputnfrba/so-commons-library.git
-make -C so-commons-library debug install
-rm -rfv so-commons-library
-
-sudo mkdir /usr/local/include/doctest
-curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doctest.h" \
-  | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
 # TailwindCSS
 curl -sLO https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-x64
