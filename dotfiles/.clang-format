@@ -1,8 +1,11 @@
 AlignAfterOpenBracket: BlockIndent
+AllowShortBlocksOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: false
-AllowShortBlocksOnASingleLine: false
 BinPackArguments: false
 BinPackParameters: false
+ColumnLimit: 120
 IndentCaseLabels: true
+IndentWidth: 4
 InsertBraces: true
+ReflowComments: false
