@@ -25,6 +25,10 @@ fi
 if false; then
 fi
 
+# Tweak configs
+sudo sed -i 's/#IdleTimeout=30/IdleTimeout=0/g' /etc/bluetooth/input.conf
+sudo sed -i 's/#HandleLidSwitch=.*/HandleLidSwitch=ignore/' /etc/systemd/logind.conf
+
 if [ "$MINT" ]; then
   sudo rm /etc/apt/preferences.d/nosnap.pref
 fi
@@ -41,7 +45,6 @@ if [ "$NOSNAP" ]; then
 else
   sudo snap install kdenlive pdfarranger obs-studio vlc
 fi
-sudo sed -i 's/#IdleTimeout=30/IdleTimeout=0/g' /etc/bluetooth/input.conf
 
 # 1Password
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
