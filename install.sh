@@ -26,7 +26,7 @@ if false; then
 fi
 
 # Tweak configs
-sudo sed -i 's/#IdleTimeout=30/IdleTimeout=0/g' /etc/bluetooth/input.conf
+sudo sed -i 's/#IdleTimeout=.*/IdleTimeout=0/g' /etc/bluetooth/input.conf
 sudo sed -i 's/#HandleLidSwitch=.*/HandleLidSwitch=ignore/' /etc/systemd/logind.conf
 
 if [ "$MINT" ]; then
