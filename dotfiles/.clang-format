@@ -1,7 +1,11 @@
 AlignAfterOpenBracket: BlockIndent
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AlignTrailingComments: Never
 BinPackArguments: false
 BinPackParameters: false
 ColumnLimit: 120
