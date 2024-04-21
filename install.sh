@@ -68,7 +68,7 @@ EOF
 chmod 600 ~/.ssh/config
 
 mkdir -p ~/.config/autostart
-cp ./dotfiles/autostart/1password.desktop ~/.config/autostart/1password.desktop
+cp ./dotfiles/.config/autostart/1password.desktop ~/.config/autostart/1password.desktop
 
 # Code
 sudo snap install code --classic
