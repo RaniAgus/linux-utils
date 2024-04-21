@@ -158,7 +158,7 @@ echo "run 'docker run hello-world' to test docker installation"
 newgrp docker
 
 # DotNET
-sudo apt-get update && sudo apt-get install -y dotnet6
+sudo apt-get update && sudo apt-get install -y dotnet8
 
 # Fly.io
 curl -L https://fly.io/install.sh | sh
