@@ -70,6 +70,12 @@ chmod 600 ~/.ssh/config
 mkdir -p ~/.config/autostart
 cp ./dotfiles/.config/autostart/1password.desktop ~/.config/autostart/1password.desktop
 
+# AWS CLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rfv aws awscliv2.zip
+
 # Code
 sudo snap install code --classic
 
