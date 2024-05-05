@@ -213,6 +213,9 @@ fi
 # Protocol buffers
 sudo apt-get update && sudo apt-get install -y protobuf-compiler
 
+# PSeInt
+curl -L https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz | sudo tar xvzC /opt
+
 # Python
 sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-setuptools python3-wheel
 
