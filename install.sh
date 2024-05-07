@@ -43,6 +43,7 @@ if [ "$NOSNAP" ]; then
       com.obsproject.Studio \
       org.videolan.VLC
 else
+  sudo snap set system "refresh.retain=2"
   sudo snap install kdenlive pdfarranger obs-studio vlc
 fi
 
