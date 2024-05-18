@@ -194,10 +194,10 @@ sdk install gradle
 sdk install quarkus
 
 # JetBrains
-# TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
-# wget -qO- "${TBA_LINK:?}" | sudo tar xvzC /opt
-# /opt/jetbrains-toolbox-*/jetbrains-toolbox
-sudo snap install intellij-idea-ultimate --classic
+TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
+wget -qO- "${TBA_LINK:?}" | sudo tar xvzC /opt
+/opt/jetbrains-toolbox-*/jetbrains-toolbox
+# sudo snap install intellij-idea-ultimate --classic
 
 # Ngrok
 curl -fsSL "https://ngrok-agent.s3.amazonaws.com/ngrok.asc" | sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null
