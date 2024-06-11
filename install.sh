@@ -136,11 +136,10 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.8/doctest/doc
   | sudo tee /usr/local/include/doctest/doctest.h > /dev/null
 
 # C Linter
-curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key | sudo gpg --dearmor --yes -o /etc/apt/keyrings/llvm-snapshot.gpg
-sudo tee /etc/apt/sources.list.d/llvm.list << EOF
-deb [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
-deb-src [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main
-EOF
+curl -fsSL https://apt.llvm.org/llvm-snapshot.gpg.key \
+  | sudo gpg --dearmor --yes -o /etc/apt/keyrings/llvm-snapshot.gpg
+echo "deb [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/llvm-snapshot.gpg] http://apt.llvm.org/${LSB_RELEASE:?}/ llvm-toolchain-${LSB_RELEASE:?} main" \
+  | sudo tee /etc/apt/sources.list.d/llvm.list
 sudo apt-get update && sudo apt-get install -y clang-tidy clang-format
 
 # Chrome
@@ -156,9 +155,10 @@ fi
 
 # Docker
 sudo apt-get update && sudo apt-get install -y ca-certificates gnupg lsb-release
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu ${LSB_RELEASE:?} stable" \
-  | sudo tee /etc/apt/sources.list.d/docker.list
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update && sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo usermod -aG docker "$USER"
 echo "run 'docker run hello-world' to test docker installation"
@@ -183,8 +183,11 @@ git config --global url."git@github.com:".insteadOf "https://github.com/"
 git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
 
 # Java
-wget -O- https://apt.corretto.aws/corretto.key | sudo apt-key add -
-sudo add-apt-repository -y 'deb https://apt.corretto.aws stable main'
+curl -fsSL https://packages.adoptium.net/artifactory/api/gpg/key/public \
+  | sudo gpg --dearmor --yes -o /etc/apt/keyrings/adoptium.gpg
+echo "deb [arch=${ARCHITECTURE:?} signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb ${LSB_RELEASE:?} main" \
+  | sudo tee /etc/apt/sources.list.d/adoptium.list > /dev/null
+
 sudo apt-get update && sudo apt-get install -y maven java-17-amazon-corretto-jdk java-11-amazon-corretto-jdk java-1.8.0-amazon-corretto-jdk graphviz
 # sudo update-alternatives --config java
 curl -s "https://get.sdkman.io" | bash
@@ -243,9 +246,10 @@ chmod +x tailwindcss-linux-x64
 sudo mv tailwindcss-linux-x64 /usr/local/bin/tailwindcss
 
 # VirtualBox
+curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc \
+  | sudo gpg --dearmor --yes -o /usr/share/keyrings/oracle-virtualbox-2016.gpg
 echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/oracle-virtualbox-2016.gpg] https://download.virtualbox.org/virtualbox/debian ${LSB_RELEASE:?} contrib" \
   | sudo tee /etc/apt/sources.list.d/virtualbox.list
-curl -fsSL https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes -o /usr/share/keyrings/oracle-virtualbox-2016.gpg
 sudo apt-get update && sudo apt-get install -y virtualbox-7.0
 
 # Zoom
