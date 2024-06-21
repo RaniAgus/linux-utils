@@ -117,7 +117,14 @@ sudo apt-get update && sudo apt-get install -y gh
 dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
 
 # C Language
-sudo apt-get update && sudo apt-get install -y make cmake entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
+sudo apt-get update && sudo apt-get install -y make entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
+
+# CMake
+curl -fsSL https://apt.kitware.com/keys/kitware-archive-latest.asc \
+  | sudo gpg --yes --dearmor --output /usr/share/keyrings/kitware-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" \
+  | sudo tee /etc/apt/sources.list.d/kitware.list
+sudo apt update && sudo apt install -y cmake
 
 # CSpec
 git clone https://github.com/mumuki/cspec.git
