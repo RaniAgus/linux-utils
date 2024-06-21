@@ -68,3 +68,17 @@ bindkey -s '^o' 'rcd\n'
 alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
 alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
+
+# video durations
+ffprobe-duration() {
+  files="${1:=$(ls)}"
+  durations=$(\
+    echo "$files" \
+    | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+    | grep duration \
+    | cut -d'=' -f2 \
+    | xargs -I{} date -d@{} -u +%H:%M:%S \
+  )
+  paste <(echo "$durations") <(echo "$files")
+}
+
