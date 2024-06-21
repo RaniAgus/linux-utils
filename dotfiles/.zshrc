@@ -59,8 +59,8 @@ alias vn="valgrind --tool=none"
 
 # ranger
 rcd () {
-  ranger --choosedir=$HOME/.rangerdir
-  cd "$(cat $HOME/.rangerdir)"
+  ranger --choosedir="$HOME/.rangerdir"
+  cd "$(cat "$HOME/.rangerdir")" || exit
 }
 bindkey -s '^o' 'rcd\n'
 
@@ -81,4 +81,3 @@ ffprobe-duration() {
   )
   paste <(echo "$durations") <(echo "$files")
 }
-
