@@ -233,6 +233,10 @@ sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-setup
 ## Ranger
 pip install ranger-fm
 
+# Rust
+curl https://sh.rustup.rs -sSf | sh
+cargo install zoxide --locked
+
 ## yt-dlp
 sudo apt-get update && sudo apt-get install -y ffmpeg
 pip install yt-dlp
