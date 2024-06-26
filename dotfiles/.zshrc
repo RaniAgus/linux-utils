@@ -81,3 +81,7 @@ ffprobe-duration() {
   )
   paste <(echo "$durations") <(echo "$files")
 }
+
+# zoxide
+eval "$(zoxide init --cmd zsh)"
+
