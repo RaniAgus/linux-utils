@@ -83,5 +83,5 @@ ffprobe-duration() {
 }
 
 # zoxide
-eval "$(zoxide init --cmd zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 
