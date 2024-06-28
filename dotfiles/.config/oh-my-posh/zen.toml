@@ -36,6 +36,54 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
   overflow = 'hidden'
 
   [[blocks.segments]]
+    type = "ruby"
+    style = "powerline"
+    powerline_symbol = ""
+    foreground = "#ffffff"
+    background = "#843f5b"
+    template = "  {{ .Full }} "
+
+  [[blocks.segments]]
+    type = "node"
+    style = "powerline"
+    powerline_symbol = ""
+    foreground = "#ffffff"
+    background = "#3c873a"
+    template = "  {{ .Full }} "
+
+  [[blocks.segments]]
+    type = "angular"
+    style = "powerline"
+    powerline_symbol = ""
+    foreground = "white"
+    background = "#a6120d"
+    template = "{{ if .Full }}  {{ .Full }} {{ end }}"
+
+  [[blocks.segments]]
+    type = "react"
+    style = "powerline"
+    powerline_symbol = ""
+    foreground = "white"
+    background = "blue"
+    template = "{{ if .Full }}  {{ .Full }} {{ end }}"
+
+  [[blocks.segments]]
+    type = "java"
+    style = "powerline"
+    powerline_symbol = ""
+    foreground = "blue"
+    background = "#ec833f"
+    template = "  {{ .Full }} "
+
+  [[blocks.segments]]
+    type = 'terraform'
+    style = 'powerline'
+    powerline_symbol = ""
+    foreground = "white"
+    background = "magenta"
+    template = " 󱁢 {{ .WorkspaceName }} "
+
+  [[blocks.segments]]
     type = 'executiontime'
     style = 'plain'
     foreground = 'yellow'
