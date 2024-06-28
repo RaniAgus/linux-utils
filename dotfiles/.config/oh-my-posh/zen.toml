@@ -36,6 +36,14 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
   overflow = 'hidden'
 
   [[blocks.segments]]
+    type = "dotnet"
+    style = "powerline"
+    powerline_symbol = ""
+    foreground = "white"
+    background = "#6a0dad"
+    template = " 󰪮 {{ .Full }} "
+
+  [[blocks.segments]]
     type = "go"
     style = "powerline"
     powerline_symbol = ""
