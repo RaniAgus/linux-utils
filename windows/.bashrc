@@ -1,4 +1,6 @@
-OSH_THEME="sirup"
+eval "$(oh-my-posh init bash --config $HOME/.config/oh-my-posh/zen.toml)"
+
+source ~/.git-plugin-bash.sh
 
 # aws login
 alias awslogin="aws configure sso --profile default"
