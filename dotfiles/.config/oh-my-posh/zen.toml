@@ -40,7 +40,7 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
     style = "powerline"
     powerline_symbol = ""
     foreground = "#ffffff"
-    background = "#7FD5EA"
+    background = "#00add8"
     template = "  {{ .Full }} "
 
   [[blocks.segments]]
