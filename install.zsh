@@ -9,6 +9,11 @@ mkdir -p ~/.oh-my-posh/bin ~/.config/oh-my-posh
 curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.oh-my-posh/bin
 cat ./dotfiles/.config/oh-my-posh/zen.toml > ~/.config/oh-my-posh/zen.toml
 
+# Nerd Font
+curl -o JetBrainsMono.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip"
+unzip JetBrainsMono.zip -d ~/.local/share/fonts/fonts/ttf
+rm -v JetBrainsMono.zip
+
 # bun
 curl -fsSL https://bun.sh/install | bash
 
