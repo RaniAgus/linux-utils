@@ -4,6 +4,11 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
+# Oh My Posh
+mkdir -p ~/.oh-my-posh/bin ~/.config/oh-my-posh
+curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.oh-my-posh/bin
+cat ./dotfiles/.config/oh-my-posh/zen.toml > ~/.config/oh-my-posh/zen.toml
+
 # bun
 curl -fsSL https://bun.sh/install | bash
 
