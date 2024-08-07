@@ -32,6 +32,9 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.rbenv/shims:$PATH"
 eval "$(rbenv init - zsh)"
 
+# Rust
+. "$HOME/.cargo/env"
+
 # sdkman
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 
