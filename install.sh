@@ -235,7 +235,7 @@ pip install ranger-fm
 
 # Rust
 curl https://sh.rustup.rs -sSf | sh
-cargo install zoxide --locked
+$HOME/.cargo/bin/cargo install zoxide --locked
 
 ## yt-dlp
 sudo apt-get update && sudo apt-get install -y ffmpeg
