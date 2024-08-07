@@ -55,6 +55,9 @@ rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
 rbenv versions | xargs rbenv global
 gem install pry bundler rspec colorize rails jekyll
 
+# Rust
+cargo install zoxide --locked
+
 ########################################################################################################################
 
 # Dual boot timezone fix
