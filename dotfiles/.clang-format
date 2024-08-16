@@ -9,7 +9,9 @@ AlignTrailingComments: Never
 BinPackArguments: false
 BinPackParameters: false
 ColumnLimit: 120
+ForEachMacros: [describe, it, before, after, skip]
 IndentCaseLabels: true
 IndentWidth: 4
 InsertBraces: true
+Macros: ["end=// end"]
 ReflowComments: false
