@@ -13,5 +13,5 @@ ForEachMacros: [describe, it, before, after, skip]
 IndentCaseLabels: true
 IndentWidth: 4
 InsertBraces: true
-Macros: ["end=// end"]
+Macros: ["end=/*end*/"]
 ReflowComments: false
