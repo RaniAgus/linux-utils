@@ -21,7 +21,7 @@ curl -fsSL https://bun.sh/install | bash
 wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh" | bash
 
 # rbenv
-sudo apt-get update && sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
+sudo apt-get update && sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential heif-gdk-pixbuf heif-thumbnailer libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
 # Install aliases
