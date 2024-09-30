@@ -36,15 +36,17 @@ fi
 # Basics
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl chntpw dconf-editor drawing fd-find gnome-shell-extension-prefs hexyl htop hyperfine jq pass p7zip-full rename ripgrep silversearcher-ag snapd software-properties-common testdisk tree usb-creator-gtk wget zip
 
+flatpak install -y flathub \
+    org.kde.kdenlive
+
 if [ "$NOSNAP" ]; then
   flatpak install -y flathub \
-      org.kde.kdenlive \
       com.github.jeromerobert.pdfarranger \
       com.obsproject.Studio \
       org.videolan.VLC
 else
   sudo snap set system "refresh.retain=2"
-  sudo snap install kdenlive pdfarranger obs-studio vlc
+  sudo snap install pdfarranger obs-studio vlc
 fi
 
 # 1Password
