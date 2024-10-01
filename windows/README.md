@@ -33,3 +33,10 @@ sed -i 's/\$ "$/\\n\$ "/g' ~/.oh-my-bash/themes/sirup/sirup.theme.sh
 1. Tocar Win + R
 2. Escribir `shell:startup`
 3. Guardar el script en esa carpeta
+
+## Fix Rust installation
+
+```
+rustup toolchain install stable-x86_64-pc-windows-gnu
+rustup default stable-x86_64-pc-windows-gnu
+```
