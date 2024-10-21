@@ -32,3 +32,4 @@ if [ $? -ne 0 ]; then
     aws sso login
 fi
 
+alias sam="/c/Program\ Files/Amazon/AWSSAMCLI/bin/sam.cmd"
