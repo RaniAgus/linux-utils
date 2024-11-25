@@ -11,4 +11,4 @@
 // 11: 100%
 [...document.getElementsByClassName('form-group')]
   .flatMap(formGroup => [...formGroup.querySelectorAll('input[value="1"]')])
-  .forEach(input => input.checked = true)
+  .forEach(input => { input.checked = true; })
