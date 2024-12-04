@@ -125,6 +125,12 @@ sudo timedatectl set-local-rtc 1
 
 ![image](https://user-images.githubusercontent.com/39303639/226109148-81b7f700-b930-40a5-85a8-5c77fb26d65f.png)
 
+### [Convert GitHub App private key to PKCS8 private key](https://stackoverflow.com/questions/8290435/convert-pem-traditional-private-key-to-pkcs8-private-key)
+
+```
+openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in pkcs1.key -out pkcs8.key
+```
+
 ### [Pair Bluetooth Devices on dual boot](https://unix.stackexchange.com/questions/255509/bluetooth-pairing-on-dual-boot-of-windows-linux-mint-ubuntu-stop-having-to-p)
 
 1. Pair all devices with Ubuntu
