@@ -131,6 +131,12 @@ sudo timedatectl set-local-rtc 1
 openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in pkcs1.key -out pkcs8.key
 ```
 
+### Generate random string
+
+```
+ruby -rsecurerandom -e 'puts SecureRandom.hex(32)'
+```
+
 ### [Pair Bluetooth Devices on dual boot](https://unix.stackexchange.com/questions/255509/bluetooth-pairing-on-dual-boot-of-windows-linux-mint-ubuntu-stop-having-to-p)
 
 1. Pair all devices with Ubuntu
