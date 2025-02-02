@@ -37,7 +37,8 @@ fi
 sudo apt-get update && sudo apt-get install -y apt-transport-https curl chntpw dconf-editor drawing fd-find gnome-shell-extension-prefs hexyl htop hyperfine jq pass p7zip-full rename ripgrep silversearcher-ag snapd software-properties-common testdisk tree usb-creator-gtk wget zip
 
 flatpak install -y flathub \
-    org.kde.kdenlive
+    org.kde.kdenlive \
+    net.pcsx2.PCSX2
 
 if [ "$NOSNAP" ]; then
   flatpak install -y flathub \
