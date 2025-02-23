@@ -228,7 +228,7 @@ fi
 sudo apt-get update && sudo apt-get install -y protobuf-compiler
 
 # PSeInt
-curl -L https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz | sudo tar xvzC /opt
+curl -L "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz" | sudo tar xvzC /opt
 
 # Python
 sudo apt-get update && sudo apt-get install -y python3 python3-pip python3-setuptools python3-wheel
@@ -238,6 +238,9 @@ pip install ranger-fm
 
 # Rust
 curl https://sh.rustup.rs -sSf | sh
+
+# Steam
+dpkg_install "https://cdn.fastly.steamstatic.com/client/installer/steam.deb"
 
 ## yt-dlp
 sudo apt-get update && sudo apt-get install -y ffmpeg
