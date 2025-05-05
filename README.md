@@ -198,7 +198,7 @@ Key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 sudo systemctl restart bluetooth
 ```
 
-## [Fix bluetooth issues](https://askubuntu.com/a/1350323)
+## [Fix bluetooth keyboard issues](https://askubuntu.com/a/1350323)
 
 1. Open both blueman applet and:
 ```
