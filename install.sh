@@ -117,7 +117,7 @@ echo "deb [arch=${ARCHITECTURE:?} signed-by=/usr/share/keyrings/githubcli-archiv
 sudo apt-get update && sudo apt-get install -y gh
 
 # Bat
-dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_amd64.deb"
+dpkg_install "https://github.com/sharkdp/bat/releases/latest/download/bat-musl_$(gh_latest_tag sharkdp/bat)_musl-linux-amd64.deb"
 
 # C Language
 sudo apt-get update && sudo apt-get install -y make entr libreadline-dev libcunit1 libcunit1-doc libcunit1-dev meson ninja-build remake shellcheck valgrind
