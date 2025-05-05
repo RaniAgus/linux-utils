@@ -64,7 +64,7 @@ curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
 sudo apt-get update && sudo apt-get install -y 1password 1password-cli
 
 mkdir -p ~/.ssh
-chmod 600 ~/.ssh
+chmod 755 ~/.ssh
 tee ~/.ssh/config >> /dev/null << EOF
 Host *
         IdentityAgent ~/.1password/agent.sock
