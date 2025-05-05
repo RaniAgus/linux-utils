@@ -197,3 +197,33 @@ Key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```bash
 sudo systemctl restart bluetooth
 ```
+
+## [Fix bluetooth issues](https://askubuntu.com/a/1350323)
+
+1. Open both blueman applet and:
+```
+bluetoothctl
+```
+
+2. In the applet, remove device if paired
+3. In the cli, set:
+
+```
+pairable on
+discoverable on
+agent on
+default-agent
+show
+```
+
+4. Start pairing in the keyboard, and use the applet to connect
+
+5. In the applet, set device as trusted
+
+6. Cleanup settings
+
+```
+agent off
+pairable off
+discoverable off
+```
