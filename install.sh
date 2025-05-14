@@ -50,6 +50,10 @@ else
   sudo snap install pdfarranger obs-studio vlc
 fi
 
+# Logitech mouse
+sudo add-apt-repository ppa:solaar-unifying/stable
+sudo apt-get update && sudo apt-get install solaar
+
 # 1Password
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | \
   sudo gpg --yes --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
