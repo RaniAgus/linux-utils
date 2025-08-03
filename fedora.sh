@@ -8,7 +8,6 @@ gh_latest_tag() {
 
 flatpak install -y flathub \
   com.discordapp.Discord \
-  com.google.Chrome \
   com.getpostman.Postman \
   org.kde.kdenlive \
   org.gnome.Extensions \
@@ -23,6 +22,11 @@ sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.var/app/us.zoom.Zoom/c
 sudo dnf update -y
 
 sudo dnf -y install dnf-plugins-core ffmpeg python3 python3-pip python3-setuptools python3-wheel jq
+
+# Chrome
+
+sudo rpm --import https://dl.google.com/linux/linux_signing_key.pub
+sudo dnf install https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
 
 # Code
 
