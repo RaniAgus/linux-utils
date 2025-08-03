@@ -24,6 +24,9 @@ wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/
 sudo apt-get update && sudo apt-get install -y libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential heif-gdk-pixbuf heif-thumbnailer libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
+# Rust
+cargo install zoxide --locked
+
 # Install aliases
 cat ./dotfiles/.zshrc >> ~/.zshrc
 # shellcheck disable=SC1090,SC3046
@@ -55,8 +58,6 @@ rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
 rbenv versions | xargs rbenv global
 gem install pry bundler rspec colorize rails jekyll
 
-# Rust
-cargo install zoxide --locked
 
 ########################################################################################################################
 
