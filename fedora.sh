@@ -11,6 +11,7 @@ flatpak install -y flathub \
   com.google.Chrome \
   com.getpostman.Postman \
   org.kde.kdenlive \
+  org.gnome.Extensions \
   net.pcsx2.PCSX2 \
   com.github.jeromerobert.pdfarranger \
   com.obsproject.Studio \
@@ -36,10 +37,10 @@ sudo dnf install -y code
 
 sudo rpm --import https://downloads.1password.com/linux/keys/1password.asc
 
-echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\nrepo_gpgcheck=1\ngpgkey=\"https://downloads.1password.com/linux/keys/1password.asc\"" \
+echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1password.com/linux/rpm/stable/\$basearch\nenabled=1\ngpgcheck=1\ngpgkey=https://downloads.1password.com/linux/keys/1password.asc" \
   | sudo tee /etc/yum.repos.d/1password.repo > /dev/null
 
-sudo dnf install -y 1password
+sudo dnf install -y 1password 1password-cli
 
 mkdir -p ~/.config/autostart
 cat <<EOF | nano ~/.config/autostart/1password.desktop
