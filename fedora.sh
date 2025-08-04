@@ -49,10 +49,15 @@ sudo dnf install -y 1password 1password-cli
 mkdir -p ~/.config/autostart
 cat <<EOF | nano ~/.config/autostart/1password.desktop
 [Desktop Entry]
-Type=Application
 Name=1Password
-Exec=1password
-X-GNOME-Autostart-enabled=true
+Exec=1password --silent %U
+Terminal=false
+Type=Application
+Icon=1password
+StartupWMClass=1Password
+Comment=Password manager and secure wallet
+MimeType=x-scheme-handler/onepassword;
+Categories=Office;
 EOF
 
 # JetBrains Mono

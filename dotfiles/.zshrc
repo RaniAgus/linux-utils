@@ -1,3 +1,10 @@
+# pip
+export PATH="$HOME/.local/bin:$PATH"
+
+# oh my posh
+export PATH="$HOME/.oh-my-posh/bin:$PATH"
+eval "$(oh-my-posh init zsh --config ~/.config/oh-my-posh/zen.toml)"
+
 # go
 export PATH="$PATH:/usr/local/go/bin:$HOME/go/bin"
 
@@ -83,4 +90,3 @@ ffprobe-duration() {
 
 # zoxide
 eval "$(zoxide init --cmd cd zsh)"
-
