@@ -131,6 +131,28 @@ TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?cod
 wget -qO- "${TBA_LINK:?}" | sudo tar xvzC /opt
 /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
 
+# Kazam
+sudo dnf install \
+  python3-devel dbus-devel cairo-devel \
+  gobject-introspection-devel \
+  libgudev-devel keybinder3-devel \
+  python3-gobject python3-gstreamer1 \
+  xdotool cmake -y
+
+pip install kazam
+
+cat > ~/.local/share/applications/kazam.desktop <<EOF
+[Desktop Entry]
+Name=Kazam
+Comment=Screen recording tool
+Exec=kazam
+Icon=kazam
+Terminal=false
+Type=Application
+Categories=AudioVideo;Recorder;
+StartupNotify=true
+EOF
+
 # PSEInt
 
 curl -L "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz" | sudo tar xvzC /opt
