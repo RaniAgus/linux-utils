@@ -101,6 +101,7 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/do
 sudo dnf install -y podman-compose
 
 systemctl --user enable podman.socket
+systemctl --user start podman.socket
 
 # echo "Run 'docker run hello-world' to verify Docker installation."
 # newgrp docker
