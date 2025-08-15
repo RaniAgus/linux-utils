@@ -49,7 +49,7 @@ echo -e "[1password]\nname=1Password Stable Channel\nbaseurl=https://downloads.1
 sudo dnf install -y 1password 1password-cli
 
 mkdir -p ~/.config/autostart
-cat <<EOF | nano ~/.config/autostart/1password.desktop
+cat > ~/.config/autostart/1password.desktop <<EOF
 [Desktop Entry]
 Name=1Password
 Exec=1password --silent %U
@@ -59,7 +59,7 @@ Icon=1password
 StartupWMClass=1Password
 Comment=Password manager and secure wallet
 MimeType=x-scheme-handler/onepassword;
-Categories=Office;
+Categories=Office;nano ~/.config/autostart/1password.desktop
 EOF
 
 # JetBrains Mono
@@ -76,8 +76,8 @@ git config --global gpg.format ssh
 
 # GitHub
 
-sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
-sudo dnf install gh --repo gh-cli
+sudo dnf config-manager addrepo -y --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+sudo dnf install -y gh --repo gh-cli
 
 # C/C++
 
@@ -121,7 +121,7 @@ git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
 
 # Java
 
-cat <<EOF > /etc/yum.repos.d/adoptium.repo
+cat > /etc/yum.repos.d/adoptium.repo <<EOF 
 [Adoptium]
 name=Adoptium
 baseurl=https://packages.adoptium.net/artifactory/rpm/fedora/\$releasever/\$basearch
