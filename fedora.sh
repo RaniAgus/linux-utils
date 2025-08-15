@@ -21,7 +21,9 @@ sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.var/app/us.zoom.Zoom/c
 
 sudo dnf update -y
 
-sudo dnf -y install dnf-plugins-core ffmpeg python3 python3-pip python3-setuptools python3-wheel jq
+sudo dnf -y install dnf-plugins-core ffmpeg python3 python3-pip python3-setuptools python3-wheel jq dnf-automatic
+
+echo -e "[commands]\napply_updates=True" | sudo tee /etc/dnf/automatic.conf
 
 # Chrome
 
