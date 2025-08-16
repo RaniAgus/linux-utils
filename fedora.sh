@@ -173,6 +173,16 @@ curl -L "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20
 
 curl https://sh.rustup.rs -sSf | sh
 
+# Steam
+
+sudo dnf install -y \
+ "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
+ "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+
+sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
+
+sudo dnf -y install steam
+
 # yt-dlp
 
 pip install yt-dlp
