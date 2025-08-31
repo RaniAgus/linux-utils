@@ -6,6 +6,31 @@ gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 
+# DNF packages
+
+sudo dnf update -y
+
+sudo dnf -y install \
+  bison \
+  dnf-automatic \
+  dnf-plugins-core \
+  dnf5-plugins \
+  ffmpeg \
+  htop \
+  jq \
+  libyaml-devel \
+  libffi-devel \
+  openssl-devel \
+  python3 python3-pip python3-setuptools python3-wheel \
+  p7zip \
+  stow \
+  tree \
+  zlib-devel
+
+echo -e "[commands]\napply_updates=True" | sudo tee /etc/dnf/automatic.conf
+
+# Flatpak
+
 flatpak install -y flathub \
   com.discordapp.Discord \
   com.getpostman.Postman \
@@ -18,12 +43,6 @@ flatpak install -y flathub \
   us.zoom.Zoom
 
 sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.var/app/us.zoom.Zoom/config/zoomus.conf
-
-sudo dnf update -y
-
-sudo dnf -y install dnf5-plugins dnf-plugins-core ffmpeg python3 python3-pip python3-setuptools python3-wheel jq dnf-automatic
-
-echo -e "[commands]\napply_updates=True" | sudo tee /etc/dnf/automatic.conf
 
 # Chrome
 
@@ -121,7 +140,7 @@ git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
 
 # Java
 
-cat > /etc/yum.repos.d/adoptium.repo <<EOF 
+cat > /etc/yum.repos.d/adoptium.repo <<EOF
 [Adoptium]
 name=Adoptium
 baseurl=https://packages.adoptium.net/artifactory/rpm/fedora/\$releasever/\$basearch
@@ -177,7 +196,7 @@ curl https://sh.rustup.rs -sSf | sh
 
 sudo dnf install -y \
  "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" \
- "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+ "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
@@ -195,7 +214,16 @@ sudo rpm --import https://www.virtualbox.org/download/oracle_vbox_2016.asc
 curl -fsSL https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo \
   | sudo tee /etc/yum.repos.d/virtualbox.repo > /dev/null
 
-sudo dnf install -y VirtualBox-7.1
+sudo dnf install -y \
+  kernel kernel-core \
+  kernel-modules kernel-modules-core kernel-modules-extra \
+  kernel-tools kernel-tools-libs \
+  kernel-headers kernel-devel \
+  VirtualBox-7.1
+
+sudo usermod -a -G vboxusers "$USER"
+
+echo 'run "sudo /sbin/vboxconfig" after reboot'
 
 # ZSH
 
