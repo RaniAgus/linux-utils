@@ -219,7 +219,7 @@ sudo dnf install -y \
   kernel-modules kernel-modules-core kernel-modules-extra \
   kernel-tools kernel-tools-libs \
   kernel-headers kernel-devel \
-  VirtualBox-7.1
+  VirtualBox-7.2
 
 sudo usermod -a -G vboxusers "$USER"
 
