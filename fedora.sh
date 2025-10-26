@@ -225,6 +225,11 @@ sudo usermod -a -G vboxusers "$USER"
 
 echo 'run "sudo /sbin/vboxconfig" after reboot'
 
+# Warp
+curl -s "https://app.warp.dev/download?package=rpm" | cut -d'"' -f2 | xargs curl -s -o warp.rpm
+sudo dnf install -y ./warp.rpm
+rm ./warp.rpm
+
 # ZSH
 
 sudo dnf install -y zsh
