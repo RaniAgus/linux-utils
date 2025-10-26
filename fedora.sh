@@ -140,21 +140,15 @@ git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
 
 # Java
 
-cat > /etc/yum.repos.d/adoptium.repo <<EOF
-[Adoptium]
-name=Adoptium
-baseurl=https://packages.adoptium.net/artifactory/rpm/fedora/\$releasever/\$basearch
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.adoptium.net/artifactory/api/gpg/key/public
-EOF
-
-sudo dnf install temurin-21-jdk
+sudo dnf install adoptium-temurin-java-repository
+sudo dnf install -y temurin-21-jdk
+sudo update-alternatives --config java
 
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk install gradle
 sdk install quarkus
+echo "JAVA_HOME=/usr/lib/jvm/temurin-21-jdk" | sudo tee /etc/java/maven.conf
 
 # JetBrains
 
