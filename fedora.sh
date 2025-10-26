@@ -25,6 +25,7 @@ sudo dnf -y install \
   p7zip \
   stow \
   tree \
+  xxd \
   zlib-devel
 
 echo -e "[commands]\napply_updates=True" | sudo tee /etc/dnf/automatic.conf
@@ -131,6 +132,10 @@ systemctl --user start podman.socket
 
 # echo "Run 'docker run hello-world' to verify Docker installation."
 # newgrp docker
+
+# Gleam
+sudo dnf copr enable frostyx/gleam
+sudo dnf install gleam
 
 # Go
 
