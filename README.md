@@ -1,5 +1,18 @@
 # linux-utils
-Scripts para instalar las apps que uso.
+Scripts para instalar las apps que uso
+
+## SSH config when 1password is broken
+
+```
+Host github.com
+	Hostname github.com
+	AddKeysToAgent Yes
+	IdentityFile /path/to/private/key
+```
+
+```sh
+chmod 400 /path/to/private/key
+```
 
 ## `zsh` Plugins
 
