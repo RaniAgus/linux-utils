@@ -1,6 +1,13 @@
 # linux-utils
 Scripts para instalar las apps que uso
 
+## Fix mode for files copied from external FS
+
+```sh
+find . -type d -print0 | xargs -0 chmod 755
+find . -type f -print0 | xargs -0 chmod 644
+```
+
 ## SSH config when 1password is broken
 
 ```
@@ -62,7 +69,7 @@ grb --continue
 
 ### Fix file permissions
 ```bash
-git diff --name-only | xargs -i chmod 644 "{}"
+git diff --name-only | xargs -i  644 "{}"
 ```
 
 ### Import mongo from multiple JSON files
