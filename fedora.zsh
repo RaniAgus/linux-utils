@@ -24,13 +24,13 @@ wget -qO- "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/
 sudo dnf install openssl-devel zlib-devel libyaml-devel libffi-devel bison g++
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-# Rust
-cargo install zoxide --locked
-
 # Install aliases
 cat ./dotfiles/.zshrc >> ~/.zshrc
 # shellcheck disable=SC1090,SC3046
 source ~/.zshrc
+
+# Rust
+cargo install zoxide --locked
 
 # Go
 go install github.com/go-task/task/v3/cmd/task@latest
