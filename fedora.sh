@@ -143,18 +143,6 @@ wget -qO- "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | 
 git config --global url."git@github.com:".insteadOf "https://github.com/"
 git config --global url."git@bitbucket.org:".insteadOf "https://bitbucket.org/"
 
-# Java
-
-sudo dnf install adoptium-temurin-java-repository
-sudo dnf install -y temurin-21-jdk
-sudo update-alternatives --config java
-
-curl -s "https://get.sdkman.io" | bash
-source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk install gradle
-sdk install quarkus
-echo "JAVA_HOME=/usr/lib/jvm/temurin-21-jdk" | sudo tee /etc/java/maven.conf
-
 # JetBrains
 
 TBA_LINK=$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
