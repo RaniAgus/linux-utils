@@ -201,6 +201,10 @@ curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?
 
 zsh -c "$(curl -fsSL "https://get.sdkman.io")"
 
+sdk install maven
+sdk install gradle
+sdk install kotlin
+
 zsh -c "$(curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh")"
 
 tee -a ~/.zshrc <<'EOF'
@@ -230,7 +234,7 @@ EOF
 zsh <<'EOF'
 nvm install --lts
 nvm use --lts
-npm i --location=global npm@latest corepack degit typescript yarn
+npm i --location=global npm@latest @angular/cli corepack degit typescript yarn
 EOF
 
 zsh -c "$(curl -fsSL "https://get.pnpm.io/install.sh")"
