@@ -214,8 +214,12 @@ chrome:
 zoom:
   - type: dnf
     packages: [https://zoom.us/client/latest/zoom_x86_64.rpm]
+    post_install: |
+      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
   - type: deb
     packages: [https://zoom.us/client/latest/zoom_amd64.deb]
+    post_install: |
+      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
 
 
 kdenlive:
@@ -345,7 +349,7 @@ gh:
 
 
 go:
-  - type: tarball
+  - type: tar
     url: "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz"
     destination: /usr/local
     sudo: true
@@ -362,7 +366,7 @@ go:
 
 
 jetbrains-toolbox:
-  - type: tarball
+  - type: tar
     url: $(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
     destination: /opt
     sudo: true
@@ -380,7 +384,10 @@ sdkman:
   - type: shell
     shell: zsh
     url: https://get.sdkman.io
-
+    post_install: |
+      sdk install maven
+      sdk install gradle
+      sdk install kotlin
 
 nvm:
   - type: shell
@@ -414,21 +421,21 @@ nvm:
           load-nvmrc
 
 
-node:
+npm:
   - type: shell
     shell: zsh
     depends_on: [nvm]
     script: |
       nvm install --lts
       nvm use --lts
-      npm i --location=global npm@latest corepack degit typescript yarn
+      npm i --location=global npm@latest @angular/cli corepack degit typescript yarn
 
 
 pnpm:
   - type: shell
     shell: zsh
     url: https://get.pnpm.io/install.sh
-    depends_on: [node]
+    depends_on: [npm]
 
 
 bun:
@@ -459,7 +466,7 @@ ruby:
 
 
 pseint:
-  - type: tarball
+  - type: tar
     url: "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz"
     destination: /opt
     sudo: true
