@@ -1,0 +1,792 @@
+# Package managers
+
+snapd:
+  - apt
+  - type: dnf
+    post_install: |
+      sudo ln -s /var/lib/snapd/snap /snap
+
+
+flatpak:
+  - type: apt
+    post_install: |
+      flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+
+pip:
+  - type: dnf
+    packages: [python3-pip]
+    depends_on:
+      - zsh
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # pip
+          export PATH="$HOME/.local/bin:$PATH"
+
+  - type: apt
+    packages: [python3-pip]
+    depends_on:
+      - zsh
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # pip
+          export PATH="$HOME/.local/bin:$PATH"
+
+
+apt-transport-https: [apt]
+
+
+dnf-automatic:
+  - type: dnf
+    post_install:
+      # Se traduce en: printf "%s\n" "[commands]" "apply_updates=True" | sudo tee /etc/dnf/automatic.conf
+      - type: tee
+        destination: /etc/dnf/automatic.conf
+        sudo: true
+        content: |
+          [commands]
+          apply_updates=True
+
+
+# Libraries
+
+build-essential:
+  - type: dnf
+    packages: [make, cmake, gcc, gcc-c++]
+  - type: apt
+    packages: [build-essential]
+
+
+# CLI Tools
+
+7z:
+  - type: dnf
+    packages: [p7zip]
+  - type: apt
+    packages: [p7zip-full]
+
+
+entr: [dnf, apt]
+
+
+ffmpeg:
+  - type: dnf
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # ffmpeg
+          ffprobe-duration() {
+            files="${1:=$(ls)}"
+            durations=$(\
+              echo "$files" \
+              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+              | grep duration \
+              | cut -d'=' -f2 \
+              | xargs -I{} date -d@{} -u +%H:%M:%S \
+            )
+            paste <(echo "$durations") <(echo "$files")
+          }
+
+  - type: apt
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # ffmpeg
+          ffprobe-duration() {
+            files="${1:=$(ls)}"
+            durations=$(\
+              echo "$files" \
+              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+              | grep duration \
+              | cut -d'=' -f2 \
+              | xargs -I{} date -d@{} -u +%H:%M:%S \
+            )
+            paste <(echo "$durations") <(echo "$files")
+          }
+
+
+htop: [dnf, apt]
+
+
+jq: [dnf, apt]
+
+
+ranger:
+  - type: dnf
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # ranger
+          rcd () {
+            ranger --choosedir="$HOME/.rangerdir"
+            cd "$(cat "$HOME/.rangerdir")" || exit
+          }
+          bindkey -s '^o' 'rcd\n'
+
+  - type: apt
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # ranger
+          rcd () {
+            ranger --choosedir="$HOME/.rangerdir"
+            cd "$(cat "$HOME/.rangerdir")" || exit
+          }
+          bindkey -s '^o' 'rcd\n'
+
+
+stow: [dnf]
+
+
+tree: [dnf, apt]
+
+
+xxd: [dnf, apt]
+
+
+zoxide:
+  - type: shell
+    shell: zsh
+    script: |
+      cargo install zoxide --locked
+    depends_on:
+      - rust
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # zoxide
+          eval "$(zoxide init zsh)"
+
+
+# Desktop Applications
+
+solaar: [dnf]
+
+chrome:
+  - type: dnf
+    packages: [https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm]
+  - type: deb
+    packages: [https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb]
+
+1password:
+  - type: dnf
+    packages: [https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm]
+    post_install:
+      - type: tee
+        destination: ~/.config/autostart/1password.desktop
+        content: |
+          [Desktop Entry]
+          Name=1Password
+          Exec=1password --silent %U
+          Terminal=false
+          Type=Application
+          Icon=1password
+          StartupWMClass=1Password
+          Comment=Password manager and secure wallet
+          MimeType=x-scheme-handler/onepassword;
+          Categories=Office;
+
+1password-cli:
+  - type: dnf
+    depends_on:
+      - 1password
+
+zoom:
+  - type: dnf
+    packages: [https://zoom.us/client/latest/zoom_x86_64.rpm]
+  - type: deb
+    packages: [https://zoom.us/client/latest/zoom_amd64.deb]
+
+
+kdenlive:
+  - type: flatpak
+    packages: [org.kde.kdenlive]
+
+
+pdfarranger:
+  - type: flatpak
+    packages: [com.github.jeromerobert.pdfarranger]
+
+
+obs-studio:
+  - type: flatpak
+    packages: [com.obsproject.Studio]
+
+
+drawing:
+  - type: flatpak
+    packages: [com.github.maoschanz.drawing]
+
+
+kazam:
+  - type: pip
+    depends_on:
+      - build-essential
+      - type: dnf
+        packages: [python3-wheel, zlib-devel]
+    post_install:
+      - type: tee
+        destination: ~/.local/share/applications/kazam.desktop
+        content: |
+          [Desktop Entry]
+          Name=Kazam
+          Comment=Screen recording tool
+          Exec=kazam
+          Icon=kazam
+          Terminal=false
+          Type=Application
+          Categories=AudioVideo;Recorder;
+          StartupNotify=true
+
+
+yt-dlp:
+  - type: pip
+    packages: ["yt-dlp[default]"]
+    depends_on: [build-essential, zsh]
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # yt-dlp
+          alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
+          alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
+          alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
+
+
+
+# Virtualization
+
+docker:
+  - type: dnf
+    packages:
+      - docker
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    depends_on:
+      - type: dnf
+        packages: [dnf5-plugins]
+    pre_install: |
+      sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    post_install: |
+      sudo systemctl enable --now docker
+      sudo groupadd docker
+      sudo usemod -aG docker $USER
+
+
+virtualbox:
+  - type: dnf
+    packages: [VirtualBox-7.2]
+    pre_install: |
+      wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
+    depends_on:
+      - type: dnf
+        packages:
+          - kernel
+          - kernel-core
+          - kernel-modules
+          - kernel-modules-core
+          - kernel-modules-extra
+          - kernel-tools
+          - kernel-tools-libs
+          - kernel-headers
+          - kernel-devel
+
+
+# Programming
+
+code:
+  - type: snapd
+    classic: true
+
+
+git:
+  - type: dnf
+    post_install: |
+      git config --global init.defaultBranch main
+      git config --global user.email "aguseranieri@gmail.com"
+      git config --global user.name "Agustin Ranieri"
+      git config --global credential.username "RaniAgus"
+      git config --global gpg.format ssh
+
+
+gh:
+  - type: dnf
+    flags:
+      - "--repo gh-cli"
+    depends_on:
+      - type: dnf
+        packages: [dnf5-plugins]
+    pre_install: |
+      sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+
+
+go:
+  - type: tarball
+    url: "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz"
+    destination: /usr/local
+    sudo: true
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # go
+          export PATH=$PATH:/usr/local/go/bin
+          export GOPATH=$HOME/go
+          export PATH=$PATH:$GOPATH/bin
+
+
+jetbrains-toolbox:
+  - type: tarball
+    url: $(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
+    destination: /opt
+    sudo: true
+    post_install: |
+      /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
+    depends_on: [jq]
+
+
+rust:
+  - type: shell
+    url: https://sh.rustup.rs
+
+
+sdkman:
+  - type: shell
+    shell: zsh
+    url: https://get.sdkman.io
+
+
+nvm:
+  - type: shell
+    shell: zsh
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh
+    post_install:
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          # nvm
+          autoload -U add-zsh-hook
+          load-nvmrc() {
+            local node_version="$(nvm version)"
+            local nvmrc_path="$(nvm_find_nvmrc)"
+
+            if [ -n "$nvmrc_path" ]; then
+              local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
+
+              if [ "$nvmrc_node_version" = "N/A" ]; then
+                nvm install
+              elif [ "$nvmrc_node_version" != "$node_version" ]; then
+                nvm use
+              fi
+            elif [ "$node_version" != "$(nvm version default)" ]; then
+              echo "Reverting to nvm default version"
+              nvm use default
+            fi
+          }
+          add-zsh-hook chpwd load-nvmrc
+          load-nvmrc
+
+
+node:
+  - type: shell
+    shell: zsh
+    depends_on: [nvm]
+    script: |
+      nvm install --lts
+      nvm use --lts
+      npm i --location=global npm@latest corepack degit typescript yarn
+
+
+pnpm:
+  - type: shell
+    shell: zsh
+    url: https://get.pnpm.io/install.sh
+    depends_on: [node]
+
+
+bun:
+  - type: shell
+    shell: zsh
+    url: https://bun.sh/install
+
+
+rbenv:
+  - type: shell
+    shell: zsh
+    url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
+    depends_on:
+      - build-essential
+      - type: dnf
+        packages: [openssl-devel, zlib-devel, libyaml-devel, libffi-devel, bison]
+
+
+ruby:
+  - type: shell
+    shell: zsh
+    depends_on: [rbenv]
+    script: |
+      rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
+      rbenv versions | xargs rbenv global
+    post_install: |
+      gem install pry bundler rspec colorize rails jekyll
+
+
+pseint:
+  - type: tarball
+    url: "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz"
+    destination: /opt
+    sudo: true
+
+
+postman: [snapd]
+
+
+# Sisoputnfrba
+
+gdb: [dnf, apt]
+
+
+clang-tidy: [dnf, apt]
+
+
+clang-format: [dnf, apt]
+
+
+cspec:
+  - type: github
+    repository: mumuki/cspec
+    install: |
+      make
+      sudo make install
+
+
+commons:
+  - type: github
+    repository: sisoputnfrba/so-commons-library
+    install: |
+      make
+      sudo make install
+
+
+doctest:
+  - type: file
+    url: https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h
+    destination: /usr/local/include/doctest
+    sudo: true
+
+
+valgrind:
+  - type: dnf
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        append: true
+        destination: ~/.zshrc
+        content: |
+          alias vm="valgrind --leak-check=full --track-origins=yes"
+          alias vh="valgrind --tool=helgrind"
+          alias vn="valgrind --tool=none"
+
+  - type: apt
+    depends_on: [zsh]
+    post_install:
+      - type: tee
+        append: true
+        destination: ~/.zshrc
+        content: |
+          alias vm="valgrind --leak-check=full --track-origins=yes"
+          alias vh="valgrind --tool=helgrind"
+          alias vn="valgrind --tool=none"
+
+
+# Entertainment
+
+vlc: [snapd]
+
+
+spotify: [snapd]
+
+
+discord:
+  - type: flatpak
+    packages: [com.discordapp.Discord]
+
+
+duckstation:
+  - type: file
+    url: https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage
+    destination: ~/.local/bin/DuckStation-x64.AppImage
+    post_install:
+      - type: tee
+        destination: ~/.local/share/applications/DuckStation-x64.desktop
+        content: |
+          [Desktop Entry]
+          Name=DuckStation
+          StartupNotify=true
+          Type=Application
+          Terminal=false
+          Categories=Utilities;
+          Exec=DuckStation-x64.AppImage
+
+
+pcsx2:
+  - type: flatpak
+    packages: [net.pcsx2.PCSX2]
+
+
+steam:
+  - type: dnf
+    depends_on:
+      - type: dnf
+        packages:
+          - "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
+          - "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+    pre_install: |
+      sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
+
+
+# Fonts
+
+jetbrains-mono:
+  - type: shell
+    url: https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh
+
+jetbrains-nf:
+  - type: zip
+    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip"
+    depends_on: [zsh]
+    destination: /usr/share/fonts/JetBrainsMonoNerdFont
+    sudo: true
+
+# Shells and prompts
+
+zsh:
+  - type: dnf
+    post_install:
+      - type: shell
+        command: |
+          sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
+          chsh -s $(which zsh)
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          gh_latest_tag() {
+            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+          }
+
+  - type: apt
+    post_install:
+      - type: shell
+        command: |
+          chsh -s $(which zsh)
+      - type: tee
+        destination: ~/.zshrc
+        append: true
+        content: |
+          gh_latest_tag() {
+            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+          }
+
+
+oh-my-zsh:
+  - type: shell
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    depends_on:
+      - zsh
+
+
+oh-my-zsh-plugins:
+  - type: shell
+    shell: zsh
+    depends_on: [oh-my-zsh]
+    script: |
+      git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+      git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+    post_install: |
+      sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+
+
+oh-my-posh:
+  - type: shell
+    url: https://ohmyposh.dev/install.sh
+    depends_on:
+      - zsh
+      - jetbrains-mono
+      - jetbrains-nf
+    pre_install: |
+      mkdir -p $HOME/.oh-my-posh/bin
+    flags:
+      - "-s"
+      - "--"
+      - "-d"
+      - "$HOME/.oh-my-posh/bin"
+    post_install:
+      - type: tee
+        destination: "$HOME/.config/oh-my-posh/zen.toml"
+        content: |
+          #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
+
+          version = 2
+          final_space = true
+          console_title_template = '{{ .Shell }} in {{ .Folder }}'
+
+          [[blocks]]
+            type = 'prompt'
+            alignment = 'left'
+            newline = true
+
+            [[blocks.segments]]
+              type = 'path'
+              style = 'plain'
+              background = 'transparent'
+              foreground = 'lightBlue'
+              template = '{{ .Path }}'
+
+              [blocks.segments.properties]
+                style = 'full'
+
+            [[blocks.segments]]
+              type = 'git'
+              style = 'plain'
+              foreground = 'p:grey'
+              background = 'transparent'
+              template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <cyan>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
+
+              [blocks.segments.properties]
+                branch_icon = ''
+                commit_icon = '@'
+                fetch_status = true
+
+          [[blocks]]
+            type = 'rprompt'
+            overflow = 'hidden'
+
+            [[blocks.segments]]
+              type = "dotnet"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "white"
+              background = "#6a0dad"
+              template = " 󰪮 {{ .Full }} "
+
+            [[blocks.segments]]
+              type = "go"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "#ffffff"
+              background = "#00add8"
+              template = "  {{ .Full }} "
+
+            [[blocks.segments]]
+              type = "ruby"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "#ffffff"
+              background = "#7a1045"
+              template = "  {{ .Full }} "
+
+            [[blocks.segments]]
+              type = "node"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "#ffffff"
+              background = "#3c873a"
+              template = "  {{ .Full }} "
+
+            [[blocks.segments]]
+              type = "angular"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "white"
+              background = "#a6120d"
+              template = "{{ if .Full }}  {{ .Full }} {{ end }}"
+
+            [[blocks.segments]]
+              type = "react"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "white"
+              background = "blue"
+              template = "{{ if .Full }}  {{ .Full }} {{ end }}"
+
+            [[blocks.segments]]
+              type = "java"
+              style = "powerline"
+              powerline_symbol = ""
+              foreground = "blue"
+              background = "#ec833f"
+              template = "  {{ .Full }} "
+
+            [[blocks.segments]]
+              type = 'terraform'
+              style = 'powerline'
+              powerline_symbol = ""
+              foreground = "white"
+              background = "magenta"
+              template = " 󱁢 {{ .WorkspaceName }} "
+
+            [[blocks.segments]]
+              type = 'executiontime'
+              style = 'plain'
+              foreground = 'yellow'
+              background = 'transparent'
+              template = ' {{ .FormattedMs }}'
+
+              [blocks.segments.properties]
+                threshold = 1000
+
+          [[blocks]]
+            type = 'prompt'
+            alignment = 'left'
+            newline = true
+
+            [[blocks.segments]]
+              type = 'text'
+              style = 'plain'
+              foreground_templates = [
+                "{{if gt .Code 0}}red{{end}}",
+                "{{if eq .Code 0}}green{{end}}",
+              ]
+              background = 'transparent'
+              template = '❯'
+
+          [transient_prompt]
+            foreground_templates = [
+              "{{if gt .Code 0}}red{{end}}",
+              "{{if eq .Code 0}}green{{end}}",
+            ]
+            background = 'transparent'
+            template = '❯ '
+
+          [secondary_prompt]
+            foreground = 'green'
+            background = 'transparent'
+            template = '❯❯ '
