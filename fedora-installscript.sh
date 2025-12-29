@@ -14,11 +14,9 @@
 
 set -e
 
-sudo dnf install -y snapd
+sudo dnf install -y bison clang-format clang-tidy cmake dnf-automatic dnf5-plugins entr gcc gcc-c++ gdb git htop https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm https://zoom.us/client/latest/zoom_x86_64.rpm jq kernel kernel-core kernel-devel kernel-headers kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs libffi-devel libyaml-devel make openssl-devel p7zip python3-wheel snapd solaar stow tree xxd zlib-devel zsh
 
 sudo ln -s /var/lib/snapd/snap /snap
-
-sudo dnf install -y zsh
 
 sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
 chsh -s $(which zsh)
@@ -29,27 +27,44 @@ gh_latest_tag() {
 }
 EOF
 
-sudo dnf install -y python3-pip
-
-tee -a ~/.zshrc <<'EOF'
-# pip
-export PATH="$HOME/.local/bin:$PATH"
-EOF
-
-sudo dnf install -y dnf-automatic
-
 sudo tee /etc/dnf/automatic.conf <<'EOF'
 [commands]
 apply_updates=True
 EOF
 
-sudo dnf install -y make cmake gcc gcc-c++
+tee ~/.config/autostart/1password.desktop <<'EOF'
+[Desktop Entry]
+Name=1Password
+Exec=1password --silent %U
+Terminal=false
+Type=Application
+Icon=1password
+StartupWMClass=1Password
+Comment=Password manager and secure wallet
+MimeType=x-scheme-handler/onepassword;
+Categories=Office;
+EOF
 
-sudo dnf install -y p7zip
+sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
 
-sudo dnf install -y entr
+git config --global init.defaultBranch main
+git config --global user.email "aguseranieri@gmail.com"
+git config --global user.name "Agustin Ranieri"
+git config --global credential.username "RaniAgus"
+git config --global gpg.format ssh
 
-sudo dnf install -y ffmpeg
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
+
+sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
+
+sudo dnf install -y 1password-cli VirtualBox-7.2 containerd.io docker docker-buildx-plugin docker-ce docker-ce-cli docker-compose-plugin ffmpeg python3-pip ranger steam valgrind
+
+tee -a ~/.zshrc <<'EOF'
+# pip
+export PATH="$HOME/.local/bin:$PATH"
+EOF
 
 tee -a ~/.zshrc <<'EOF'
 # ffmpeg
@@ -66,12 +81,6 @@ ffprobe-duration() {
 }
 EOF
 
-sudo dnf install -y htop
-
-sudo dnf install -y jq
-
-sudo dnf install -y ranger
-
 tee -a ~/.zshrc <<'EOF'
 # ranger
 rcd () {
@@ -81,11 +90,15 @@ rcd () {
 bindkey -s '^o' 'rcd\n'
 EOF
 
-sudo dnf install -y stow
+sudo systemctl enable --now docker
+sudo groupadd docker
+sudo usemod -aG docker $USER
 
-sudo dnf install -y tree
-
-sudo dnf install -y xxd
+tee -a ~/.zshrc <<'EOF'
+alias vm="valgrind --leak-check=full --track-origins=yes"
+alias vh="valgrind --tool=helgrind"
+alias vn="valgrind --tool=none"
+EOF
 
 bash -c "$(curl -fsSL "https://sh.rustup.rs")"
 
@@ -98,42 +111,9 @@ tee -a ~/.zshrc <<'EOF'
 eval "$(zoxide init zsh)"
 EOF
 
-sudo dnf install -y solaar
+flatpak install -y flathub com.discordapp.Discord com.github.jeromerobert.pdfarranger com.github.maoschanz.drawing com.obsproject.Studio net.pcsx2.PCSX2 org.kde.kdenlive
 
-sudo dnf install -y https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-
-sudo dnf install -y https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm
-
-tee ~/.config/autostart/1password.desktop <<'EOF'
-[Desktop Entry]
-Name=1Password
-Exec=1password --silent %U
-Terminal=false
-Type=Application
-Icon=1password
-StartupWMClass=1Password
-Comment=Password manager and secure wallet
-MimeType=x-scheme-handler/onepassword;
-Categories=Office;
-EOF
-
-sudo dnf install -y 1password-cli
-
-sudo dnf install -y https://zoom.us/client/latest/zoom_x86_64.rpm
-
-sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
-
-flatpak install -y flathub org.kde.kdenlive
-
-flatpak install -y flathub com.github.jeromerobert.pdfarranger
-
-flatpak install -y flathub com.obsproject.Studio
-
-flatpak install -y flathub com.github.maoschanz.drawing
-
-sudo dnf install -y python3-wheel zlib-devel
-
-pip install -U kazam
+pip install -U kazam yt-dlp[default]
 
 tee ~/.local/share/applications/kazam.desktop <<'EOF'
 [Desktop Entry]
@@ -147,8 +127,6 @@ Categories=AudioVideo;Recorder;
 StartupNotify=true
 EOF
 
-pip install -U yt-dlp[default]
-
 tee -a ~/.zshrc <<'EOF'
 # yt-dlp
 alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
@@ -156,31 +134,7 @@ alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
 EOF
 
-sudo dnf install -y dnf5-plugins
-
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-
-sudo dnf install -y docker docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-sudo systemctl enable --now docker
-sudo groupadd docker
-sudo usemod -aG docker $USER
-
-sudo dnf install -y kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs kernel-headers kernel-devel
-
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
-
-sudo dnf install -y VirtualBox-7.2
-
 sudo snap install code --classic
-
-sudo dnf install -y git
-
-git config --global init.defaultBranch main
-git config --global user.email "aguseranieri@gmail.com"
-git config --global user.name "Agustin Ranieri"
-git config --global credential.username "RaniAgus"
-git config --global gpg.format ssh
 
 sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
 
@@ -241,8 +195,6 @@ zsh -c "$(curl -fsSL "https://get.pnpm.io/install.sh")"
 
 zsh -c "$(curl -fsSL "https://bun.sh/install")"
 
-sudo dnf install -y openssl-devel zlib-devel libyaml-devel libffi-devel bison
-
 zsh -c "$(curl -fsSL "https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer")"
 
 zsh <<'EOF'
@@ -254,13 +206,7 @@ gem install pry bundler rspec colorize rails jekyll
 
 curl -fsSL "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz" | sudo tar xzvC /opt
 
-sudo snap install postman
-
-sudo dnf install -y gdb
-
-sudo dnf install -y clang-tidy
-
-sudo dnf install -y clang-format
+sudo snap install postman spotify vlc
 
 TMP_DIR=$(mktemp -d)
 git clone https://github.com/mumuki/cspec.git $TMP_DIR
@@ -282,20 +228,6 @@ rm -rf $TMP_DIR
 
 curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h" | sudo tee /usr/local/include/doctest
 
-sudo dnf install -y valgrind
-
-tee -a ~/.zshrc <<'EOF'
-alias vm="valgrind --leak-check=full --track-origins=yes"
-alias vh="valgrind --tool=helgrind"
-alias vn="valgrind --tool=none"
-EOF
-
-sudo snap install vlc
-
-sudo snap install spotify
-
-flatpak install -y flathub com.discordapp.Discord
-
 curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee ~/.local/bin/DuckStation-x64.AppImage
 
 tee ~/.local/share/applications/DuckStation-x64.desktop <<'EOF'
@@ -307,14 +239,6 @@ Terminal=false
 Categories=Utilities;
 Exec=DuckStation-x64.AppImage
 EOF
-
-flatpak install -y flathub net.pcsx2.PCSX2
-
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-
-sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
-
-sudo dnf install -y steam
 
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh")"
 
