@@ -74,48 +74,6 @@ build-essential:
 entr: [dnf, apt]
 
 
-ffmpeg:
-  - type: dnf
-    depends_on: [zsh]
-    post_install:
-      - type: tee
-        destination: "$HOME/.zshrc"
-        append: true
-        content: |
-          # ffmpeg
-          ffprobe-duration() {
-            files="${1:=$(ls)}"
-            durations=$(\
-              echo "$files" \
-              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
-              | grep duration \
-              | cut -d'=' -f2 \
-              | xargs -I{} date -d@{} -u +%H:%M:%S \
-            )
-            paste <(echo "$durations") <(echo "$files")
-          }
-
-  - type: apt
-    depends_on: [zsh]
-    post_install:
-      - type: tee
-        destination: "$HOME/.zshrc"
-        append: true
-        content: |
-          # ffmpeg
-          ffprobe-duration() {
-            files="${1:=$(ls)}"
-            durations=$(\
-              echo "$files" \
-              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
-              | grep duration \
-              | cut -d'=' -f2 \
-              | xargs -I{} date -d@{} -u +%H:%M:%S \
-            )
-            paste <(echo "$durations") <(echo "$files")
-          }
-
-
 htop: [dnf, apt]
 
 
@@ -626,6 +584,19 @@ zsh:
             curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
           }
 
+          # ffmpeg
+          ffprobe-duration() {
+            files="${1:=$(ls)}"
+            durations=$(\
+              echo "$files" \
+              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+              | grep duration \
+              | cut -d'=' -f2 \
+              | xargs -I{} date -d@{} -u +%H:%M:%S \
+            )
+            paste <(echo "$durations") <(echo "$files")
+          }
+
   - type: apt
     post_install:
       - type: shell
@@ -637,6 +608,19 @@ zsh:
         content: |
           gh_latest_tag() {
             curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+          }
+
+          # ffmpeg
+          ffprobe-duration() {
+            files="${1:=$(ls)}"
+            durations=$(\
+              echo "$files" \
+              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+              | grep duration \
+              | cut -d'=' -f2 \
+              | xargs -I{} date -d@{} -u +%H:%M:%S \
+            )
+            paste <(echo "$durations") <(echo "$files")
           }
 
 

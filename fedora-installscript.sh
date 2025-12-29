@@ -26,6 +26,19 @@ tee -a "$HOME/.zshrc" <<'EOF'
 gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
+
+# ffmpeg
+ffprobe-duration() {
+  files="${1:=$(ls)}"
+  durations=$(\
+    echo "$files" \
+    | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+    | grep duration \
+    | cut -d'=' -f2 \
+    | xargs -I{} date -d@{} -u +%H:%M:%S \
+  )
+  paste <(echo "$durations") <(echo "$files")
+}
 EOF
 
 sudo tee "/etc/dnf/automatic.conf" <<'EOF'
@@ -62,26 +75,11 @@ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm 
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "1password-cli" "VirtualBox-7.2" "containerd.io" "docker" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "ffmpeg" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "1password-cli" "VirtualBox-7.2" "containerd.io" "docker" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
 export PATH="$HOME/.local/bin:$PATH"
-EOF
-
-tee -a "$HOME/.zshrc" <<'EOF'
-# ffmpeg
-ffprobe-duration() {
-  files="${1:=$(ls)}"
-  durations=$(\
-    echo "$files" \
-    | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
-    | grep duration \
-    | cut -d'=' -f2 \
-    | xargs -I{} date -d@{} -u +%H:%M:%S \
-  )
-  paste <(echo "$durations") <(echo "$files")
-}
 EOF
 
 tee -a "$HOME/.zshrc" <<'EOF'
