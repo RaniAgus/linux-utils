@@ -20,7 +20,6 @@ sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" 
 
 sudo ln -sf /var/lib/snapd/snap /snap
 
-sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
 chsh -s "$(which zsh)"
 
 tee -a "$HOME/.zshrc" <<'EOF'

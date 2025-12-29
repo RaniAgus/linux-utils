@@ -617,7 +617,6 @@ zsh:
     post_install:
       - type: shell
         command: |
-          sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
           chsh -s "$(which zsh)"
       - type: tee
         destination: "$HOME/.zshrc"
