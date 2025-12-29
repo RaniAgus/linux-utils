@@ -153,6 +153,8 @@ ranger:
           bindkey -s '^o' 'rcd\n'
 
 
+shellcheck: [dnf, apt]
+
 stow: [dnf]
 
 
@@ -298,7 +300,7 @@ docker:
     post_install: |
       sudo systemctl enable --now docker
       sudo groupadd docker
-      sudo usemod -aG docker $USER
+      sudo usemod -aG docker "$USER"
 
 
 virtualbox:
@@ -371,6 +373,7 @@ jetbrains-toolbox:
     destination: /opt
     sudo: true
     post_install: |
+      # shellcheck disable=SC2211
       /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
     depends_on: [jq]
 
@@ -602,7 +605,7 @@ zsh:
       - type: shell
         command: |
           sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
-          chsh -s $(which zsh)
+          chsh -s "$(which zsh)"
       - type: tee
         destination: "$HOME/.zshrc"
         append: true
@@ -651,7 +654,7 @@ oh-my-posh:
       - jetbrains-mono
       - jetbrains-nf
     pre_install: |
-      mkdir -p $HOME/.oh-my-posh/bin
+      mkdir -p "$HOME/.oh-my-posh/bin"
     flags:
       - "-s"
       - "--"

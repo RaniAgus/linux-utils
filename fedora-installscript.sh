@@ -14,12 +14,12 @@
 
 set -e
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "python3-wheel" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "python3-wheel" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -s /var/lib/snapd/snap /snap
 
 sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
-chsh -s $(which zsh)
+chsh -s "$(which zsh)"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 gh_latest_tag() {
@@ -92,7 +92,7 @@ EOF
 
 sudo systemctl enable --now docker
 sudo groupadd docker
-sudo usemod -aG docker $USER
+sudo usemod -aG docker "$USER"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 alias vm="valgrind --leak-check=full --track-origins=yes"
@@ -151,6 +151,7 @@ EOF
 
 curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')" | sudo tar xzvC "/opt"
 
+# shellcheck disable=SC2211
 /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
 
 zsh -c "$(curl -fsSL "https://get.sdkman.io")"
@@ -258,7 +259,7 @@ EOF
 
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
 
-mkdir -p $HOME/.oh-my-posh/bin
+mkdir -p "$HOME/.oh-my-posh/bin"
 
 bash -c "$(curl -fsSL "https://ohmyposh.dev/install.sh")"
 
