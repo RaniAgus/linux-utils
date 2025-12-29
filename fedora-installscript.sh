@@ -14,7 +14,9 @@
 
 set -e
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "python3-wheel" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
+sudo dnf copr enable frostyx/gleam -y
+
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "python3-wheel" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -s /var/lib/snapd/snap /snap
 
@@ -53,7 +55,7 @@ git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
 git config --global gpg.format ssh
 
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
 
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
 
@@ -92,7 +94,7 @@ EOF
 
 sudo systemctl enable --now docker
 sudo groupadd docker
-sudo usemod -aG docker "$USER"
+sudo usermod -aG docker "$USER"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 alias vm="valgrind --leak-check=full --track-origins=yes"

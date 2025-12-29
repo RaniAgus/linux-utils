@@ -292,15 +292,14 @@ docker:
       - containerd.io
       - docker-buildx-plugin
       - docker-compose-plugin
+    repofile: https://download.docker.com/linux/fedora/docker-ce.repo
     depends_on:
       - type: dnf
         packages: [dnf5-plugins]
-    pre_install: |
-      sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
     post_install: |
       sudo systemctl enable --now docker
       sudo groupadd docker
-      sudo usemod -aG docker "$USER"
+      sudo usermod -aG docker "$USER"
 
 
 virtualbox:
@@ -341,13 +340,11 @@ git:
 
 gh:
   - type: dnf
-    flags:
-      - "--repo gh-cli"
+    repo: gh-cli
+    repofile: https://cli.github.com/packages/rpm/gh-cli.repo
     depends_on:
       - type: dnf
         packages: [dnf5-plugins]
-    pre_install: |
-      sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
 
 
 go:
@@ -466,6 +463,11 @@ ruby:
       rbenv versions | xargs rbenv global
     post_install: |
       gem install pry bundler rspec colorize rails jekyll
+
+
+gleam:
+  - type: dnf
+    copr: frostyx/gleam
 
 
 pseint:
