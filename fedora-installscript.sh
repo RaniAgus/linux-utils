@@ -14,25 +14,25 @@
 
 set -e
 
-sudo dnf install -y bison clang-format clang-tidy cmake dnf-automatic dnf5-plugins entr gcc gcc-c++ gdb git htop https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm https://zoom.us/client/latest/zoom_x86_64.rpm jq kernel kernel-core kernel-devel kernel-headers kernel-modules kernel-modules-core kernel-modules-extra kernel-tools kernel-tools-libs libffi-devel libyaml-devel make openssl-devel p7zip python3-wheel snapd solaar stow tree xxd zlib-devel zsh
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "python3-wheel" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -s /var/lib/snapd/snap /snap
 
 sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
 chsh -s $(which zsh)
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 gh_latest_tag() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
 }
 EOF
 
-sudo tee /etc/dnf/automatic.conf <<'EOF'
+sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 [commands]
 apply_updates=True
 EOF
 
-tee ~/.config/autostart/1password.desktop <<'EOF'
+tee "$HOME/.config/autostart/1password.desktop" <<'EOF'
 [Desktop Entry]
 Name=1Password
 Exec=1password --silent %U
@@ -45,7 +45,7 @@ MimeType=x-scheme-handler/onepassword;
 Categories=Office;
 EOF
 
-sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
+sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
 
 git config --global init.defaultBranch main
 git config --global user.email "aguseranieri@gmail.com"
@@ -59,14 +59,14 @@ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm 
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y 1password-cli VirtualBox-7.2 containerd.io docker docker-buildx-plugin docker-ce docker-ce-cli docker-compose-plugin ffmpeg python3-pip ranger steam valgrind
+sudo dnf install -y "1password-cli" "VirtualBox-7.2" "containerd.io" "docker" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "ffmpeg" "python3-pip" "ranger" "steam" "valgrind"
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # pip
 export PATH="$HOME/.local/bin:$PATH"
 EOF
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # ffmpeg
 ffprobe-duration() {
   files="${1:=$(ls)}"
@@ -81,7 +81,7 @@ ffprobe-duration() {
 }
 EOF
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # ranger
 rcd () {
   ranger --choosedir="$HOME/.rangerdir"
@@ -94,7 +94,7 @@ sudo systemctl enable --now docker
 sudo groupadd docker
 sudo usemod -aG docker $USER
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 alias vm="valgrind --leak-check=full --track-origins=yes"
 alias vh="valgrind --tool=helgrind"
 alias vn="valgrind --tool=none"
@@ -106,16 +106,16 @@ zsh <<'EOF'
 cargo install zoxide --locked
 EOF
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # zoxide
 eval "$(zoxide init zsh)"
 EOF
 
-flatpak install -y flathub com.discordapp.Discord com.github.jeromerobert.pdfarranger com.github.maoschanz.drawing com.obsproject.Studio net.pcsx2.PCSX2 org.kde.kdenlive
+flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive"
 
-pip install -U kazam yt-dlp[default]
+pip install -U "kazam" "yt-dlp[default]"
 
-tee ~/.local/share/applications/kazam.desktop <<'EOF'
+tee "$HOME/.local/share/applications/kazam.desktop" <<'EOF'
 [Desktop Entry]
 Name=Kazam
 Comment=Screen recording tool
@@ -127,29 +127,29 @@ Categories=AudioVideo;Recorder;
 StartupNotify=true
 EOF
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # yt-dlp
 alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
 alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
 EOF
 
-sudo snap install code --classic
+sudo snap install "code" --classic
 
 sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
 
-sudo dnf install -y gh --repo gh-cli
+sudo dnf install -y "gh" --repo gh-cli
 
-curl -fsSL "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" | sudo tar xzvC /usr/local
+curl -fsSL "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" | sudo tar xzvC "/usr/local"
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # go
 export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 EOF
 
-curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')" | sudo tar xzvC /opt
+curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')" | sudo tar xzvC "/opt"
 
 /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
 
@@ -161,7 +161,7 @@ sdk install kotlin
 
 zsh -c "$(curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh")"
 
-tee -a ~/.zshrc <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
 # nvm
 autoload -U add-zsh-hook
 load-nvmrc() {
@@ -204,33 +204,35 @@ EOF
 
 gem install pry bundler rspec colorize rails jekyll
 
-curl -fsSL "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz" | sudo tar xzvC /opt
+curl -fsSL "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz" | sudo tar xzvC "/opt"
 
-sudo snap install postman spotify vlc
+sudo snap install "postman" "spotify" "vlc"
 
 TMP_DIR=$(mktemp -d)
-git clone https://github.com/mumuki/cspec.git $TMP_DIR
+git clone https://github.com/mumuki/cspec.git "$TMP_DIR"
 (
-  cd $TMP_DIR
+  cd "$TMP_DIR"
   make
   sudo make install
 )
-rm -rf $TMP_DIR
+rm -rf "$TMP_DIR"
 
 TMP_DIR=$(mktemp -d)
-git clone https://github.com/sisoputnfrba/so-commons-library.git $TMP_DIR
+git clone https://github.com/sisoputnfrba/so-commons-library.git "$TMP_DIR"
 (
-  cd $TMP_DIR
+  cd "$TMP_DIR"
   make
   sudo make install
 )
-rm -rf $TMP_DIR
+rm -rf "$TMP_DIR"
 
-curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h" | sudo tee /usr/local/include/doctest
+sudo mkdir -p /usr/local/include/doctest
 
-curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee ~/.local/bin/DuckStation-x64.AppImage
+curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h" | sudo tee "/usr/local/include/doctest/doctest.h"
 
-tee ~/.local/share/applications/DuckStation-x64.desktop <<'EOF'
+curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee "$HOME/.local/bin/DuckStation-x64.AppImage"
+
+tee "$HOME/.local/share/applications/DuckStation-x64.desktop" <<'EOF'
 [Desktop Entry]
 Name=DuckStation
 StartupNotify=true
@@ -243,9 +245,9 @@ EOF
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh")"
 
 TMP_FILE=$(mktemp)
-curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip" -o $TMP_FILE
-sudo unzip $TMP_FILE -d /usr/share/fonts/JetBrainsMonoNerdFont
-rm $TMP_FILE
+curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip" -o "$TMP_FILE"
+sudo unzip "$TMP_FILE" -d "/usr/share/fonts/JetBrainsMonoNerdFont"
+rm "$TMP_FILE"
 
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh")"
 
@@ -254,13 +256,13 @@ git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 EOF
 
-sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
 
 mkdir -p $HOME/.oh-my-posh/bin
 
 bash -c "$(curl -fsSL "https://ohmyposh.dev/install.sh")"
 
-tee $HOME/.config/oh-my-posh/zen.toml <<'EOF'
+tee "$HOME/.config/oh-my-posh/zen.toml" <<'EOF'
 #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
 
 version = 2

@@ -20,7 +20,7 @@ pip:
       - zsh
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # pip
@@ -32,7 +32,7 @@ pip:
       - zsh
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # pip
@@ -80,7 +80,7 @@ ffmpeg:
     depends_on: [zsh]
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # ffmpeg
@@ -100,7 +100,7 @@ ffmpeg:
     depends_on: [zsh]
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # ffmpeg
@@ -128,7 +128,7 @@ ranger:
     depends_on: [zsh]
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # ranger
@@ -142,7 +142,7 @@ ranger:
     depends_on: [zsh]
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # ranger
@@ -171,7 +171,7 @@ zoxide:
       - rust
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # zoxide
@@ -193,7 +193,7 @@ chrome:
     packages: [https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm]
     post_install:
       - type: tee
-        destination: ~/.config/autostart/1password.desktop
+        destination: "$HOME/.config/autostart/1password.desktop"
         content: |
           [Desktop Entry]
           Name=1Password
@@ -215,11 +215,11 @@ zoom:
   - type: dnf
     packages: [https://zoom.us/client/latest/zoom_x86_64.rpm]
     post_install: |
-      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
+      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
   - type: deb
     packages: [https://zoom.us/client/latest/zoom_amd64.deb]
     post_install: |
-      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' ~/.config/zoomus.conf
+      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
 
 
 kdenlive:
@@ -250,7 +250,7 @@ kazam:
         packages: [python3-wheel, zlib-devel]
     post_install:
       - type: tee
-        destination: ~/.local/share/applications/kazam.desktop
+        destination: "$HOME/.local/share/applications/kazam.desktop"
         content: |
           [Desktop Entry]
           Name=Kazam
@@ -269,7 +269,7 @@ yt-dlp:
     depends_on: [build-essential, zsh]
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # yt-dlp
@@ -356,7 +356,7 @@ go:
     depends_on: [zsh]
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # go
@@ -395,7 +395,7 @@ nvm:
     url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh
     post_install:
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           # nvm
@@ -505,8 +505,10 @@ commons:
 doctest:
   - type: file
     url: https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h
-    destination: /usr/local/include/doctest
+    destination: /usr/local/include/doctest/doctest.h
     sudo: true
+    pre_install: |
+      sudo mkdir -p /usr/local/include/doctest
 
 
 valgrind:
@@ -515,7 +517,7 @@ valgrind:
     post_install:
       - type: tee
         append: true
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         content: |
           alias vm="valgrind --leak-check=full --track-origins=yes"
           alias vh="valgrind --tool=helgrind"
@@ -526,7 +528,7 @@ valgrind:
     post_install:
       - type: tee
         append: true
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         content: |
           alias vm="valgrind --leak-check=full --track-origins=yes"
           alias vh="valgrind --tool=helgrind"
@@ -549,10 +551,10 @@ discord:
 duckstation:
   - type: file
     url: https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage
-    destination: ~/.local/bin/DuckStation-x64.AppImage
+    destination: "$HOME/.local/bin/DuckStation-x64.AppImage"
     post_install:
       - type: tee
-        destination: ~/.local/share/applications/DuckStation-x64.desktop
+        destination: "$HOME/.local/share/applications/DuckStation-x64.desktop"
         content: |
           [Desktop Entry]
           Name=DuckStation
@@ -602,7 +604,7 @@ zsh:
           sh -c "$(wget "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh" -O -)"
           chsh -s $(which zsh)
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           gh_latest_tag() {
@@ -615,7 +617,7 @@ zsh:
         command: |
           chsh -s $(which zsh)
       - type: tee
-        destination: ~/.zshrc
+        destination: "$HOME/.zshrc"
         append: true
         content: |
           gh_latest_tag() {
@@ -638,7 +640,7 @@ oh-my-zsh-plugins:
       git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
       git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
     post_install: |
-      sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+      sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
 
 
 oh-my-posh:
