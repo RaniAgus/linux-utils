@@ -635,6 +635,8 @@ oh-my-zsh:
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     depends_on:
       - zsh
+    pre_install: |
+      rm -rf "$HOME/.oh-my-zsh"
 
 
 oh-my-zsh-plugins:
