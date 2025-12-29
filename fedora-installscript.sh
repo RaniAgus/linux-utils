@@ -34,6 +34,8 @@ sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 apply_updates=True
 EOF
 
+mkdir -p "$HOME/.config/autostart"
+
 tee "$HOME/.config/autostart/1password.desktop" <<'EOF'
 [Desktop Entry]
 Name=1Password
@@ -116,6 +118,8 @@ EOF
 flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive"
 
 pip install -U "kazam" "yt-dlp[default]"
+
+mkdir -p "$HOME/.local/share/applications"
 
 tee "$HOME/.local/share/applications/kazam.desktop" <<'EOF'
 [Desktop Entry]
@@ -233,7 +237,12 @@ sudo mkdir -p /usr/local/include/doctest
 
 curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h" | sudo tee "/usr/local/include/doctest/doctest.h"
 
+mkdir -p "$HOME/.local/bin"
+
 curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee "$HOME/.local/bin/DuckStation-x64.AppImage"
+
+chmod +x "$HOME/.local/bin/DuckStation-x64.AppImage"
+mkdir -p "$HOME/.local/share/applications"
 
 tee "$HOME/.local/share/applications/DuckStation-x64.desktop" <<'EOF'
 [Desktop Entry]

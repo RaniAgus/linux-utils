@@ -45,7 +45,6 @@ apt-transport-https: [apt]
 dnf-automatic:
   - type: dnf
     post_install:
-      # Se traduce en: printf "%s\n" "[commands]" "apply_updates=True" | sudo tee /etc/dnf/automatic.conf
       - type: tee
         destination: /etc/dnf/automatic.conf
         sudo: true
@@ -194,6 +193,9 @@ chrome:
   - type: dnf
     packages: [https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm]
     post_install:
+      - type: shell
+        command: |
+          mkdir -p "$HOME/.config/autostart"
       - type: tee
         destination: "$HOME/.config/autostart/1password.desktop"
         content: |
@@ -251,6 +253,9 @@ kazam:
       - type: dnf
         packages: [python3-wheel, zlib-devel]
     post_install:
+      - type: shell
+        command: |
+          mkdir -p "$HOME/.local/share/applications"
       - type: tee
         destination: "$HOME/.local/share/applications/kazam.desktop"
         content: |
@@ -557,7 +562,13 @@ duckstation:
   - type: file
     url: https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage
     destination: "$HOME/.local/bin/DuckStation-x64.AppImage"
+    pre_install: |
+      mkdir -p "$HOME/.local/bin"
     post_install:
+      - type: shell
+        command: |
+          chmod +x "$HOME/.local/bin/DuckStation-x64.AppImage"
+          mkdir -p "$HOME/.local/share/applications"
       - type: tee
         destination: "$HOME/.local/share/applications/DuckStation-x64.desktop"
         content: |
