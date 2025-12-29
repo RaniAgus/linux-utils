@@ -246,7 +246,6 @@ yt-dlp:
 docker:
   - type: dnf
     packages:
-      - docker
       - docker-ce
       - docker-ce-cli
       - containerd.io
@@ -265,8 +264,8 @@ docker:
 virtualbox:
   - type: dnf
     packages: [VirtualBox-7.2]
-    pre_install: |
-      wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
+    repo: virtualbox
+    repofile: https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
     depends_on:
       - type: dnf
         packages:

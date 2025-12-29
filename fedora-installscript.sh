@@ -73,11 +73,9 @@ EOF
 
 sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
 
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo rpm --import -
-
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "1password-cli" "VirtualBox-7.2" "containerd.io" "docker" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "1password-cli" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
@@ -138,6 +136,10 @@ alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
 alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
 EOF
+
+sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
+
+sudo dnf install -y "VirtualBox-7.2" --repo virtualbox
 
 sudo snap install "code" --classic
 
