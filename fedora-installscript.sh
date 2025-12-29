@@ -48,7 +48,7 @@ MimeType=x-scheme-handler/onepassword;
 Categories=Office;
 EOF
 
-sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
+# sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
 
 git config --global init.defaultBranch main
 git config --global user.email "aguseranieri@gmail.com"

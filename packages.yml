@@ -219,11 +219,11 @@ zoom:
   - type: dnf
     packages: [https://zoom.us/client/latest/zoom_x86_64.rpm]
     post_install: |
-      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
+      # sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
   - type: deb
     packages: [https://zoom.us/client/latest/zoom_amd64.deb]
     post_install: |
-      sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
+      # sed -i 's/enableMiniWindow=.*/enableMiniWindow=false/' "$HOME/.config/zoomus.conf"
 
 
 kdenlive:
