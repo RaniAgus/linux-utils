@@ -4,7 +4,7 @@ snapd:
   - apt
   - type: dnf
     post_install: |
-      sudo ln -s /var/lib/snapd/snap /snap
+      sudo ln -sf /var/lib/snapd/snap /snap
 
 
 flatpak:
