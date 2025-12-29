@@ -16,8 +16,7 @@ flatpak:
 pip:
   - type: dnf
     packages: [python3-pip]
-    depends_on:
-      - zsh
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -28,8 +27,7 @@ pip:
 
   - type: apt
     packages: [python3-pip]
-    depends_on:
-      - zsh
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -82,7 +80,7 @@ jq: [dnf, apt]
 
 ranger:
   - type: dnf
-    depends_on: [zsh]
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -96,7 +94,7 @@ ranger:
           bindkey -s '^o' 'rcd\n'
 
   - type: apt
-    depends_on: [zsh]
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -126,8 +124,7 @@ zoxide:
     shell: zsh
     script: |
       cargo install zoxide --locked
-    depends_on:
-      - rust
+    depends_on: [oh-my-zsh, rust]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -231,7 +228,7 @@ kazam:
 yt-dlp:
   - type: pip
     packages: ["yt-dlp[default]"]
-    depends_on: [build-essential, zsh]
+    depends_on: [build-essential, oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -315,7 +312,7 @@ go:
     url: "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz"
     destination: /usr/local
     sudo: true
-    depends_on: [zsh]
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -347,6 +344,7 @@ sdkman:
   - type: shell
     shell: zsh
     url: https://get.sdkman.io
+    depends_on: [oh-my-zsh]
     post_install: |
       sdk install maven
       sdk install gradle
@@ -356,6 +354,7 @@ nvm:
   - type: shell
     shell: zsh
     url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -405,6 +404,7 @@ bun:
   - type: shell
     shell: zsh
     url: https://bun.sh/install
+    depends_on: [oh-my-zsh]
 
 
 rbenv:
@@ -413,6 +413,7 @@ rbenv:
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
     depends_on:
       - build-essential
+      - oh-my-zsh
       - type: dnf
         packages: [openssl-devel, zlib-devel, libyaml-devel, libffi-devel, bison]
 
@@ -481,7 +482,7 @@ doctest:
 
 valgrind:
   - type: dnf
-    depends_on: [zsh]
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         append: true
@@ -492,7 +493,7 @@ valgrind:
           alias vn="valgrind --tool=none"
 
   - type: apt
-    depends_on: [zsh]
+    depends_on: [oh-my-zsh]
     post_install:
       - type: tee
         append: true
@@ -564,73 +565,42 @@ jetbrains-mono:
 jetbrains-nf:
   - type: zip
     url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip"
-    depends_on: [zsh]
+    depends_on: [oh-my-zsh]
     destination: /usr/share/fonts/JetBrainsMonoNerdFont
     sudo: true
 
 # Shells and prompts
 
-zsh:
-  - type: dnf
-    post_install:
-      - type: shell
-        command: |
-          chsh -s "$(which zsh)"
-      - type: tee
-        destination: "$HOME/.zshrc"
-        append: true
-        content: |
-          gh_latest_tag() {
-            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
-          }
-
-          # ffmpeg
-          ffprobe-duration() {
-            files="${1:=$(ls)}"
-            durations=$(\
-              echo "$files" \
-              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
-              | grep duration \
-              | cut -d'=' -f2 \
-              | xargs -I{} date -d@{} -u +%H:%M:%S \
-            )
-            paste <(echo "$durations") <(echo "$files")
-          }
-
-  - type: apt
-    post_install:
-      - type: shell
-        command: |
-          chsh -s $(which zsh)
-      - type: tee
-        destination: "$HOME/.zshrc"
-        append: true
-        content: |
-          gh_latest_tag() {
-            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
-          }
-
-          # ffmpeg
-          ffprobe-duration() {
-            files="${1:=$(ls)}"
-            durations=$(\
-              echo "$files" \
-              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
-              | grep duration \
-              | cut -d'=' -f2 \
-              | xargs -I{} date -d@{} -u +%H:%M:%S \
-            )
-            paste <(echo "$durations") <(echo "$files")
-          }
+zsh: [dnf, apt]
 
 
 oh-my-zsh:
   - type: shell
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-    depends_on:
-      - zsh
+    depends_on: [zsh]
     pre_install: |
       rm -rf "$HOME/.oh-my-zsh"
+    post_install:
+      - type: tee
+        destination: "$HOME/.zshrc"
+        append: true
+        content: |
+          gh_latest_tag() {
+            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+          }
+
+          # ffmpeg
+          ffprobe-duration() {
+            files="${1:=$(ls)}"
+            durations=$(\
+              echo "$files" \
+              | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+              | grep duration \
+              | cut -d'=' -f2 \
+              | xargs -I{} date -d@{} -u +%H:%M:%S \
+            )
+            paste <(echo "$durations") <(echo "$files")
+          }
 
 
 oh-my-zsh-plugins:
@@ -648,7 +618,7 @@ oh-my-posh:
   - type: shell
     url: https://ohmyposh.dev/install.sh
     depends_on:
-      - zsh
+      - oh-my-zsh
       - jetbrains-mono
       - jetbrains-nf
     pre_install: |

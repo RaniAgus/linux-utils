@@ -20,27 +20,6 @@ sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" 
 
 sudo ln -sf /var/lib/snapd/snap /snap
 
-chsh -s "$(which zsh)"
-
-tee -a "$HOME/.zshrc" <<'EOF'
-gh_latest_tag() {
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
-}
-
-# ffmpeg
-ffprobe-duration() {
-  files="${1:=$(ls)}"
-  durations=$(\
-    echo "$files" \
-    | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
-    | grep duration \
-    | cut -d'=' -f2 \
-    | xargs -I{} date -d@{} -u +%H:%M:%S \
-  )
-  paste <(echo "$durations") <(echo "$files")
-}
-EOF
-
 sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 [commands]
 apply_updates=True
@@ -68,6 +47,29 @@ git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
 git config --global gpg.format ssh
+
+rm -rf "$HOME/.oh-my-zsh"
+
+bash -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh")"
+
+tee -a "$HOME/.zshrc" <<'EOF'
+gh_latest_tag() {
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+}
+
+# ffmpeg
+ffprobe-duration() {
+  files="${1:=$(ls)}"
+  durations=$(\
+    echo "$files" \
+    | xargs -I{} ffprobe -show_format "{}" 2> /dev/null \
+    | grep duration \
+    | cut -d'=' -f2 \
+    | xargs -I{} date -d@{} -u +%H:%M:%S \
+  )
+  paste <(echo "$durations") <(echo "$files")
+}
+EOF
 
 sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
 
@@ -257,10 +259,6 @@ TMP_FILE=$(mktemp)
 curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip" -o "$TMP_FILE"
 sudo unzip "$TMP_FILE" -d "/usr/share/fonts/JetBrainsMonoNerdFont"
 rm "$TMP_FILE"
-
-rm -rf "$HOME/.oh-my-zsh"
-
-bash -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh")"
 
 zsh <<'EOF'
 git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
