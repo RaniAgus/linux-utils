@@ -121,7 +121,6 @@ xxd: [dnf, apt]
 
 zoxide:
   - type: shell
-    shell: zsh
     script: |
       cargo install zoxide --locked
     depends_on: [oh-my-zsh, rust]
@@ -257,7 +256,7 @@ docker:
         packages: [dnf5-plugins]
     post_install: |
       sudo systemctl enable --now docker
-      sudo groupadd docker
+      sudo groupadd -f docker
       sudo usermod -aG docker "$USER"
 
 
@@ -341,19 +340,42 @@ rust:
 
 sdkman:
   - type: shell
-    shell: zsh
     url: https://get.sdkman.io
     depends_on: [oh-my-zsh]
-    post_install: |
+
+
+# TODO: Encontrar una mejor solución para ejecutar sdkman en zsh
+sdkman-packages:
+  - type: shell
+    shell: zsh
+    depends_on: [sdkman]
+    script: |
+      source "$HOME/.zshrc"
+      sdk install java $(sdk list java | grep -E '21\..*-tem' | head -1 | awk '{print $NF}')
+      sdk install java $(sdk list java | grep -E '17\..*-tem' | head -1 | awk '{print $NF}')
+      sdk install java $(sdk list java | grep -E '11\..*-tem' | head -1 | awk '{print $NF}')
       sdk install maven
       sdk install gradle
       sdk install kotlin
+      sdk install scala
+      sdk install sbt
+
 
 nvm:
   - type: shell
-    shell: zsh
-    url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh
+    url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r '.tag_name' | sed 's/v//g')/install.sh
     depends_on: [oh-my-zsh]
+
+
+# TODO: Encontrar una mejor solución para ejecutar nvm en zsh
+npm:
+  - type: shell
+    shell: zsh
+    depends_on: [nvm]
+    script: |
+      source "$HOME/.zshrc"
+      nvm install --lts
+      nvm use --lts
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -382,44 +404,68 @@ nvm:
           load-nvmrc
 
 
-npm:
+npm-packages:
   - type: shell
     shell: zsh
-    depends_on: [nvm]
+    depends_on: [npm]
     script: |
-      nvm install --lts
-      nvm use --lts
-      npm i --location=global npm@latest @angular/cli corepack degit typescript yarn
+      source "$HOME/.zshrc"
+      npm i --location=global npm@latest @angular/cli degit typescript
+
+
+corepack:
+  - type: shell
+    shell: zsh
+    depends_on: [npm]
+    script: |
+      source "$HOME/.zshrc"
+      npm install --location=global corepack
+      corepack enable
 
 
 pnpm:
   - type: shell
     shell: zsh
-    url: https://get.pnpm.io/install.sh
-    depends_on: [npm]
+    depends_on: [corepack]
+    script: |
+      source "$HOME/.zshrc"
+      corepack prepare pnpm@latest --activate
+
+yarn:
+  - type: shell
+    shell: zsh
+    depends_on: [corepack]
+    script: |
+      source "$HOME/.zshrc"
+      corepack prepare yarn@stable --activate
 
 
 bun:
   - type: shell
-    shell: zsh
     url: https://bun.sh/install
     depends_on: [oh-my-zsh]
 
 
 rbenv:
   - type: shell
-    shell: zsh
     url: https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer
     depends_on:
       - build-essential
       - oh-my-zsh
       - type: dnf
         packages: [openssl-devel, zlib-devel, libyaml-devel, libffi-devel, bison]
+    post_install:
+      - type: tee
+        destination: "$HOME/.zshrc"
+        append: true
+        content: |
+          # rbenv
+          export PATH="$HOME/.rbenv/bin:$PATH"
+          eval "$(rbenv init - zsh)"
 
 
 ruby:
   - type: shell
-    shell: zsh
     depends_on: [rbenv]
     script: |
       rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
@@ -431,13 +477,6 @@ ruby:
 gleam:
   - type: dnf
     copr: frostyx/gleam
-
-
-pseint:
-  - type: tar
-    url: "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz"
-    destination: /opt
-    sudo: true
 
 
 postman: [snapd]
@@ -604,11 +643,10 @@ oh-my-zsh:
 
 oh-my-zsh-plugins:
   - type: shell
-    shell: zsh
     depends_on: [oh-my-zsh]
     script: |
-      git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-      git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+      git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+      git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
     post_install: |
       sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
 
@@ -628,6 +666,13 @@ oh-my-posh:
       - "-d"
       - "$HOME/.oh-my-posh/bin"
     post_install:
+      - type: tee
+        destination: "$HOME/.zshrc"
+        append: true
+        content: |
+          # oh-my-posh
+          export PATH="$HOME/.oh-my-posh/bin:$PATH"
+          eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
       - type: tee
         destination: "$HOME/.config/oh-my-posh/zen.toml"
         content: |

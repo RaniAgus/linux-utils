@@ -71,7 +71,7 @@ ffprobe-duration() {
 }
 EOF
 
-sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo
+sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo --overwrite
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
@@ -92,7 +92,7 @@ bindkey -s '^o' 'rcd\n'
 EOF
 
 sudo systemctl enable --now docker
-sudo groupadd docker
+sudo groupadd -f docker
 sudo usermod -aG docker "$USER"
 
 tee -a "$HOME/.zshrc" <<'EOF'
@@ -103,7 +103,7 @@ EOF
 
 bash -c "$(curl -fsSL "https://sh.rustup.rs")"
 
-zsh <<'EOF'
+bash <<'EOF'
 cargo install zoxide --locked
 EOF
 
@@ -137,13 +137,13 @@ alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
 EOF
 
-sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
+sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo --overwrite
 
 sudo dnf install -y "VirtualBox-7.2" --repo virtualbox
 
 sudo snap install "code" --classic
 
-sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo
+sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo --overwrite
 
 sudo dnf install -y "gh" --repo gh-cli
 
@@ -161,13 +161,27 @@ curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?
 # shellcheck disable=SC2211
 /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
 
-zsh -c "$(curl -fsSL "https://get.sdkman.io")"
+bash -c "$(curl -fsSL "https://get.sdkman.io")"
 
+zsh <<'EOF'
+source "$HOME/.zshrc"
+sdk install java $(sdk list java | grep -E '21\..*-tem' | head -1 | awk '{print $NF}')
+sdk install java $(sdk list java | grep -E '17\..*-tem' | head -1 | awk '{print $NF}')
+sdk install java $(sdk list java | grep -E '11\..*-tem' | head -1 | awk '{print $NF}')
 sdk install maven
 sdk install gradle
 sdk install kotlin
+sdk install scala
+sdk install sbt
+EOF
 
-zsh -c "$(curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v$(gh_latest_tag nvm-sh/nvm)/install.sh")"
+bash -c "$(curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r '.tag_name' | sed 's/v//g')/install.sh")"
+
+zsh <<'EOF'
+source "$HOME/.zshrc"
+nvm install --lts
+nvm use --lts
+EOF
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # nvm
@@ -194,25 +208,42 @@ load-nvmrc
 EOF
 
 zsh <<'EOF'
-nvm install --lts
-nvm use --lts
-npm i --location=global npm@latest @angular/cli corepack degit typescript yarn
+source "$HOME/.zshrc"
+npm i --location=global npm@latest @angular/cli degit typescript
 EOF
 
-zsh -c "$(curl -fsSL "https://get.pnpm.io/install.sh")"
-
-zsh -c "$(curl -fsSL "https://bun.sh/install")"
-
-zsh -c "$(curl -fsSL "https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer")"
+zsh <<'EOF'
+source "$HOME/.zshrc"
+npm install --location=global corepack
+corepack enable
+EOF
 
 zsh <<'EOF'
+source "$HOME/.zshrc"
+corepack prepare pnpm@latest --activate
+EOF
+
+zsh <<'EOF'
+source "$HOME/.zshrc"
+corepack prepare yarn@stable --activate
+EOF
+
+bash -c "$(curl -fsSL "https://bun.sh/install")"
+
+bash -c "$(curl -fsSL "https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer")"
+
+tee -a "$HOME/.zshrc" <<'EOF'
+# rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
+EOF
+
+bash <<'EOF'
 rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
 rbenv versions | xargs rbenv global
 EOF
 
 gem install pry bundler rspec colorize rails jekyll
-
-curl -fsSL "https://downloads.sourceforge.net/project/pseint/20230517/pseint-l64-20230517.tgz" | sudo tar xzvC "/opt"
 
 sudo snap install "postman" "spotify" "vlc"
 
@@ -262,9 +293,9 @@ curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_late
 sudo unzip "$TMP_FILE" -d "/usr/share/fonts/JetBrainsMonoNerdFont"
 rm "$TMP_FILE"
 
-zsh <<'EOF'
-git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+bash <<'EOF'
+git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
 EOF
 
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
@@ -272,6 +303,12 @@ sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting
 mkdir -p "$HOME/.oh-my-posh/bin"
 
 bash -c "$(curl -fsSL "https://ohmyposh.dev/install.sh")"
+
+tee -a "$HOME/.zshrc" <<'EOF'
+# oh-my-posh
+export PATH="$HOME/.oh-my-posh/bin:$PATH"
+eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
+EOF
 
 tee "$HOME/.config/oh-my-posh/zen.toml" <<'EOF'
 #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
