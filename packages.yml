@@ -5,6 +5,7 @@ snapd:
   - type: dnf
     post_install: |
       sudo ln -sf /var/lib/snapd/snap /snap
+      sudo systemctl restart snapd.seeded.service
 
 
 flatpak:
@@ -121,9 +122,11 @@ xxd: [dnf, apt]
 
 zoxide:
   - type: shell
+    shell: zsh
     script: |
+      source "$HOME/.zshrc"
       cargo install zoxide --locked
-    depends_on: [oh-my-zsh, rust]
+    depends_on: [rust]
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
@@ -200,30 +203,6 @@ drawing:
     packages: [com.github.maoschanz.drawing]
 
 
-kazam:
-  - type: pip
-    depends_on:
-      - build-essential
-      - type: dnf
-        packages: [python3-wheel, zlib-devel]
-    post_install:
-      - type: shell
-        command: |
-          mkdir -p "$HOME/.local/share/applications"
-      - type: tee
-        destination: "$HOME/.local/share/applications/kazam.desktop"
-        content: |
-          [Desktop Entry]
-          Name=Kazam
-          Comment=Screen recording tool
-          Exec=kazam
-          Icon=kazam
-          Terminal=false
-          Type=Application
-          Categories=AudioVideo;Recorder;
-          StartupNotify=true
-
-
 yt-dlp:
   - type: pip
     packages: ["yt-dlp[default]"]
@@ -263,7 +242,6 @@ docker:
 virtualbox:
   - type: dnf
     packages: [VirtualBox-7.2]
-    repo: virtualbox
     repofile: https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
     depends_on:
       - type: dnf
@@ -329,13 +307,21 @@ jetbrains-toolbox:
     sudo: true
     post_install: |
       # shellcheck disable=SC2211
-      /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
+      /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
     depends_on: [jq]
 
 
 rust:
   - type: shell
     url: https://sh.rustup.rs
+    depends_on: [oh-my-zsh]
+    post_install:
+      - type: tee
+        destination: "$HOME/.zshrc"
+        append: true
+        content: |
+          # rust
+          export PATH="$HOME/.cargo/bin:$PATH"
 
 
 sdkman:
@@ -365,6 +351,15 @@ nvm:
   - type: shell
     url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r '.tag_name' | sed 's/v//g')/install.sh
     depends_on: [oh-my-zsh]
+    post_install:
+      - type: tee
+        destination: "$HOME/.zshrc"
+        append: true
+        content: |
+          # nvm
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 
 # TODO: Encontrar una mejor solución para ejecutar nvm en zsh
@@ -466,11 +461,20 @@ rbenv:
 
 ruby:
   - type: shell
+    shell: zsh
     depends_on: [rbenv]
     script: |
+      source "$HOME/.zshrc"
       rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
       rbenv versions | xargs rbenv global
-    post_install: |
+
+
+ruby-packages:
+  - type: shell
+    shell: zsh
+    depends_on: [ruby]
+    script: |
+      source "$HOME/.zshrc"
       gem install pry bundler rspec colorize rails jekyll
 
 
@@ -559,12 +563,13 @@ duckstation:
   - type: file
     url: https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage
     destination: "$HOME/.local/bin/DuckStation-x64.AppImage"
+    silent: true
+    executable: true
     pre_install: |
       mkdir -p "$HOME/.local/bin"
     post_install:
       - type: shell
         command: |
-          chmod +x "$HOME/.local/bin/DuckStation-x64.AppImage"
           mkdir -p "$HOME/.local/share/applications"
       - type: tee
         destination: "$HOME/.local/share/applications/DuckStation-x64.desktop"
@@ -673,6 +678,9 @@ oh-my-posh:
           # oh-my-posh
           export PATH="$HOME/.oh-my-posh/bin:$PATH"
           eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
+      - type: shell
+        command: |
+          mkdir -p "$HOME/.config/oh-my-posh"
       - type: tee
         destination: "$HOME/.config/oh-my-posh/zen.toml"
         content: |

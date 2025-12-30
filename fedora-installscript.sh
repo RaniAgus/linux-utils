@@ -16,9 +16,10 @@ set -e
 
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "python3-wheel" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
+sudo systemctl restart snapd.seeded.service
 
 sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 [commands]
@@ -73,9 +74,11 @@ EOF
 
 sudo dnf config-manager addrepo --from-repofile=https://download.docker.com/linux/fedora/docker-ce.repo --overwrite
 
+sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo --overwrite
+
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "1password-cli" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
@@ -103,7 +106,13 @@ EOF
 
 bash -c "$(curl -fsSL "https://sh.rustup.rs")"
 
-bash <<'EOF'
+tee -a "$HOME/.zshrc" <<'EOF'
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"
+EOF
+
+zsh <<'EOF'
+source "$HOME/.zshrc"
 cargo install zoxide --locked
 EOF
 
@@ -114,21 +123,7 @@ EOF
 
 flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive"
 
-pip install -U "kazam" "yt-dlp[default]"
-
-mkdir -p "$HOME/.local/share/applications"
-
-tee "$HOME/.local/share/applications/kazam.desktop" <<'EOF'
-[Desktop Entry]
-Name=Kazam
-Comment=Screen recording tool
-Exec=kazam
-Icon=kazam
-Terminal=false
-Type=Application
-Categories=AudioVideo;Recorder;
-StartupNotify=true
-EOF
+pip install -U "yt-dlp[default]"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # yt-dlp
@@ -136,10 +131,6 @@ alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
 alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
 alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
 EOF
-
-sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo --overwrite
-
-sudo dnf install -y "VirtualBox-7.2" --repo virtualbox
 
 sudo snap install "code" --classic
 
@@ -159,7 +150,7 @@ EOF
 curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')" | sudo tar xzvC "/opt"
 
 # shellcheck disable=SC2211
-/opt/jetbrains-toolbox-*/bin/jetbrains-toolbox
+/opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
 
 bash -c "$(curl -fsSL "https://get.sdkman.io")"
 
@@ -176,6 +167,13 @@ sdk install sbt
 EOF
 
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r '.tag_name' | sed 's/v//g')/install.sh")"
+
+tee -a "$HOME/.zshrc" <<'EOF'
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+EOF
 
 zsh <<'EOF'
 source "$HOME/.zshrc"
@@ -238,12 +236,16 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 EOF
 
-bash <<'EOF'
+zsh <<'EOF'
+source "$HOME/.zshrc"
 rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
 rbenv versions | xargs rbenv global
 EOF
 
+zsh <<'EOF'
+source "$HOME/.zshrc"
 gem install pry bundler rspec colorize rails jekyll
+EOF
 
 sudo snap install "postman" "spotify" "vlc"
 
@@ -271,9 +273,9 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/do
 
 mkdir -p "$HOME/.local/bin"
 
-curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee "$HOME/.local/bin/DuckStation-x64.AppImage"
-
+curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee "$HOME/.local/bin/DuckStation-x64.AppImage" > /dev/null
 chmod +x "$HOME/.local/bin/DuckStation-x64.AppImage"
+
 mkdir -p "$HOME/.local/share/applications"
 
 tee "$HOME/.local/share/applications/DuckStation-x64.desktop" <<'EOF'
@@ -309,6 +311,8 @@ tee -a "$HOME/.zshrc" <<'EOF'
 export PATH="$HOME/.oh-my-posh/bin:$PATH"
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
 EOF
+
+mkdir -p "$HOME/.config/oh-my-posh"
 
 tee "$HOME/.config/oh-my-posh/zen.toml" <<'EOF'
 #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
