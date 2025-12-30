@@ -663,13 +663,6 @@ oh-my-posh:
       - oh-my-zsh
       - jetbrains-mono
       - jetbrains-nf
-    pre_install: |
-      mkdir -p "$HOME/.oh-my-posh/bin"
-    flags:
-      - "-s"
-      - "--"
-      - "-d"
-      - "$HOME/.oh-my-posh/bin"
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"

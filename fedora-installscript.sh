@@ -302,8 +302,6 @@ EOF
 
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
 
-mkdir -p "$HOME/.oh-my-posh/bin"
-
 bash -c "$(curl -fsSL "https://ohmyposh.dev/install.sh")"
 
 tee -a "$HOME/.zshrc" <<'EOF'
