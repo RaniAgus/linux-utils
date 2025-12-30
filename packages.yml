@@ -73,6 +73,15 @@ build-essential:
 entr: [dnf, apt]
 
 
+gifski:
+  - type: shell
+    shell: zsh
+    script: |
+      source "$HOME/.zshrc"
+      cargo install gifski
+    depends_on: [rust]
+
+
 htop: [dnf, apt]
 
 
@@ -125,7 +134,7 @@ zoxide:
     shell: zsh
     script: |
       source "$HOME/.zshrc"
-      cargo install zoxide --locked
+      cargo install zoxide
     depends_on: [rust]
     post_install:
       - type: tee
