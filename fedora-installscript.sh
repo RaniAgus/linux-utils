@@ -51,11 +51,31 @@ git config --global gpg.format ssh
 
 rm -rf "$HOME/.oh-my-zsh"
 
+gh_latest_tag() {
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+}
+
+gh_latest_release_url() {
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
+}
+
+gh_latest_release_asset() {
+  curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
+}
+
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh")"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 gh_latest_tag() {
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+}
+
+gh_latest_release_url() {
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
+}
+
+gh_latest_release_asset() {
+  curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
 }
 
 # ffmpeg
@@ -111,19 +131,17 @@ tee -a "$HOME/.zshrc" <<'EOF'
 export PATH="$HOME/.cargo/bin:$PATH"
 EOF
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
+cargo install gifski
+" </dev/null
+
+zsh -i -c "
 cargo install zoxide
-EOF
+" </dev/null
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # zoxide
 eval "$(zoxide init zsh)"
-EOF
-
-zsh <<'EOF'
-source "$HOME/.zshrc"
-cargo install gifski
 EOF
 
 flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive"
@@ -159,19 +177,18 @@ curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?
 
 bash -c "$(curl -fsSL "https://get.sdkman.io")"
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
-sdk install java $(sdk list java | grep -E '21\..*-tem' | head -1 | awk '{print $NF}')
-sdk install java $(sdk list java | grep -E '17\..*-tem' | head -1 | awk '{print $NF}')
-sdk install java $(sdk list java | grep -E '11\..*-tem' | head -1 | awk '{print $NF}')
+zsh -i -c "
+sdk install java \$(sdk list java | grep -E '21\..*-tem' | head -1 | awk '{print \$NF}')
+sdk install java \$(sdk list java | grep -E '17\..*-tem' | head -1 | awk '{print \$NF}')
+sdk install java \$(sdk list java | grep -E '11\..*-tem' | head -1 | awk '{print \$NF}')
 sdk install maven
 sdk install gradle
 sdk install kotlin
 sdk install scala
 sdk install sbt
-EOF
+" </dev/null
 
-bash -c "$(curl -fsSL "https://raw.githubusercontent.com/nvm-sh/nvm/v$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r '.tag_name' | sed 's/v//g')/install.sh")"
+bash -c "$(curl -fsSL "$(gh_latest_release_asset nvm-sh/nvm install.sh)")"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # nvm
@@ -180,11 +197,10 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 EOF
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 nvm install --lts
 nvm use --lts
-EOF
+" </dev/null
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # nvm
@@ -210,26 +226,22 @@ add-zsh-hook chpwd load-nvmrc
 load-nvmrc
 EOF
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 npm i --location=global npm@latest @angular/cli degit typescript
-EOF
+" </dev/null
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 npm install --location=global corepack
 corepack enable
-EOF
+" </dev/null
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 corepack prepare pnpm@latest --activate
-EOF
+" </dev/null
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 corepack prepare yarn@stable --activate
-EOF
+" </dev/null
 
 bash -c "$(curl -fsSL "https://bun.sh/install")"
 
@@ -241,16 +253,14 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init - zsh)"
 EOF
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
 rbenv versions | xargs rbenv global
-EOF
+" </dev/null
 
-zsh <<'EOF'
-source "$HOME/.zshrc"
+zsh -i -c "
 gem install pry bundler rspec colorize rails jekyll
-EOF
+" </dev/null
 
 sudo snap install "postman" "spotify" "vlc"
 
@@ -296,14 +306,14 @@ EOF
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh")"
 
 TMP_FILE=$(mktemp)
-curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip" -o "$TMP_FILE"
+curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip" -o "$TMP_FILE"
 sudo unzip "$TMP_FILE" -d "/usr/share/fonts/JetBrainsMonoNerdFont"
 rm "$TMP_FILE"
 
-bash <<'EOF'
-git clone https://github.com/zsh-users/zsh-autosuggestions "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-EOF
+bash -i -c "
+git clone https://github.com/zsh-users/zsh-autosuggestions \"\${ZSH_CUSTOM:-\$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions\"
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git \"\${ZSH_CUSTOM:-\$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting\"
+" </dev/null
 
 sed -i 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' "$HOME/.zshrc"
 

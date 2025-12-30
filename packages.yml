@@ -77,7 +77,6 @@ gifski:
   - type: shell
     shell: zsh
     script: |
-      source "$HOME/.zshrc"
       cargo install gifski
     depends_on: [rust]
 
@@ -133,7 +132,6 @@ zoxide:
   - type: shell
     shell: zsh
     script: |
-      source "$HOME/.zshrc"
       cargo install zoxide
     depends_on: [rust]
     post_install:
@@ -339,13 +337,12 @@ sdkman:
     depends_on: [oh-my-zsh]
 
 
-# TODO: Encontrar una mejor solución para ejecutar sdkman en zsh
+# TODO: Agregar el tipo "sdkman"
 sdkman-packages:
   - type: shell
     shell: zsh
     depends_on: [sdkman]
     script: |
-      source "$HOME/.zshrc"
       sdk install java $(sdk list java | grep -E '21\..*-tem' | head -1 | awk '{print $NF}')
       sdk install java $(sdk list java | grep -E '17\..*-tem' | head -1 | awk '{print $NF}')
       sdk install java $(sdk list java | grep -E '11\..*-tem' | head -1 | awk '{print $NF}')
@@ -358,7 +355,7 @@ sdkman-packages:
 
 nvm:
   - type: shell
-    url: https://raw.githubusercontent.com/nvm-sh/nvm/v$(curl -fsSL "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | jq -r '.tag_name' | sed 's/v//g')/install.sh
+    url: "$(gh_latest_release_asset nvm-sh/nvm install.sh)"
     depends_on: [oh-my-zsh]
     post_install:
       - type: tee
@@ -377,7 +374,6 @@ npm:
     shell: zsh
     depends_on: [nvm]
     script: |
-      source "$HOME/.zshrc"
       nvm install --lts
       nvm use --lts
     post_install:
@@ -413,7 +409,6 @@ npm-packages:
     shell: zsh
     depends_on: [npm]
     script: |
-      source "$HOME/.zshrc"
       npm i --location=global npm@latest @angular/cli degit typescript
 
 
@@ -422,7 +417,6 @@ corepack:
     shell: zsh
     depends_on: [npm]
     script: |
-      source "$HOME/.zshrc"
       npm install --location=global corepack
       corepack enable
 
@@ -432,7 +426,6 @@ pnpm:
     shell: zsh
     depends_on: [corepack]
     script: |
-      source "$HOME/.zshrc"
       corepack prepare pnpm@latest --activate
 
 yarn:
@@ -440,7 +433,6 @@ yarn:
     shell: zsh
     depends_on: [corepack]
     script: |
-      source "$HOME/.zshrc"
       corepack prepare yarn@stable --activate
 
 
@@ -473,7 +465,6 @@ ruby:
     shell: zsh
     depends_on: [rbenv]
     script: |
-      source "$HOME/.zshrc"
       rbenv install -l 2> /dev/null | grep '^3' | tail -1 | xargs rbenv install
       rbenv versions | xargs rbenv global
 
@@ -483,7 +474,6 @@ ruby-packages:
     shell: zsh
     depends_on: [ruby]
     script: |
-      source "$HOME/.zshrc"
       gem install pry bundler rspec colorize rails jekyll
 
 
@@ -616,7 +606,7 @@ jetbrains-mono:
 
 jetbrains-nf:
   - type: zip
-    url: "https://github.com/ryanoasis/nerd-fonts/releases/download/v$(gh_latest_tag ryanoasis/nerd-fonts)/JetBrainsMono.zip"
+    url: https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip
     depends_on: [oh-my-zsh]
     destination: /usr/share/fonts/JetBrainsMonoNerdFont
     sudo: true
@@ -626,19 +616,41 @@ jetbrains-nf:
 zsh: [dnf, apt]
 
 
+# TODO: Encontrar una mejor forma de crear funciones utilitarias con installscript
+
 oh-my-zsh:
   - type: shell
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     depends_on: [zsh]
     pre_install: |
       rm -rf "$HOME/.oh-my-zsh"
+
+      gh_latest_tag() {
+        curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+      }
+
+      gh_latest_release_url() {
+        curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
+      }
+
+      gh_latest_release_asset() {
+        curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
+      }
     post_install:
       - type: tee
         destination: "$HOME/.zshrc"
         append: true
         content: |
           gh_latest_tag() {
-            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name' | sed 's/v//g'
+            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.tag_name'
+          }
+
+          gh_latest_release_url() {
+            curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
+          }
+
+          gh_latest_release_asset() {
+            curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
           }
 
           # ffmpeg
