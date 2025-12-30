@@ -56,11 +56,11 @@ gh_latest_tag() {
 }
 
 gh_latest_release_url() {
-  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
+  curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'"$2"'") | .browser_download_url'
 }
 
-gh_latest_release_asset() {
-  curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
+gh_latest_release_asset_url() {
+  echo "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
 }
 
 bash -c "$(curl -fsSL "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh")"
@@ -74,8 +74,8 @@ gh_latest_release_url() {
   curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
 }
 
-gh_latest_release_asset() {
-  curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
+gh_latest_release_asset_url() {
+  echo "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
 }
 
 # ffmpeg
@@ -188,7 +188,7 @@ sdk install scala
 sdk install sbt
 " </dev/null
 
-bash -c "$(curl -fsSL "$(gh_latest_release_asset nvm-sh/nvm install.sh)")"
+bash -c "$(curl -fsSL "$(gh_latest_release_asset_url nvm-sh/nvm install.sh)")"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # nvm

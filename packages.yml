@@ -355,7 +355,7 @@ sdkman-packages:
 
 nvm:
   - type: shell
-    url: "$(gh_latest_release_asset nvm-sh/nvm install.sh)"
+    url: $(gh_latest_release_asset_url nvm-sh/nvm install.sh)
     depends_on: [oh-my-zsh]
     post_install:
       - type: tee
@@ -630,11 +630,11 @@ oh-my-zsh:
       }
 
       gh_latest_release_url() {
-        curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
+        curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'"$2"'") | .browser_download_url'
       }
 
-      gh_latest_release_asset() {
-        curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
+      gh_latest_release_asset_url() {
+        echo "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
       }
     post_install:
       - type: tee
@@ -649,8 +649,8 @@ oh-my-zsh:
             curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r '.assets[] | select(.name == "'$2'") | .browser_download_url'
           }
 
-          gh_latest_release_asset() {
-            curl -fsSL "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
+          gh_latest_release_asset_url() {
+            echo "https://raw.githubusercontent.com/$1/$(gh_latest_tag "$1")/$2"
           }
 
           # ffmpeg
