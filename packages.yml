@@ -195,6 +195,12 @@ kdenlive:
     packages: [org.kde.kdenlive]
 
 
+localsend:
+  # - snapd
+  - type: flatpak
+    packages: [org.localsend.localsend_app]
+
+
 pdfarranger:
   - type: flatpak
     packages: [com.github.jeromerobert.pdfarranger]

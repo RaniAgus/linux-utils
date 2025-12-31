@@ -144,7 +144,7 @@ tee -a "$HOME/.zshrc" <<'EOF'
 eval "$(zoxide init zsh)"
 EOF
 
-flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive"
+flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive" "org.localsend.localsend_app"
 
 pip install -U "yt-dlp[default]"
 
@@ -178,9 +178,9 @@ curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?
 bash -c "$(curl -fsSL "https://get.sdkman.io")"
 
 zsh -i -c "
-sdk install java \$(sdk list java | grep -E '21\..*-tem' | head -1 | awk '{print \$NF}')
-sdk install java \$(sdk list java | grep -E '17\..*-tem' | head -1 | awk '{print \$NF}')
-sdk install java \$(sdk list java | grep -E '11\..*-tem' | head -1 | awk '{print \$NF}')
+sdk install java \$(sdk list java | grep -E '21\\..*-tem' | head -1 | awk '{print \$NF}')
+sdk install java \$(sdk list java | grep -E '17\\..*-tem' | head -1 | awk '{print \$NF}')
+sdk install java \$(sdk list java | grep -E '11\\..*-tem' | head -1 | awk '{print \$NF}')
 sdk install maven
 sdk install gradle
 sdk install kotlin
