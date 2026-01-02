@@ -14,6 +14,12 @@ flatpak:
       flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 
+# TODO: Agregar soporte para AppImage
+appimage:
+  - type: dnf
+    packages: [fuse, fuse-libs]
+
+
 pip:
   - type: dnf
     packages: [python3-pip]
@@ -488,7 +494,34 @@ gleam:
     copr: frostyx/gleam
 
 
+# API testing
+
 postman: [snapd]
+
+
+requestly:
+  - type: file
+    url: https://rqst.ly/linux
+    destination: "$HOME/.local/bin/Requestly.AppImage"
+    silent: true
+    executable: true
+    depends_on: [appimage]
+    pre_install: |
+      mkdir -p "$HOME/.local/bin"
+    post_install:
+      - type: shell
+        command: |
+          mkdir -p "$HOME/.local/share/applications"
+      - type: tee
+        destination: "$HOME/.local/share/applications/Requestly.desktop"
+        content: |
+          [Desktop Entry]
+          Name=Requestly
+          StartupNotify=true
+          Type=Application
+          Terminal=false
+          Categories=Utilities;
+          Exec=Requestly.AppImage
 
 
 # Sisoputnfrba
@@ -570,6 +603,7 @@ duckstation:
     destination: "$HOME/.local/bin/DuckStation-x64.AppImage"
     silent: true
     executable: true
+    depends_on: [appimage]
     pre_install: |
       mkdir -p "$HOME/.local/bin"
     post_install:

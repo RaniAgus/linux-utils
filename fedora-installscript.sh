@@ -16,7 +16,7 @@ set -e
 
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
@@ -263,6 +263,23 @@ gem install pry bundler rspec colorize rails jekyll
 " </dev/null
 
 sudo snap install "postman" "spotify" "vlc"
+
+mkdir -p "$HOME/.local/bin"
+
+curl -fsSL "https://rqst.ly/linux" | tee "$HOME/.local/bin/Requestly.AppImage" > /dev/null
+chmod +x "$HOME/.local/bin/Requestly.AppImage"
+
+mkdir -p "$HOME/.local/share/applications"
+
+tee "$HOME/.local/share/applications/Requestly.desktop" <<'EOF'
+[Desktop Entry]
+Name=Requestly
+StartupNotify=true
+Type=Application
+Terminal=false
+Categories=Utilities;
+Exec=Requestly.AppImage
+EOF
 
 TMP_DIR=$(mktemp -d)
 git clone https://github.com/mumuki/cspec.git "$TMP_DIR"
