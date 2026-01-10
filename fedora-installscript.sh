@@ -158,7 +158,7 @@ sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
@@ -321,59 +321,6 @@ rbenv versions | xargs rbenv global
 zsh -i -c "
 gem install pry bundler rspec colorize rails jekyll
 " </dev/null
-
-mkdir -p "$HOME/.local/bin"
-
-curl -fsSL "https://github.com/hoppscotch/releases/releases/latest/download/Hoppscotch_linux_x64.AppImage" | tee "$HOME/.local/bin/Hoppscotch.AppImage" > /dev/null
-chmod +x "$HOME/.local/bin/Hoppscotch.AppImage"
-
-mkdir -p "$HOME/.local/share/applications"
-
-tee "$HOME/.local/share/applications/Hoppscotch.desktop" <<'EOF'
-[Desktop Entry]
-Name=Hoppscotch
-StartupNotify=true
-Type=Application
-Terminal=false
-Categories=Network;Development;
-Icon=hoppscotch
-Exec=$HOME/.local/bin/Hoppscotch.AppImage
-EOF
-
-(
-  TMP_DIR=$(mktemp -d)
-  cd "$TMP_DIR" || exit
-  "$HOME/.local/bin/Hoppscotch.AppImage" --appimage-extract
-  cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/"
-  rm -rf "$TMP_DIR"
-)
-
-mkdir -p "$HOME/.local/bin"
-
-curl -fsSL "https://rqst.ly/linux" | tee "$HOME/.local/bin/Requestly.AppImage" > /dev/null
-chmod +x "$HOME/.local/bin/Requestly.AppImage"
-
-mkdir -p "$HOME/.local/share/applications"
-
-tee "$HOME/.local/share/applications/Requestly.desktop" <<'EOF'
-[Desktop Entry]
-Name=Requestly
-StartupNotify=true
-Type=Application
-Terminal=false
-Categories=Network;Development;
-Icon=requestly
-Exec=$HOME/.local/bin/Requestly.AppImage
-MimeType=x-scheme-handler/requestly;
-EOF
-
-(
-  TMP_DIR=$(mktemp -d)
-  cd "$TMP_DIR" || exit
-  "$HOME/.local/bin/Requestly.AppImage" --appimage-extract
-  cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/"
-  rm -rf "$TMP_DIR"
-)
 
 TMP_DIR=$(mktemp -d)
 git clone https://github.com/mumuki/cspec.git "$TMP_DIR"

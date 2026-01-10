@@ -556,75 +556,12 @@ gleam:
 
 # API testing
 
-hoppscotch:
-  - type: file
-    url: https://github.com/hoppscotch/releases/releases/latest/download/Hoppscotch_linux_x64.AppImage
-    destination: "$HOME/.local/bin/Hoppscotch.AppImage"
-    silent: true
-    executable: true
-    depends_on: [appimage]
-    pre_install: |
-      mkdir -p "$HOME/.local/bin"
-    post_install:
-      - type: shell
-        command: |
-          mkdir -p "$HOME/.local/share/applications"
-      - type: tee
-        destination: "$HOME/.local/share/applications/Hoppscotch.desktop"
-        content: |
-          [Desktop Entry]
-          Name=Hoppscotch
-          StartupNotify=true
-          Type=Application
-          Terminal=false
-          Categories=Network;Development;
-          Icon=hoppscotch
-          Exec=$HOME/.local/bin/Hoppscotch.AppImage
-      - type: shell
-        command: |
-          (
-            TMP_DIR=$(mktemp -d)
-            cd "$TMP_DIR" || exit
-            "$HOME/.local/bin/Hoppscotch.AppImage" --appimage-extract
-            cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/"
-            rm -rf "$TMP_DIR"
-          )
-
-
-requestly:
-  - type: file
-    url: https://rqst.ly/linux
-    destination: "$HOME/.local/bin/Requestly.AppImage"
-    silent: true
-    executable: true
-    depends_on: [appimage]
-    pre_install: |
-      mkdir -p "$HOME/.local/bin"
-    post_install:
-      - type: shell
-        command: |
-          mkdir -p "$HOME/.local/share/applications"
-      - type: tee
-        destination: "$HOME/.local/share/applications/Requestly.desktop"
-        content: |
-          [Desktop Entry]
-          Name=Requestly
-          StartupNotify=true
-          Type=Application
-          Terminal=false
-          Categories=Network;Development;
-          Icon=requestly
-          Exec=$HOME/.local/bin/Requestly.AppImage
-          MimeType=x-scheme-handler/requestly;
-      - type: shell
-        command: |
-          (
-            TMP_DIR=$(mktemp -d)
-            cd "$TMP_DIR" || exit
-            "$HOME/.local/bin/Requestly.AppImage" --appimage-extract
-            cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/"
-            rm -rf "$TMP_DIR"
-          )
+bruno:
+  - type: dnf
+    packages:
+      - '$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno")_x86_64_linux.rpm")'
+    depends_on:
+      - oh-my-zsh
 
 
 # Sisoputnfrba
