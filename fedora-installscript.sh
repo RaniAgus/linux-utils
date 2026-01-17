@@ -299,6 +299,7 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/do
 
 sudo snap install "spotify" "vlc"
 
+mkdir -p "$(dirname "$HOME/.local/bin/DuckStation.AppImage")"
 curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" -o "$HOME/.local/bin/DuckStation.AppImage" > /dev/null
 chmod +x "$HOME/.local/bin/DuckStation.AppImage"
 
