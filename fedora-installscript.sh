@@ -31,65 +31,7 @@ sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "cursor" "dnf-au
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
 
-tee "$HOME/.local/share/icons/hicolor" <<'EOF'
-[Icon Theme]
-Name=Hicolor
-Comment=Fallback icon theme
-Hidden=true
-Directories=16x16/apps,22x22/apps,24x24/apps,32x32/apps,48x48/apps,64x64/apps,128x128/apps,256x256/apps,512x512/apps,scalable/apps
-
-[16x16/apps]
-Size=16
-Context=Applications
-Type=Threshold
-
-[22x22/apps]
-Size=22
-Context=Applications
-Type=Threshold
-
-[24x24/apps]
-Size=24
-Context=Applications
-Type=Threshold
-
-[32x32/apps]
-Size=32
-Context=Applications
-Type=Threshold
-
-[48x48/apps]
-Size=48
-Context=Applications
-Type=Threshold
-
-[64x64/apps]
-Size=64
-Context=Applications
-Type=Threshold
-
-[128x128/apps]
-Size=128
-Context=Applications
-Type=Threshold
-
-[256x256/apps]
-Size=256
-Context=Applications
-Type=Threshold
-
-[512x512/apps]
-Size=512
-Context=Applications
-Type=Threshold
-
-[scalable/apps]
-Size=48
-Context=Applications
-Type=Scalable
-MinSize=1
-MaxSize=512
-EOF
+mkdir -p "$HOME/.local/bin"
 
 sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 [commands]
@@ -358,14 +300,12 @@ curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/do
 
 sudo snap install "spotify" "vlc"
 
-mkdir -p "$HOME/.local/bin"
-
-curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" | tee "$HOME/.local/bin/DuckStation-x64.AppImage" > /dev/null
-chmod +x "$HOME/.local/bin/DuckStation-x64.AppImage"
+curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" -o "$HOME/.local/bin/DuckStation.AppImage" > /dev/null
+chmod +x "$HOME/.local/bin/DuckStation.AppImage"
 
 mkdir -p "$HOME/.local/share/applications"
 
-tee "$HOME/.local/share/applications/DuckStation-x64.desktop" <<'EOF'
+tee "$HOME/.local/share/applications/DuckStation.desktop" <<'EOF'
 [Desktop Entry]
 Name=DuckStation
 StartupNotify=true
@@ -373,14 +313,14 @@ Type=Application
 Terminal=false
 Categories=Game;Emulator;
 Icon=org.duckstation.DuckStation
-Exec=$HOME/.local/bin/DuckStation-x64.AppImage
+Exec=$HOME/.local/bin/DuckStation.AppImage
 EOF
 
 (
   TMP_DIR=$(mktemp -d)
   cd "$TMP_DIR" || exit
-  "$HOME/.local/bin/DuckStation-x64.AppImage" --appimage-extract
-  cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/"
+  "$HOME/.local/bin/DuckStation.AppImage" --appimage-extract
+  cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/" 2>/dev/null || true
   rm -rf "$TMP_DIR"
 )
 
