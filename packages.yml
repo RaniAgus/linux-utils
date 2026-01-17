@@ -355,6 +355,9 @@ cursor:
           gpgcheck=1
           gpgkey=https://downloads.cursor.com/keys/anysphere.asc
           repo_gpgcheck=1
+      - type: shell
+        command: |
+          sudo dnf check-update -y
 
 
 opencode:
@@ -372,6 +375,25 @@ jetbrains-toolbox:
       # shellcheck disable=SC2211
       /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
     depends_on: [jq]
+
+
+windsurf:
+  - type: dnf
+    pre_install:
+      - type: tee
+        destination: /etc/yum.repos.d/windsurf.repo
+        sudo: true
+        content: |
+          [windsurf]
+          name=Windsurf Repository
+          baseurl=https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/yum/repo/
+          enabled=1
+          autorefresh=1
+          gpgcheck=1
+          gpgkey=https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/yum/RPM-GPG-KEY-windsurf
+      - type: shell
+        command: |
+          sudo dnf check-update -y
 
 
 # Programming
