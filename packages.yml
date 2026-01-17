@@ -224,10 +224,8 @@ chrome:
   - type: dnf
     packages: [https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm]
     post_install:
-      - type: shell
-        command: |
-          mkdir -p "$HOME/.config/autostart"
       - type: tee
+        mkdir: true
         destination: "$HOME/.config/autostart/1password.desktop"
         content: |
           [Desktop Entry]
@@ -781,11 +779,9 @@ oh-my-posh:
           # oh-my-posh
           export PATH="$HOME/.oh-my-posh/bin:$PATH"
           eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
-      - type: shell
-        command: |
-          mkdir -p "$HOME/.config/oh-my-posh"
       - type: tee
         destination: "$HOME/.config/oh-my-posh/zen.toml"
+        mkdir: true
         content: |
           #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
 

@@ -38,8 +38,7 @@ sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 apply_updates=True
 EOF
 
-mkdir -p "$HOME/.config/autostart"
-
+mkdir -p "$(dirname "$HOME/.config/autostart/1password.desktop)"
 tee "$HOME/.config/autostart/1password.desktop" <<'EOF'
 [Desktop Entry]
 Name=1Password
@@ -303,8 +302,7 @@ sudo snap install "spotify" "vlc"
 curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" -o "$HOME/.local/bin/DuckStation.AppImage" > /dev/null
 chmod +x "$HOME/.local/bin/DuckStation.AppImage"
 
-mkdir -p "$HOME/.local/share/applications"
-
+mkdir -p "$(dirname "$HOME/.local/share/applications/DuckStation.desktop)"
 tee "$HOME/.local/share/applications/DuckStation.desktop" <<'EOF'
 [Desktop Entry]
 Name=DuckStation
@@ -346,8 +344,7 @@ export PATH="$HOME/.oh-my-posh/bin:$PATH"
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
 EOF
 
-mkdir -p "$HOME/.config/oh-my-posh"
-
+mkdir -p "$(dirname "$HOME/.config/oh-my-posh/zen.toml)"
 tee "$HOME/.config/oh-my-posh/zen.toml" <<'EOF'
 #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
 
