@@ -14,9 +14,19 @@
 
 set -e
 
+sudo tee "/etc/yum.repos.d/cursor.repo" <<'EOF'
+[cursor]
+name=Cursor
+baseurl=https://downloads.cursor.com/yumrepo
+enabled=1
+gpgcheck=1
+gpgkey=https://downloads.cursor.com/keys/anysphere.asc
+repo_gpgcheck=1
+EOF
+
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "cursor" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
@@ -217,6 +227,13 @@ EOF
 
 sudo snap install "code" --classic
 
+bash -c "$(curl -fsSL "https://opencode.ai/install")"
+
+curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')" | sudo tar xzvC "/opt"
+
+# shellcheck disable=SC2211
+/opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
+
 sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo --overwrite
 
 sudo dnf install -y "gh" --repo gh-cli
@@ -229,11 +246,6 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 EOF
-
-curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')" | sudo tar xzvC "/opt"
-
-# shellcheck disable=SC2211
-/opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
 
 bash -c "$(curl -fsSL "https://get.sdkman.io")"
 

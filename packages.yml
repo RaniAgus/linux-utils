@@ -336,7 +336,7 @@ virtualbox:
           - kernel-devel
 
 
-# Programming
+# IDEs
 
 code:
   - type: snapd
@@ -357,6 +357,25 @@ cursor:
           gpgkey=https://downloads.cursor.com/keys/anysphere.asc
           repo_gpgcheck=1
 
+
+opencode:
+  - type: shell
+    url: https://opencode.ai/install
+
+
+
+jetbrains-toolbox:
+  - type: tar
+    url: $(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
+    destination: /opt
+    sudo: true
+    post_install: |
+      # shellcheck disable=SC2211
+      /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
+    depends_on: [jq]
+
+
+# Programming
 
 git:
   - type: dnf
@@ -392,17 +411,6 @@ go:
           export PATH=$PATH:/usr/local/go/bin
           export GOPATH=$HOME/go
           export PATH=$PATH:$GOPATH/bin
-
-
-jetbrains-toolbox:
-  - type: tar
-    url: $(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
-    destination: /opt
-    sudo: true
-    post_install: |
-      # shellcheck disable=SC2211
-      /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
-    depends_on: [jq]
 
 
 rust:
