@@ -291,6 +291,9 @@ gem install pry bundler rspec colorize rails jekyll
 
 sudo snap install "ngrok" "spotify" "vlc"
 
+read -s -p "Enter ngrok auth token: " NGROK_TOKEN
+ngrok config add-authtoken "$NGROK_TOKEN"
+
 TMP_DIR=$(mktemp -d)
 git clone https://github.com/mumuki/cspec.git "$TMP_DIR"
 (

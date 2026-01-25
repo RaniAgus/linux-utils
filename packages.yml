@@ -607,7 +607,11 @@ bruno:
     depends_on:
       - oh-my-zsh
 
-ngrok: [snapd]
+ngrok:
+  - type: snapd
+    post_install: |
+      read -s -p "Enter ngrok auth token: " NGROK_TOKEN
+      ngrok config add-authtoken "$NGROK_TOKEN"
 
 # Sisoputnfrba
 
