@@ -289,6 +289,8 @@ zsh -i -c "
 gem install pry bundler rspec colorize rails jekyll
 " </dev/null
 
+sudo snap install "ngrok" "spotify" "vlc"
+
 TMP_DIR=$(mktemp -d)
 git clone https://github.com/mumuki/cspec.git "$TMP_DIR"
 (
@@ -310,8 +312,6 @@ rm -rf "$TMP_DIR"
 sudo mkdir -p /usr/local/include/doctest
 
 curl -fsSL "https://raw.githubusercontent.com/doctest/doctest/v2.4.12/doctest/doctest.h" | sudo tee "/usr/local/include/doctest/doctest.h"
-
-sudo snap install "spotify" "vlc"
 
 mkdir -p "$(dirname "$HOME/.local/bin/DuckStation.AppImage")"
 curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" -o "$HOME/.local/bin/DuckStation.AppImage" > /dev/null

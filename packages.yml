@@ -607,6 +607,7 @@ bruno:
     depends_on:
       - oh-my-zsh
 
+ngrok: [snapd]
 
 # Sisoputnfrba
 
