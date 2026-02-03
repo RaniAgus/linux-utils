@@ -175,9 +175,13 @@ pip install -U "yt-dlp[default]"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # yt-dlp
-alias ytdl-playlist='yt-dlp -o "%(playlist_index)s-%(title)s.%(ext)s"'
-alias ytdl-video='yt-dlp -o "%(title)s.%(ext)s"'
-alias ytdl-audio='yt-dlp -x -o "%(title)s.%(ext)s"'
+ytdl() {
+  python3 -m pip install -U "yt-dlp[default]"
+  yt-dlp $@
+}
+alias ytdl-playlist='ytdl -o "%(playlist_index)s-%(title)s.%(ext)s"'
+alias ytdl-video='ytdl -o "%(title)s.%(ext)s"'
+alias ytdl-audio='ytdl -x -o "%(title)s.%(ext)s"'
 EOF
 
 sudo snap install "code" --classic
