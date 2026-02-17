@@ -186,10 +186,14 @@ ranger:
 
 shellcheck: [dnf, apt]
 
+
 stow: [dnf]
 
 
 tree: [dnf, apt]
+
+
+xclip: [dnf, apt]
 
 
 xxd: [dnf, apt]
