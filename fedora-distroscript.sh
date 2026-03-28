@@ -233,6 +233,10 @@ nvm install --lts
 nvm use --lts
 " </dev/null
 
+tee "$HOME/.npmrc" <<'EOF'
+ignore-scripts=true
+EOF
+
 tee -a "$HOME/.zshrc" <<'EOF'
 # nvm
 autoload -U add-zsh-hook

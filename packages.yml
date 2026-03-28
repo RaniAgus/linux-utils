@@ -501,6 +501,10 @@ npm:
       nvm use --lts
     post_install:
       - type: tee
+        destination: "$HOME/.npmrc"
+        content: |
+          ignore-scripts=true
+      - type: tee
         destination: "$HOME/.zshrc"
         append: true
         content: |
