@@ -1,6 +1,11 @@
 # linux-utils
 Scripts para instalar las apps que uso
 
+## GNOME extensions
+
+- https://extensions.gnome.org/extension/4481/forge/
+- https://extensions.gnome.org/extension/1460/vitals/
+
 ## Fix mode for files copied from external FS
 
 ```sh
