@@ -348,24 +348,6 @@ code:
   - type: snapd
     classic: true
 
-cursor:
-  - type: dnf
-    pre_install:
-      - type: tee
-        destination: /etc/yum.repos.d/cursor.repo
-        sudo: true
-        content: |
-          [cursor]
-          name=Cursor
-          baseurl=https://downloads.cursor.com/yumrepo
-          enabled=1
-          gpgcheck=1
-          gpgkey=https://downloads.cursor.com/keys/anysphere.asc
-          repo_gpgcheck=1
-      - type: shell
-        command: |
-          sudo dnf check-update -y
-
 
 opencode:
   - type: shell
@@ -382,25 +364,6 @@ jetbrains-toolbox:
       # shellcheck disable=SC2211
       /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
     depends_on: [jq]
-
-
-windsurf:
-  - type: dnf
-    pre_install:
-      - type: tee
-        destination: /etc/yum.repos.d/windsurf.repo
-        sudo: true
-        content: |
-          [windsurf]
-          name=Windsurf Repository
-          baseurl=https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/yum/repo/
-          enabled=1
-          autorefresh=1
-          gpgcheck=1
-          gpgkey=https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/yum/RPM-GPG-KEY-windsurf
-      - type: shell
-        command: |
-          sudo dnf check-update -y
 
 
 # Programming
@@ -456,7 +419,14 @@ rust:
 
 sdkman:
   - type: shell
-    url: https://get.sdkman.io
+    # Fix for SDKMAN! installer failing on fresh installs due to "find: No such file or directory" errors
+    # url: https://get.sdkman.io
+    command: >
+      rm -rf "$HOME/.sdkman"
+      curl -fsSL https://get.sdkman.io \
+        | sed 's|find "$sdkman_src_folder" -maxdepth 1 -type f -delete|find "$sdkman_src_folder" -maxdepth 1 -type f -delete 2>/dev/null \|\| true|' \
+        | sed 's|find "$sdkman_libexec_folder" -maxdepth 1 -type f -delete|find "$sdkman_libexec_folder" -maxdepth 1 -type f -delete 2>/dev/null \|\| true|' \
+        | bash
     depends_on: [oh-my-zsh]
 
 
@@ -614,7 +584,7 @@ gleam:
 bruno:
   - type: dnf
     packages:
-      - '$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno")_x86_64_linux.rpm")'
+      - '$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno" | sed "s/^v//")_x86_64_linux.rpm")'
     depends_on:
       - oh-my-zsh
 

@@ -14,33 +14,9 @@
 
 set -e
 
-sudo tee "/etc/yum.repos.d/cursor.repo" <<'EOF'
-[cursor]
-name=Cursor
-baseurl=https://downloads.cursor.com/yumrepo
-enabled=1
-gpgcheck=1
-gpgkey=https://downloads.cursor.com/keys/anysphere.asc
-repo_gpgcheck=1
-EOF
-
-sudo dnf check-update -y
-
-sudo tee "/etc/yum.repos.d/windsurf.repo" <<'EOF'
-[windsurf]
-name=Windsurf Repository
-baseurl=https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/yum/repo/
-enabled=1
-autorefresh=1
-gpgcheck=1
-gpgkey=https://windsurf-stable.codeiumdata.com/wVxQEIWkwPUEAGf3/yum/RPM-GPG-KEY-windsurf
-EOF
-
-sudo dnf check-update -y
-
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "cursor" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "windsurf" "xclip" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xclip" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
@@ -52,7 +28,7 @@ sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 apply_updates=True
 EOF
 
-mkdir -p "$(dirname "$HOME/.config/autostart/1password.desktop)"
+mkdir -p "$(dirname "$HOME/.config/autostart/1password.desktop")"
 tee "$HOME/.config/autostart/1password.desktop" <<'EOF'
 [Desktop Entry]
 Name=1Password
@@ -123,7 +99,7 @@ sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno" | sed "s/^v//")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
@@ -328,7 +304,7 @@ mkdir -p "$(dirname "$HOME/.local/bin/DuckStation.AppImage")"
 curl -fsSL "https://github.com/stenzek/duckstation/releases/download/latest/DuckStation-x64.AppImage" -o "$HOME/.local/bin/DuckStation.AppImage" > /dev/null
 chmod +x "$HOME/.local/bin/DuckStation.AppImage"
 
-mkdir -p "$(dirname "$HOME/.local/share/applications/DuckStation.desktop)"
+mkdir -p "$(dirname "$HOME/.local/share/applications/DuckStation.desktop")"
 tee "$HOME/.local/share/applications/DuckStation.desktop" <<'EOF'
 [Desktop Entry]
 Name=DuckStation
@@ -337,7 +313,7 @@ Type=Application
 Terminal=false
 Categories=Game;Emulator;
 Icon=org.duckstation.DuckStation
-Exec=$HOME/.local/bin/DuckStation.AppImage
+Exec=sh -c "$HOME/.local/bin/DuckStation.AppImage"
 EOF
 
 (
@@ -370,7 +346,7 @@ export PATH="$HOME/.oh-my-posh/bin:$PATH"
 eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/zen.toml)"
 EOF
 
-mkdir -p "$(dirname "$HOME/.config/oh-my-posh/zen.toml)"
+mkdir -p "$(dirname "$HOME/.config/oh-my-posh/zen.toml")"
 tee "$HOME/.config/oh-my-posh/zen.toml" <<'EOF'
 #:schema https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json
 
@@ -511,3 +487,4 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
   background = 'transparent'
   template = '❯❯ '
 EOF
+
