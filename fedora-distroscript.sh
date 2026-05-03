@@ -142,7 +142,7 @@ cargo install zoxide
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # zoxide
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh)"
 EOF
 
 flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive" "org.localsend.localsend_app"

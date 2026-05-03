@@ -211,7 +211,7 @@ zoxide:
         append: true
         content: |
           # zoxide
-          eval "$(zoxide init zsh)"
+          eval "$(zoxide init --cmd cd zsh)"
 
 
 # Desktop Applications
