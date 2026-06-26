@@ -28,6 +28,41 @@ sudo tee "/etc/dnf/automatic.conf" <<'EOF'
 apply_updates=True
 EOF
 
+mkdir -p "$(dirname "$HOME/.config/solaar/rules.yaml")"
+tee "$HOME/.config/solaar/rules.yaml" <<'EOF'
+%YAML 1.3
+---
+- Key: [Back Button, pressed]
+- KeyPress:
+  - Escape
+  - click
+...
+---
+- Key: [Forward Button, pressed]
+- KeyPress:
+  - Print
+  - click
+...
+---
+- Key: [Mouse Gesture Button, pressed]
+- KeyPress:
+  - Super_L
+  - click
+...
+---
+- Test: [thumb_wheel_up, 31]
+- KeyPress:
+  - [Super_L, Left]
+  - click
+...
+---
+- Test: [thumb_wheel_down, 31]
+- KeyPress:
+  - [Super_L, Right]
+  - click
+...
+EOF
+
 mkdir -p "$(dirname "$HOME/.config/autostart/1password.desktop")"
 tee "$HOME/.config/autostart/1password.desktop" <<'EOF'
 [Desktop Entry]
@@ -172,6 +207,30 @@ curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?
 sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo --overwrite
 
 sudo dnf install -y "gh" --repo gh-cli
+
+mkdir -p "$(dirname "$HOME/.local/bin/GitHub Copilot.AppImage")"
+curl -fsSL "https://gh.io/copilot-app-linux" -o "$HOME/.local/bin/GitHub Copilot.AppImage" > /dev/null
+chmod +x "$HOME/.local/bin/GitHub Copilot.AppImage"
+
+mkdir -p "$(dirname "$HOME/.local/share/applications/GitHub Copilot.desktop")"
+tee "$HOME/.local/share/applications/GitHub Copilot.desktop" <<'EOF'
+[Desktop Entry]
+Name=GitHub Copilot
+StartupNotify=true
+Type=Application
+Terminal=false
+Categories=Development;IDE;
+Icon=github
+Exec=sh -c "$HOME/.local/bin/GitHub Copilot.AppImage"
+EOF
+
+(
+  TMP_DIR=$(mktemp -d)
+  cd "$TMP_DIR" || exit
+  "$HOME/.local/bin/GitHub Copilot.AppImage" --appimage-extract
+  cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/" 2>/dev/null || true
+  rm -rf "$TMP_DIR"
+)
 
 curl -fsSL "https://go.dev/dl/$(curl -fsSL 'https://golang.org/VERSION?m=text' | head -n1).linux-amd64.tar.gz" | sudo tar xzvC "/usr/local"
 
