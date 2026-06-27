@@ -137,6 +137,14 @@ build-essential:
     packages: [p7zip-full]
 
 
+csvlens:
+  - type: shell
+    shell: zsh
+    script: |
+      cargo install csvlens
+    depends_on: [rust]
+
+
 entr: [dnf, apt]
 
 
@@ -182,6 +190,9 @@ ranger:
             cd "$(cat "$HOME/.rangerdir")" || exit
           }
           bindkey -s '^o' 'rcd\n'
+
+
+ripgrep: [dnf]
 
 
 shellcheck: [dnf, apt]

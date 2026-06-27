@@ -16,7 +16,7 @@ set -e
 
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "shellcheck" "snapd" "solaar" "stow" "tree" "xclip" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "ripgrep" "shellcheck" "snapd" "solaar" "stow" "tree" "xclip" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
@@ -84,10 +84,6 @@ git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
 git config --global gpg.format ssh
-git config --global interactive.diffFilter 'delta --color-only'
-git config --global delta.navigate true
-git config --global delta.dark true
-git config --global merge.conflictStyle zdiff3
 
 rm -rf "$HOME/.oh-my-zsh"
 
@@ -176,6 +172,10 @@ tee -a "$HOME/.zshrc" <<'EOF'
 # rust
 export PATH="$HOME/.cargo/bin:$PATH"
 EOF
+
+zsh -i -c "
+cargo install csvlens
+" </dev/null
 
 zsh -i -c "
 cargo install gifski
