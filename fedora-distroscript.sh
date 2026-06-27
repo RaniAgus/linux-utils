@@ -84,6 +84,10 @@ git config --global user.email "aguseranieri@gmail.com"
 git config --global user.name "Agustin Ranieri"
 git config --global credential.username "RaniAgus"
 git config --global gpg.format ssh
+git config --global interactive.diffFilter 'delta --color-only'
+git config --global delta.navigate true
+git config --global delta.dark true
+git config --global merge.conflictStyle zdiff3
 
 rm -rf "$HOME/.oh-my-zsh"
 
@@ -134,7 +138,7 @@ sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno" | sed "s/^v//")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno" | sed "s/^v//")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "git-delta" "python3-pip" "ranger" "steam" "valgrind"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
@@ -153,6 +157,12 @@ EOF
 sudo systemctl enable --now docker
 sudo groupadd -f docker
 sudo usermod -aG docker "$USER"
+
+git config --global core.pager delta
+git config --global interactive.diffFilter 'delta --color-only'
+git config --global delta.navigate true
+git config --global delta.dark true
+git config --global merge.conflictStyle zdiff3
 
 tee -a "$HOME/.zshrc" <<'EOF'
 alias vm="valgrind --leak-check=full --track-origins=yes"

@@ -414,6 +414,15 @@ git:
       git config --global credential.username "RaniAgus"
       git config --global gpg.format ssh
 
+git-delta:
+  - type: dnf
+    depends_on: [git]
+    post_install: |
+      git config --global core.pager delta
+      git config --global interactive.diffFilter 'delta --color-only'
+      git config --global delta.navigate true
+      git config --global delta.dark true
+      git config --global merge.conflictStyle zdiff3
 
 gh:
   - type: dnf
