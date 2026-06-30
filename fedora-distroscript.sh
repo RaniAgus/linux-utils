@@ -16,7 +16,7 @@ set -e
 
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "ripgrep" "shellcheck" "snapd" "solaar" "stow" "tree" "xclip" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "ripgrep" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
@@ -134,7 +134,7 @@ sudo dnf config-manager addrepo --from-repofile=https://download.virtualbox.org/
 
 sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
 
-sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno" | sed "s/^v//")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "git-delta" "python3-pip" "ranger" "steam" "valgrind"
+sudo dnf install -y "$(gh_latest_release_url "usebruno/bruno" "bruno_$(gh_latest_tag "usebruno/bruno" | sed "s/^v//")_x86_64_linux.rpm")" "1password-cli" "VirtualBox-7.2" "containerd.io" "docker-buildx-plugin" "docker-ce" "docker-ce-cli" "docker-compose-plugin" "git-delta" "python3-pip" "ranger" "steam" "valgrind" "xclip"
 
 tee -a "$HOME/.zshrc" <<'EOF'
 # pip
@@ -148,6 +148,10 @@ rcd () {
   cd "$(cat "$HOME/.rangerdir")" || exit
 }
 bindkey -s '^o' 'rcd\n'
+EOF
+
+tee -a "$HOME/.zshrc" <<'EOF'
+alias pbcopy="xclip -selection clipboard"
 EOF
 
 sudo systemctl enable --now docker

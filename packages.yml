@@ -204,7 +204,23 @@ stow: [dnf]
 tree: [dnf, apt]
 
 
-xclip: [dnf, apt]
+xclip:
+  - type: dnf
+    depends_on: [oh-my-zsh]
+    post_install:
+      - type: tee
+        append: true
+        destination: "$HOME/.zshrc"
+        content: |
+          alias pbcopy="xclip -selection clipboard"
+  - type: apt
+    depends_on: [oh-my-zsh]
+    post_install:
+      - type: tee
+        append: true
+        destination: "$HOME/.zshrc"
+        content: |
+          alias pbcopy="xclip -selection clipboard"
 
 
 xxd: [dnf, apt]
