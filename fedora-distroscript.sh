@@ -196,6 +196,30 @@ EOF
 
 flatpak install -y flathub "com.discordapp.Discord" "com.github.jeromerobert.pdfarranger" "com.github.maoschanz.drawing" "com.obsproject.Studio" "net.pcsx2.PCSX2" "org.kde.kdenlive" "org.localsend.localsend_app"
 
+mkdir -p "$(dirname "$HOME/.local/bin/Obsidian.AppImage")"
+curl -fsSL "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage" -o "$HOME/.local/bin/Obsidian.AppImage" > /dev/null
+chmod +x "$HOME/.local/bin/Obsidian.AppImage"
+
+mkdir -p "$(dirname "$HOME/.local/share/applications/Obsidian.desktop")"
+tee "$HOME/.local/share/applications/Obsidian.desktop" <<'EOF'
+[Desktop Entry]
+Name=Obsidian
+StartupNotify=true
+Type=Application
+Terminal=false
+Categories=Office;
+Icon=obsidian
+Exec=sh -c '"$HOME/.local/bin/Obsidian.AppImage" "$1"' sh %u
+EOF
+
+(
+  TMP_DIR=$(mktemp -d)
+  cd "$TMP_DIR" || exit
+  "$HOME/.local/bin/Obsidian.AppImage" --appimage-extract
+  cp -rv squashfs-root/usr/share/icons/hicolor/* "$HOME/.local/share/icons/hicolor/" 2>/dev/null || true
+  rm -rf "$TMP_DIR"
+)
+
 pip install -U "yt-dlp[default]"
 
 tee -a "$HOME/.zshrc" <<'EOF'
@@ -218,6 +242,10 @@ curl -fsSL "$(curl -fsSL "https://data.services.jetbrains.com/products/releases?
 # shellcheck disable=SC2211
 /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
 
+tee -a "$HOME/.zshrc" <<'EOF'
+export PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
+EOF
+
 sudo dnf config-manager addrepo --from-repofile=https://cli.github.com/packages/rpm/gh-cli.repo --overwrite
 
 sudo dnf install -y "gh" --repo gh-cli
@@ -235,7 +263,7 @@ Type=Application
 Terminal=false
 Categories=Development;IDE;
 Icon=github
-Exec=sh -c "$HOME/.local/bin/GitHub Copilot.AppImage"
+Exec=sh -c '"$HOME/.local/bin/GitHub Copilot.AppImage" "$1"' sh %u
 EOF
 
 (
@@ -386,7 +414,7 @@ Type=Application
 Terminal=false
 Categories=Game;Emulator;
 Icon=org.duckstation.DuckStation
-Exec=sh -c "$HOME/.local/bin/DuckStation.AppImage"
+Exec=sh -c '"$HOME/.local/bin/DuckStation.AppImage" "$1"' sh %u
 EOF
 
 (

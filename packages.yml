@@ -344,6 +344,15 @@ obs-studio:
     packages: [com.obsproject.Studio]
 
 
+obsidian:
+  - type: appimage
+    url: https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/Obsidian-1.12.7.AppImage
+    name: Obsidian
+    icon_name: obsidian
+    categories:
+      - Office
+
+
 drawing:
   - type: flatpak
     packages: [com.github.maoschanz.drawing]
@@ -424,10 +433,17 @@ jetbrains-toolbox:
     url: $(curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" | jq -r '.TBA[0].downloads.linux.link')
     destination: /opt
     sudo: true
-    post_install: |
-      # shellcheck disable=SC2211
-      /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
-    depends_on: [jq]
+    post_install:
+      - type: shell
+        command: |
+          # shellcheck disable=SC2211
+          /opt/jetbrains-toolbox-*/bin/jetbrains-toolbox >/dev/null & disown;
+      - type: tee
+        destination: "$HOME/.zshrc"
+        append: true
+        content: |
+          export PATH="$HOME/.local/share/JetBrains/Toolbox/scripts:$PATH"
+    depends_on: [jq, oh-my-zsh]
 
 
 # Programming
