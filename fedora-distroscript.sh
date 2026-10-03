@@ -63,6 +63,52 @@ tee "$HOME/.config/solaar/rules.yaml" <<'EOF'
 ...
 EOF
 
+sudo tee "/etc/udev/rules.d/42-logitech-unifying.rules" <<'EOF'
+# This rule was added by Solaar.
+#
+# Allows non-root users to have raw access to Logitech devices.
+# Allowing users to write to the device is potentially dangerous
+# because they could perform firmware updates.
+KERNEL=="uinput", SUBSYSTEM=="misc", TAG+="uaccess", OPTIONS+="static_node=uinput"
+
+ACTION == "remove", GOTO="solaar_end"
+SUBSYSTEM != "hidraw", GOTO="solaar_end"
+
+# USB-connected Logitech receivers and devices
+ATTRS{idVendor}=="046d", GOTO="solaar_apply"
+
+# Lenovo nano receiver
+ATTRS{idVendor}=="17ef", ATTRS{idProduct}=="6042", GOTO="solaar_apply"
+
+# Bluetooth-connected Logitech devices
+KERNELS == "0005:046D:*", GOTO="solaar_apply"
+
+GOTO="solaar_end"
+
+LABEL="solaar_apply"
+
+# Allow any seated user to access the receiver.
+# uaccess: modern ACL-enabled udev
+TAG+="uaccess"
+
+# Grant members of the "plugdev" group access to receiver (useful for SSH users)
+#MODE="0660", GROUP="plugdev"
+
+LABEL="solaar_end"
+# vim: ft=udevrules
+EOF
+
+sudo tee "/etc/udev/rules.d/70-keychron.rules" <<'EOF'
+# Keychron K11 Max, enable access by Keychron launcher
+# idProduct extracted from `lsusb -d 3434:` output
+SUBSYSTEM=="hidraw", SUBSYSTEMS=="usb", ACTION=="add|change", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="0ab3", TAG+="uaccess"
+
+SUBSYSTEM=="hidraw", SUBSYSTEMS=="usb", ACTION=="add|change", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="d030", TAG+="uaccess"
+EOF
+
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+
 mkdir -p "$(dirname "$HOME/.config/autostart/1password.desktop")"
 tee "$HOME/.config/autostart/1password.desktop" <<'EOF'
 [Desktop Entry]
