@@ -93,6 +93,31 @@ ls | cut -f1 -d. | xargs -n1 -i -p mongoimport --db $DB_NAME --collection {} --f
 - Then uncheck the box about using the default value and set the custom value to []
 - Restart
 
+### Fedora Bluetooth latency workaround
+
+Bluetooth audio latency may improve by disabling deep power saving in the `rtw88` driver and Wi-Fi power saving in NetworkManager.
+
+`/etc/modprobe.d/rtw88.conf`:
+
+```text
+options rtw88_core disable_lps_deep=1
+```
+
+`/etc/NetworkManager/conf.d/wifi-powersave-off.conf`:
+
+```ini
+[connection]
+wifi.powersave = 2
+```
+
+Reboot after applying the changes. You can verify the driver option with:
+
+```bash
+cat /sys/module/rtw88_core/parameters/disable_lps_deep
+```
+
+It should return `Y`.
+
 ### Repair grub dual boot
 
 ```bash
