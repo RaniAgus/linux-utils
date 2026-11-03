@@ -16,7 +16,7 @@ set -e
 
 sudo dnf copr enable frostyx/gleam -y
 
-sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "ripgrep" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
+sudo dnf install -y "bison" "clang-format" "clang-tidy" "cmake" "dnf-automatic" "dnf5-plugins" "entr" "fuse" "fuse-libs" "gcc" "gcc-c++" "gdb" "git" "gleam" "htop" "https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm" "https://downloads.1password.com/linux/rpm/stable/x86_64/1password-latest.rpm" "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm" "https://persistent.oaistatic.com/codex-app-prod/linux/rpm/latest/chatgpt.x86_64.rpm" "https://zoom.us/client/latest/zoom_x86_64.rpm" "jq" "kernel" "kernel-core" "kernel-devel" "kernel-headers" "kernel-modules" "kernel-modules-core" "kernel-modules-extra" "kernel-tools" "kernel-tools-libs" "libffi-devel" "libyaml-devel" "make" "openssl-devel" "p7zip" "ripgrep" "shellcheck" "snapd" "solaar" "stow" "tree" "xxd" "zlib-devel" "zsh"
 
 sudo ln -sf /var/lib/snapd/snap /snap
 sudo systemctl restart snapd.seeded.service
@@ -634,4 +634,3 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
   background = 'transparent'
   template = '❯❯ '
 EOF
-
